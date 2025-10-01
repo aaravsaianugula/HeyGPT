@@ -75,11 +75,25 @@ namespace HeyGPT.Views
 
         private void SetupSystemTray()
         {
+            Icon? trayIcon = null;
+            try
+            {
+                string iconPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SqaureLog.ico");
+                if (System.IO.File.Exists(iconPath))
+                {
+                    trayIcon = new Icon(iconPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to load custom tray icon: {ex.Message}");
+            }
+
             _notifyIcon = new NotifyIcon
             {
-                Icon = SystemIcons.Application,
+                Icon = trayIcon ?? SystemIcons.Application,
                 Visible = true,
-                Text = "HeyGPT"
+                Text = "HeyGPT - Voice Assistant"
             };
 
             ContextMenuStrip contextMenu = new ContextMenuStrip();

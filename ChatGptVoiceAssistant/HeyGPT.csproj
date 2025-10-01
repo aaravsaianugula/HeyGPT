@@ -30,9 +30,10 @@
     <Resource Include="..\Assets\SqaureLog.png">
       <Link>Assets\SqaureLog.png</Link>
     </Resource>
-    <Resource Include="..\Assets\SqaureLog.ico">
-      <Link>Assets\SqaureLog.ico</Link>
-    </Resource>
+    <Content Include="..\Assets\SqaureLog.ico">
+      <Link>SqaureLog.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
