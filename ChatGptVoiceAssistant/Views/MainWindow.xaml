@@ -1,0 +1,230 @@
+<Window x:Class="HeyGPT.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="HeyGPT · 음성 비서"
+        Height="720" Width="720"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Icon="../Assets/SqaureLog.ico"
+        Background="{StaticResource TraditionalGradientBrush}"
+        Loaded="Window_Loaded"
+        Opacity="0">
+
+    <Grid Margin="32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header with Logo -->
+        <StackPanel x:Name="HeaderPanel" Grid.Row="0" Margin="0,0,0,24" HorizontalAlignment="Center"
+                    Opacity="0"
+                    RenderTransformOrigin="0.5,0.5">
+            <StackPanel.RenderTransform>
+                <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+            </StackPanel.RenderTransform>
+            <Ellipse Width="140" Height="140"
+                     Margin="0,0,0,12"
+                     HorizontalAlignment="Center">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="../Assets/Logo.png" Stretch="UniformToFill"/>
+                </Ellipse.Fill>
+                <Ellipse.Effect>
+                    <DropShadowEffect Color="#40000000"
+                                      BlurRadius="20"
+                                      ShadowDepth="6"
+                                      Direction="270"
+                                      Opacity="0.3"/>
+                </Ellipse.Effect>
+            </Ellipse>
+
+            <TextBlock Text="音声アシスタント · Voice Assistant"
+                       FontSize="13"
+                       FontWeight="Light"
+                       Foreground="{StaticResource StoneBrush}"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,0"
+                       Opacity="0.7"/>
+        </StackPanel>
+
+        <!-- Status Display Card -->
+        <Border x:Name="StatusCard" Grid.Row="1"
+                Style="{StaticResource WabiSabiCard}"
+                Margin="0,0,0,24"
+                Opacity="0">
+            <Border.RenderTransform>
+                <TranslateTransform Y="-30"/>
+            </Border.RenderTransform>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                    <Ellipse Width="12" Height="12"
+                             Fill="{StaticResource SecondaryBrush}"
+                             Margin="0,0,8,0"
+                             VerticalAlignment="Center"/>
+                    <TextBlock Text="現在の状態 · Current Status"
+                               Style="{StaticResource SubheaderText}"
+                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                </StackPanel>
+
+                <TextBlock x:Name="StatusTextBlock"
+                           Style="{StaticResource BodyText}"
+                           FontSize="14"
+                           Foreground="{StaticResource PrimaryBrush}"
+                           TextWrapping="Wrap"
+                           Margin="20,8,0,0"
+                           Text="Application started. Configure settings and start listening."/>
+            </StackPanel>
+        </Border>
+
+        <!-- Activity Log Card -->
+        <Border x:Name="ActivityLogCard" Grid.Row="2"
+                Style="{StaticResource WabiSabiCard}"
+                Margin="0,0,0,24"
+                Opacity="0">
+            <Border.RenderTransform>
+                <TranslateTransform Y="-30"/>
+            </Border.RenderTransform>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                    <Path Data="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M16.59,7.58L10,14.17L7.41,11.59L6,13L10,17L18,9L16.59,7.58Z"
+                          Fill="{StaticResource WoodBrush}"
+                          Width="16"
+                          Height="16"
+                          Stretch="Uniform"
+                          Margin="0,0,8,0"
+                          VerticalAlignment="Center"/>
+                    <TextBlock Text="活動ログ · Activity Log"
+                               Style="{StaticResource SubheaderText}"/>
+                </StackPanel>
+
+                <Border Grid.Row="1"
+                        Background="{StaticResource BackgroundBrush}"
+                        CornerRadius="8"
+                        Padding="16"
+                        BorderBrush="{StaticResource MistBrush}"
+                        BorderThickness="1">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  MaxHeight="220">
+                        <TextBlock x:Name="LogTextBlock"
+                                   Style="{StaticResource BodyText}"
+                                   FontSize="12"
+                                   FontFamily="Consolas"
+                                   Foreground="{StaticResource CharcoalBrush}"
+                                   TextWrapping="Wrap"
+                                   LineHeight="18"
+                                   Text=""/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Action Buttons -->
+        <StackPanel x:Name="ActionButtonsPanel" Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,20"
+                    Opacity="0">
+            <StackPanel.RenderTransform>
+                <TranslateTransform Y="30"/>
+            </StackPanel.RenderTransform>
+            <Button x:Name="StartButton"
+                    Style="{StaticResource AccentButton}"
+                    Click="StartButton_Click"
+                    Width="200"
+                    Padding="24,16">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="▶"
+                               FontSize="16"
+                               Margin="0,0,8,0"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Start Listening"
+                               FontSize="14"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="StopButton"
+                    Style="{StaticResource SecondaryButton}"
+                    Click="StopButton_Click"
+                    Width="200"
+                    Padding="24,16"
+                    IsEnabled="False">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="⏸"
+                               FontSize="16"
+                               Margin="0,0,8,0"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Stop Listening"
+                               FontSize="14"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!-- Settings, Test, and User Guide Buttons -->
+        <Grid x:Name="BottomButtonsPanel" Grid.Row="4"
+              Opacity="0">
+            <Grid.RenderTransform>
+                <TranslateTransform Y="30"/>
+            </Grid.RenderTransform>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="SettingsButton"
+                    Grid.Column="0"
+                    Style="{StaticResource TraditionalButton}"
+                    Click="SettingsButton_Click"
+                    Margin="0,0,4,0"
+                    Padding="16,14">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="⚙"
+                               FontSize="16"
+                               Margin="0,0,8,0"/>
+                    <TextBlock Text="Settings"
+                               FontSize="13"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="TestButton"
+                    Grid.Column="1"
+                    Style="{StaticResource TraditionalButton}"
+                    Click="TestButton_Click"
+                    Margin="4,0,4,0"
+                    Padding="16,14">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="🧪"
+                               FontSize="16"
+                               Margin="0,0,8,0"/>
+                    <TextBlock Text="Test"
+                               FontSize="13"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="UserGuideButton"
+                    Grid.Column="2"
+                    Style="{StaticResource TraditionalButton}"
+                    Click="UserGuideButton_Click"
+                    Margin="4,0,0,0"
+                    Padding="16,14">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="📖"
+                               FontSize="16"
+                               Margin="0,0,8,0"/>
+                    <TextBlock Text="Guide"
+                               FontSize="13"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
