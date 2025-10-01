@@ -63,20 +63,25 @@ namespace HeyGPT.Views
         {
             try
             {
-                _usePorcupine = _currentSettings.UsePorcupine && !string.IsNullOrWhiteSpace(_currentSettings.PicovoiceAccessKey);
+                // Auto-detect: Use Porcupine if AccessKey provided, otherwise System.Speech
+                _usePorcupine = !string.IsNullOrWhiteSpace(_currentSettings.PicovoiceAccessKey);
 
                 if (_usePorcupine)
                 {
+                    // Porcupine for wake word detection (high accuracy, no isolation needed)
                     _porcupineService = new PorcupineWakeWordService();
-                    _porcupineService.Initialize(_currentSettings.PicovoiceAccessKey, null, _currentSettings.PorcupineSensitivity);
+                    _porcupineService.Initialize(_currentSettings.PicovoiceAccessKey, null, _currentSettings.PorcupineSensitivity, _currentSettings.WakeWord);
                     _porcupineService.WakeWordDetected += OnWakeWordDetected;
                     _porcupineService.StatusChanged += OnSpeechStatusChanged;
                     _porcupineService.ErrorOccurred += OnSpeechError;
-                    AddLog($"✓ Using Porcupine wake word engine (high accuracy)");
-                    AddLog($"Porcupine version: {_porcupineService.GetVersion()}");
+                    AddLog($"🎯 Porcupine AI Wake Word Engine");
+                    AddLog($"   Wake word: '{_currentSettings.WakeWord}'");
+                    AddLog($"   Sensitivity: {_currentSettings.PorcupineSensitivity}");
+                    AddLog($"   Version: {_porcupineService.GetVersion()}");
                 }
                 else
                 {
+                    // Fallback: System.Speech for wake word detection
                     _speechService.Initialize(_currentSettings.WakeWord, _currentSettings.SpeechConfidenceThreshold);
                     _speechService.ConfigureIsolation(
                         _currentSettings.EnableWakeWordIsolation,
@@ -87,9 +92,11 @@ namespace HeyGPT.Views
                     _speechService.WakeWordDetected += OnWakeWordDetected;
                     _speechService.StatusChanged += OnSpeechStatusChanged;
                     _speechService.ErrorOccurred += OnSpeechError;
-                    AddLog("Using System.Speech for wake word detection");
+                    AddLog($"⚠️ Using System.Speech (basic mode)");
+                    AddLog($"   For better accuracy, add Porcupine AccessKey in Settings");
                 }
 
+                // Always initialize voice commands (mic on/off, exit)
                 _speechService.InitializeCommands();
                 _speechService.CommandRecognized += OnCommandRecognized;
             }

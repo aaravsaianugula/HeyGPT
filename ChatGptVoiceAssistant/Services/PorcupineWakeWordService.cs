@@ -24,13 +24,36 @@ namespace HeyGPT.Services
 
         public bool IsListening => _isListening;
 
-        public void Initialize(string accessKey, string? customKeywordPath = null, float sensitivity = 0.5f)
+        private BuiltInKeyword MapWakeWordToKeyword(string wakeWord)
+        {
+            return wakeWord.ToLowerInvariant().Replace(" ", "") switch
+            {
+                "jarvis" => BuiltInKeyword.JARVIS,
+                "alexa" => BuiltInKeyword.ALEXA,
+                "computer" => BuiltInKeyword.COMPUTER,
+                "heygoogle" or "hey google" => BuiltInKeyword.HEY_GOOGLE,
+                "heysiri" or "hey siri" => BuiltInKeyword.HEY_SIRI,
+                "okgoogle" or "ok google" => BuiltInKeyword.OK_GOOGLE,
+                "picovoice" => BuiltInKeyword.PICOVOICE,
+                "porcupine" => BuiltInKeyword.PORCUPINE,
+                "bumblebee" => BuiltInKeyword.BUMBLEBEE,
+                "terminator" => BuiltInKeyword.TERMINATOR,
+                "americano" => BuiltInKeyword.AMERICANO,
+                "blueberry" => BuiltInKeyword.BLUEBERRY,
+                "grapefruit" => BuiltInKeyword.GRAPEFRUIT,
+                "grasshopper" => BuiltInKeyword.GRASSHOPPER,
+                _ => BuiltInKeyword.COMPUTER
+            };
+        }
+
+        public void Initialize(string accessKey, string? customKeywordPath = null, float sensitivity = 0.5f, string wakeWord = "computer")
         {
             try
             {
                 _accessKey = accessKey;
                 _customKeywordPath = customKeywordPath;
                 _sensitivity = sensitivity;
+                _builtInKeyword = MapWakeWordToKeyword(wakeWord);
 
                 if (string.IsNullOrWhiteSpace(_accessKey))
                 {

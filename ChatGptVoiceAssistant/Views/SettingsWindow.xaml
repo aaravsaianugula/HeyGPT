@@ -107,7 +107,20 @@
                                 Background="{StaticResource MistBrush}"
                                 Margin="0,16,0,16"/>
 
-                        <!-- Wake Word Isolation -->
+                        <!-- System.Speech Advanced Settings (Fallback Only) -->
+                        <Border Background="{StaticResource MistBrush}"
+                                CornerRadius="6"
+                                Padding="12"
+                                Margin="0,0,0,12">
+                            <TextBlock Style="{StaticResource CaptionText}"
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource StoneBrush}">
+                                <Run Text="ℹ️ These settings only apply when using System.Speech (fallback mode)." FontWeight="SemiBold"/>
+                                <LineBreak/>
+                                <Run Text="If you have Porcupine AccessKey, these are ignored." FontSize="10"/>
+                            </TextBlock>
+                        </Border>
+
                         <TextBlock Style="{StaticResource SubheaderText}"
                                    Text="Advanced Wake Word Isolation"
                                    FontSize="14"
@@ -194,36 +207,26 @@
                     </StackPanel>
                 </GroupBox>
 
-                <!-- Porcupine High Accuracy Wake Word -->
+                <!-- Porcupine AI Wake Word Engine (Recommended) -->
                 <GroupBox Style="{StaticResource TraditionalGroupBox}">
                     <GroupBox.Header>
-                        <TextBlock Text="🎯 Porcupine High Accuracy Mode · 高精度モード"/>
+                        <TextBlock Text="🎯 Porcupine AI Wake Word Engine (Recommended)"/>
                     </GroupBox.Header>
 
                     <StackPanel>
-                        <CheckBox x:Name="UsePorcupineCheckBox"
-                                  IsChecked="{Binding UsePorcupine, UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="0,0,0,16">
-                            <CheckBox.Content>
-                                <StackPanel>
-                                    <TextBlock Text="Enable Porcupine Wake Word Detection"
-                                               Style="{StaticResource SubheaderText}"
-                                               FontSize="14"
-                                               Margin="0"/>
-                                    <TextBlock Text="97%+ accuracy, &lt;1 false positive per 10 hours"
-                                               Style="{StaticResource CaptionText}"
-                                               Margin="0,4,0,0"
-                                               FontSize="11"
-                                               Foreground="{StaticResource SecondaryBrush}"/>
-                                </StackPanel>
-                            </CheckBox.Content>
-                        </CheckBox>
-
-                        <TextBlock Style="{StaticResource CaptionText}"
-                                   TextWrapping="Wrap"
-                                   Margin="0,0,0,12">
-                            <Run Text="🚀 Porcupine is an industry-standard wake word engine with exceptional accuracy. Recommended to fix false positive issues with System.Speech." FontWeight="SemiBold"/>
-                        </TextBlock>
+                        <Border Background="{StaticResource SecondaryBrush}"
+                                CornerRadius="6"
+                                Padding="12"
+                                Margin="0,0,0,16"
+                                Opacity="0.2">
+                            <TextBlock Style="{StaticResource CaptionText}"
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource CharcoalBrush}">
+                                <Run Text="✨ 97%+ accuracy, &lt;1 false positive per 10 hours" FontWeight="Bold"/>
+                                <LineBreak/>
+                                <Run Text="Simply enter your AccessKey below to enable high accuracy wake word detection. No complex settings needed!" FontSize="11"/>
+                            </TextBlock>
+                        </Border>
 
                         <TextBlock Style="{StaticResource SubheaderText}"
                                    Text="Picovoice AccessKey (Required)"
