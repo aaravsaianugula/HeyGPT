@@ -22,9 +22,12 @@ namespace HeyGPT.Services
         private DateTime _lastSilenceStartTime = DateTime.Now;
         private DateTime _lastSpeechTime = DateTime.Now;
         private DateTime _firstHypothesisTime = DateTime.MinValue;
+        private DateTime _lastRecognitionTime = DateTime.MinValue;
         private bool _isCurrentlySilent = true;
         private int _currentAudioLevel = 0;
+        private bool _waitingForSilenceConfirmation = false;
         private readonly List<string> _recentHypotheses = new List<string>();
+        private readonly List<string> _postRecognitionHypotheses = new List<string>();
         private readonly object _lockObject = new object();
 
         public event EventHandler<string>? WakeWordDetected;
@@ -85,9 +88,12 @@ namespace HeyGPT.Services
                 _lastSilenceStartTime = DateTime.Now;
                 _lastSpeechTime = DateTime.Now;
                 _firstHypothesisTime = DateTime.MinValue;
+                _lastRecognitionTime = DateTime.MinValue;
                 _isCurrentlySilent = true;
                 _currentAudioLevel = 0;
+                _waitingForSilenceConfirmation = false;
                 _recentHypotheses.Clear();
+                _postRecognitionHypotheses.Clear();
             }
         }
 
@@ -158,7 +164,7 @@ namespace HeyGPT.Services
                 {
                     _lastSilenceStartTime = DateTime.Now;
 
-                    if (_recentHypotheses.Count > 0 && (DateTime.Now - _firstHypothesisTime).TotalMilliseconds > 3000)
+                    if (!_waitingForSilenceConfirmation && _recentHypotheses.Count > 0 && (DateTime.Now - _firstHypothesisTime).TotalMilliseconds > 3000)
                     {
                         _recentHypotheses.Clear();
                         _firstHypothesisTime = DateTime.MinValue;
@@ -167,6 +173,11 @@ namespace HeyGPT.Services
                 else if (wasSilent && !_isCurrentlySilent)
                 {
                     _lastSpeechTime = DateTime.Now;
+
+                    if (!_waitingForSilenceConfirmation && _postRecognitionHypotheses.Count > 0)
+                    {
+                        _postRecognitionHypotheses.Clear();
+                    }
                 }
             }
         }
@@ -175,6 +186,13 @@ namespace HeyGPT.Services
         {
             lock (_lockObject)
             {
+                if (_waitingForSilenceConfirmation)
+                {
+                    _postRecognitionHypotheses.Add(e.Result.Text);
+                    StatusChanged?.Invoke(this, $"⚠ Post-recognition speech detected: '{e.Result.Text}'");
+                    return;
+                }
+
                 if (_recentHypotheses.Count == 0)
                 {
                     _firstHypothesisTime = DateTime.Now;
@@ -189,7 +207,7 @@ namespace HeyGPT.Services
             }
         }
 
-        private void OnSpeechRecognized(object? sender, SpeechRecognizedEventArgs e)
+        private async void OnSpeechRecognized(object? sender, SpeechRecognizedEventArgs e)
         {
             if (e.Result.Confidence < _confidenceThreshold)
             {
@@ -213,11 +231,43 @@ namespace HeyGPT.Services
 
             lock (_lockObject)
             {
-                _lastActivationTime = DateTime.Now;
-                _recentHypotheses.Clear();
+                _lastRecognitionTime = DateTime.Now;
+                _waitingForSilenceConfirmation = true;
+                _postRecognitionHypotheses.Clear();
             }
 
-            StatusChanged?.Invoke(this, $"✓ Wake word detected (isolated): '{recognizedText}' (confidence: {e.Result.Confidence:P0})");
+            StatusChanged?.Invoke(this, $"Wake word recognized - waiting for silence confirmation...");
+
+            await System.Threading.Tasks.Task.Delay(400);
+
+            lock (_lockObject)
+            {
+                _waitingForSilenceConfirmation = false;
+
+                if (_postRecognitionHypotheses.Count > 0)
+                {
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: Speech continued after wake word ({_postRecognitionHypotheses.Count} post-recognition hypotheses)");
+                    _recentHypotheses.Clear();
+                    _postRecognitionHypotheses.Clear();
+                    _firstHypothesisTime = DateTime.MinValue;
+                    return;
+                }
+
+                var timeSinceSilence = (DateTime.Now - _lastSilenceStartTime).TotalMilliseconds;
+                if (!_isCurrentlySilent && timeSinceSilence > 500)
+                {
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: No silence after wake word (still hearing speech)");
+                    _recentHypotheses.Clear();
+                    _firstHypothesisTime = DateTime.MinValue;
+                    return;
+                }
+
+                _lastActivationTime = DateTime.Now;
+                _recentHypotheses.Clear();
+                _firstHypothesisTime = DateTime.MinValue;
+            }
+
+            StatusChanged?.Invoke(this, $"✓ Wake word CONFIRMED (isolated): '{recognizedText}' (confidence: {e.Result.Confidence:P0})");
             WakeWordDetected?.Invoke(this, recognizedText);
         }
 
