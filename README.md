@@ -215,6 +215,7 @@ HeyGPT/
 │   ├── Models/            # Data models
 │   │   └── AppSettings.cs
 │   ├── Services/          # Core services
+│   │   ├── PorcupineWakeWordService.cs
 │   │   ├── SpeechRecognitionService.cs
 │   │   ├── WindowAutomationService.cs
 │   │   ├── ScreenshotService.cs
