@@ -6,7 +6,7 @@
 
 A modern, voice-activated desktop assistant for Windows that launches and controls ChatGPT using wake word detection.
 
-[![Release](https://img.shields.io/badge/Release-v1.0.0-blue.svg)](https://github.com/aaravsaianugula/HeyGPT/releases/latest)
+[![Release](https://img.shields.io/badge/Release-v1.1.0-blue.svg)](https://github.com/aaravsaianugula/HeyGPT/releases/latest)
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)](https://www.microsoft.com/windows)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -52,8 +52,8 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 ## 🚀 Installation
 
 ### Option 1: Download Release (Recommended)
-1. Download **[HeyGPT v1.0.0](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.0.0)** (9.6 MB)
-2. Extract `HeyGPT-v1.0.0-Windows.zip` to a permanent location (e.g., `C:\Program Files\HeyGPT`)
+1. Download **[HeyGPT v1.1.0](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.1.0)** (13 MB)
+2. Extract `HeyGPT-v1.1.0-Windows.zip` to a permanent location (e.g., `C:\Program Files\HeyGPT`)
 3. **Important**: Keep all files together - don't move just the `.exe`
 4. Run `HeyGPT.exe` from the extracted folder
 5. (Optional) Right-click `HeyGPT.exe` → **Send to** → **Desktop (create shortcut)**
@@ -302,6 +302,35 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ChatGPT Desktop App by OpenAI
 
 ## 📝 Changelog
+
+### v1.1.0 (2025-10-01)
+**Major Update: Porcupine High Accuracy Wake Word Detection** 🎉
+
+**🎯 Major Features:**
+- Added Porcupine by Picovoice for industry-standard wake word detection
+- 97%+ accuracy with <1 false positive per 10 hours
+- Voice commands: "mic on/off", "exit voice mode" (in voice mode only)
+- Dual wake word engine support (Porcupine + System.Speech)
+- Blue orb detection for voice mode tracking
+- Comprehensive in-app Porcupine user guide
+
+**🔧 Improvements:**
+- Dramatically improved wake word accuracy
+- Fixed false positive issue with System.Speech
+- Added Picovoice AccessKey configuration in Settings
+- Added sensitivity adjustment (0.0-1.0)
+- Added voice mode monitoring (checks every 2 seconds)
+- Updated Settings UI with Porcupine section
+
+**📦 Dependencies:**
+- Added Porcupine 3.0.10
+- Added NAudio 2.2.1
+
+**📖 Documentation:**
+- Updated README with Porcupine setup instructions
+- Added Porcupine troubleshooting guide
+- Created comprehensive in-app user guide
+- Added RELEASE_NOTES.txt to distribution package
 
 ### v1.0.0 (2025-10-01)
 **First Official Release** 🎉

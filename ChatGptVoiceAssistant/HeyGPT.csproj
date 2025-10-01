@@ -12,6 +12,14 @@
     <RootNamespace>HeyGPT</RootNamespace>
     <StartupObject>HeyGPT.App</StartupObject>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Version>1.1.0</Version>
+    <FileVersion>1.1.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <Product>HeyGPT Voice Assistant</Product>
+    <Authors>Aarav Sai Anugula, Claude Code</Authors>
+    <Company>HeyGPT</Company>
+    <Description>Voice-activated ChatGPT assistant with Porcupine high accuracy wake word detection</Description>
+    <Copyright>Copyright © 2025</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
