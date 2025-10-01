@@ -51,10 +51,14 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 
 ### Option 1: Download Release (Recommended)
 1. Download **[HeyGPT v1.0.0](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.0.0)** (9.6 MB)
-2. Extract `HeyGPT-v1.0.0-Windows.zip` to a folder
-3. Run `HeyGPT.exe`
-4. Configure monitor in Settings
-5. Click "Start Listening" and say "Hey GPT"!
+2. Extract `HeyGPT-v1.0.0-Windows.zip` to a permanent location (e.g., `C:\Program Files\HeyGPT`)
+3. **Important**: Keep all files together - don't move just the `.exe`
+4. Run `HeyGPT.exe` from the extracted folder
+5. (Optional) Right-click `HeyGPT.exe` → **Send to** → **Desktop (create shortcut)**
+6. Configure monitor in Settings
+7. Click "Start Listening" and say "Hey GPT"!
+
+**Note**: The first launch may take a few seconds while Windows loads .NET runtime.
 
 ### Option 2: Build from Source
 ```bash
@@ -70,6 +74,15 @@ dotnet build --configuration Release
 # Run
 dotnet run
 ```
+
+## 🎯 How to Launch HeyGPT
+
+After installation, you can launch HeyGPT using any of these methods:
+
+1. **Windows Search**: Press `Win` key, type "HeyGPT", press Enter
+2. **Desktop Shortcut**: Double-click the HeyGPT icon (if created)
+3. **Direct Launch**: Navigate to installation folder and run `HeyGPT.exe`
+4. **Auto-Start**: Enable in Settings to launch with Windows
 
 ## 📖 Quick Start Guide
 
@@ -134,12 +147,27 @@ Adjust settings based on your environment:
 - **Shared Space**: Enable isolation to prevent accidental triggers
 
 ### Troubleshooting
+
+#### Launch Issues
+- **"Windows is searching for python.exe" error**: This means you have a broken shortcut. Delete the shortcut and recreate it by right-clicking `HeyGPT.exe` → **Send to** → **Desktop (create shortcut)**
+- **App doesn't appear in Windows Search**: Windows may need time to index. Try launching directly from the folder or restart Windows
+- **Missing .dll errors**: Extract the entire zip file contents together - don't move just the `.exe` file
+- **.NET runtime errors**: Install [.NET 8.0 Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
+
+#### Voice Recognition Issues
 - **Wake word not detected**: Check microphone permissions, speak wake word clearly and alone (not in a sentence)
 - **"Speech continued after wake word" rejections**: Pause briefly after saying "Hey GPT", isolation requires silence after wake word
 - **Wake word triggers mid-sentence**: Should not happen with v1.0.0+ strict isolation; check Activity Log for details
-- **ChatGPT doesn't launch**: Verify ChatGPT Desktop App is installed and "chatgpt" command works in terminal
+
+#### ChatGPT Integration Issues
+- **ChatGPT doesn't launch**: Verify ChatGPT Desktop App is installed and "chatgpt" command works in PowerShell/CMD
 - **Buttons not clicked**: Reconfigure button positions via Settings using the 10-second countdown capture
+- **Blue orb not detected**: ChatGPT window layout may have changed; reconfigure voice mode button position
+
+#### General Issues
 - **App stops listening**: Now includes auto-restart; check Activity Log if issues persist
+- **Settings not saving**: Check write permissions for `%APPDATA%\HeyGPT\` folder
+- **App minimizes unexpectedly**: Check "Start Minimized" setting in Settings window
 
 ## 🏗️ Architecture
 
