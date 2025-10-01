@@ -6,6 +6,7 @@
 
 A modern, voice-activated desktop assistant for Windows that launches and controls ChatGPT using wake word detection.
 
+[![Release](https://img.shields.io/badge/Release-v1.0.0-blue.svg)](https://github.com/aaravsaianugula/HeyGPT/releases/latest)
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)](https://www.microsoft.com/windows)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -16,8 +17,10 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 
 ### 🎤 Voice Recognition
 - **Wake Word Detection** - Activate with customizable wake word (default: "Hey GPT")
-- **Advanced Isolation** - Prevents false positives with silence detection and cooldown periods
-- **Configurable Confidence** - Adjust speech recognition sensitivity
+- **Strict Isolation Technology** - Advanced filtering prevents false triggers when wake word is embedded in sentences
+- **Post-Recognition Validation** - 400ms confirmation period ensures wake word was spoken in isolation
+- **Continuous Listening Mode** - Keeps listening after each detection, no need to restart
+- **Configurable Confidence** - Adjust speech recognition sensitivity and thresholds
 
 ### 🖥️ Window Automation
 - **Multi-Monitor Support** - Launch ChatGPT on any monitor
@@ -47,9 +50,11 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 ## 🚀 Installation
 
 ### Option 1: Download Release (Recommended)
-1. Download the latest release from [Releases](../../releases)
-2. Extract the ZIP file
+1. Download **[HeyGPT v1.0.0](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.0.0)** (9.6 MB)
+2. Extract `HeyGPT-v1.0.0-Windows.zip` to a folder
 3. Run `HeyGPT.exe`
+4. Configure monitor in Settings
+5. Click "Start Listening" and say "Hey GPT"!
 
 ### Option 2: Build from Source
 ```bash
@@ -94,27 +99,47 @@ For improved reliability, capture exact button positions:
 
 ### 5. Start Using
 1. Click **Start Listening**
-2. Say your wake word: "Hey GPT"
+2. Say your wake word: "Hey GPT" (speak it alone, not in a sentence)
 3. ChatGPT launches automatically in voice mode!
+4. App continues listening - say "Hey GPT" again anytime to launch another window
+5. Click **Stop** when you're done
 
 ## 🎯 Usage Tips
 
+### How Wake Word Isolation Works
+HeyGPT uses **advanced isolation technology** to ensure wake words are only detected when spoken alone:
+
+**Pre-Recognition Checks:**
+- Maximum 5 speech hypotheses (rejects if part of longer sentence)
+- Maximum 3 unique words (rejects if conversation detected)
+- Maximum 2 second speech duration
+- All words must be part of wake word (rejects "Hey what's up GPT")
+
+**Post-Recognition Validation (400ms):**
+- Monitors for continued speech after wake word
+- Rejects if any additional words detected
+- Ensures silence follows the wake word
+
+**Result:** ✅ "Hey GPT" triggers, ❌ "Hey GPT can you..." rejects
+
 ### Wake Word Isolation Settings
-- **Silence Threshold**: Audio level below which is considered silence (0-30)
-- **Minimum Silence Duration**: Required silence before wake word (ms)
-- **Cooldown Period**: Time between wake word detections (ms)
+- **Enable Wake Word Isolation**: Turn on/off strict filtering (recommended: ON)
+- **Cooldown Period**: Time between detections (default: 1.5s)
+- **Confidence Threshold**: Speech recognition confidence level (default: 0.7)
 
 ### Environment Presets
 Adjust settings based on your environment:
-- **Quiet Office**: Higher sensitivity, shorter cooldown
-- **Noisy Environment**: Lower sensitivity, longer cooldown, higher silence threshold
-- **Shared Space**: Enable isolation, increase cooldown
+- **Quiet Office**: Enable isolation, default settings work well
+- **Noisy Environment**: Increase confidence threshold to 0.8+
+- **Shared Space**: Enable isolation to prevent accidental triggers
 
 ### Troubleshooting
-- **Wake word not detected**: Increase confidence threshold, check microphone
-- **False positives**: Enable isolation, increase silence threshold
-- **ChatGPT doesn't launch**: Verify "chatgpt" command works in terminal
-- **Buttons not clicked**: Reconfigure button positions via Settings
+- **Wake word not detected**: Check microphone permissions, speak wake word clearly and alone (not in a sentence)
+- **"Speech continued after wake word" rejections**: Pause briefly after saying "Hey GPT", isolation requires silence after wake word
+- **Wake word triggers mid-sentence**: Should not happen with v1.0.0+ strict isolation; check Activity Log for details
+- **ChatGPT doesn't launch**: Verify ChatGPT Desktop App is installed and "chatgpt" command works in terminal
+- **Buttons not clicked**: Reconfigure button positions via Settings using the 10-second countdown capture
+- **App stops listening**: Now includes auto-restart; check Activity Log if issues persist
 
 ## 🏗️ Architecture
 
@@ -209,6 +234,36 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Logo design inspired by 1950s-60s retro Japanese aesthetics
 - Wake word isolation techniques from speech recognition research
 - ChatGPT Desktop App by OpenAI
+
+## 📝 Changelog
+
+### v1.0.0 (2025-10-01)
+**First Official Release** 🎉
+
+**🎤 Voice Recognition Improvements:**
+- Implemented strict wake word isolation with 5-level filtering
+- Added post-recognition validation (400ms confirmation period)
+- Prevents false triggers when wake word is embedded in sentences
+- Continuous listening mode - no need to restart after each detection
+- Reduced default cooldown from 2.5s to 1.5s
+
+**🖥️ Window Automation:**
+- Multi-monitor support with position capture
+- OCR-based and position-based button clicking
+- Blue orb verification for voice mode
+- Automatic window positioning and maximization
+
+**🎨 UI/UX:**
+- Retro Japanese aesthetic with fluid animations
+- System tray integration
+- Auto-start with Windows capability
+- Start minimized option
+
+**🔧 Technical:**
+- Full .NET 8.0 WPF implementation
+- MVVM architecture
+- Local settings persistence
+- Comprehensive activity logging
 
 ## 📞 Support
 
