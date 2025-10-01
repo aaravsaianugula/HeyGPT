@@ -51,18 +51,26 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 
 ## 🚀 Installation
 
-### Option 1: Download Release (Recommended)
-1. Download **[HeyGPT v1.1.0](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.1.0)** (13 MB)
-2. Extract `HeyGPT-v1.1.0-Windows.zip` to a permanent location (e.g., `C:\Program Files\HeyGPT`)
+### Option 1: Windows Installer (Recommended)
+1. Download **[HeyGPT-v1.1.0-Setup.exe](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.1.0)** (11 MB)
+2. Run the installer - it will install to `C:\Program Files\HeyGPT`
+3. Creates Start Menu shortcuts automatically
+4. **Can be uninstalled** from Windows Settings → Apps & Features → HeyGPT
+5. Configure monitor in Settings
+6. Click "Start Listening" and say "Hey GPT"!
+
+**Benefits**: Automatic shortcuts, clean uninstall, integrates with Windows properly.
+
+### Option 2: Portable ZIP Version
+1. Download **[HeyGPT-v1.1.0-Windows.zip](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.1.0)** (13 MB)
+2. Extract to a permanent location (e.g., `C:\Program Files\HeyGPT`)
 3. **Important**: Keep all files together - don't move just the `.exe`
 4. Run `HeyGPT.exe` from the extracted folder
 5. (Optional) Right-click `HeyGPT.exe` → **Send to** → **Desktop (create shortcut)**
-6. Configure monitor in Settings
-7. Click "Start Listening" and say "Hey GPT"!
 
 **Note**: The first launch may take a few seconds while Windows loads .NET runtime.
 
-### Option 2: Build from Source
+### Option 3: Build from Source
 ```bash
 # Clone the repository
 git clone https://github.com/aaravsaianugula/HeyGPT.git
@@ -203,6 +211,10 @@ Adjust settings based on your environment:
 - **Settings not saving**: Check write permissions for `%APPDATA%\HeyGPT\` folder
 - **App minimizes unexpectedly**: Check "Start Minimized" setting in Settings window
 
+#### Uninstallation
+- **Installed via installer**: Go to Windows Settings → Apps & Features → Search "HeyGPT" → Click Uninstall
+- **Portable ZIP version**: Simply delete the HeyGPT folder. Settings are stored in `%APPDATA%\HeyGPT\` - delete this folder too if desired
+
 ## 🏗️ Architecture
 
 ### Project Structure
@@ -332,6 +344,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Added Porcupine troubleshooting guide
 - Created comprehensive in-app user guide
 - Added RELEASE_NOTES.txt to distribution package
+
+**💿 Distribution:**
+- Added Windows Installer (HeyGPT-v1.1.0-Setup.exe) for easy installation
+- Full uninstall support via Windows Settings → Apps & Features
+- Automatic Start Menu shortcuts
+- Optional Windows startup integration
 
 ### v1.0.0 (2025-10-01)
 **First Official Release** 🎉
