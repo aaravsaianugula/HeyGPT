@@ -474,5 +474,51 @@ namespace HeyGPT.Views
             windowFadeIn.Children.Add(fadeAnimation);
             windowFadeIn.Begin();
         }
+
+        private void BrowseCustomWakeWord_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Select Custom Wake Word File",
+                Filter = "Porcupine Keyword Files (*.ppn)|*.ppn|All Files (*.*)|*.*",
+                DefaultExt = ".ppn",
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                _viewModel.CustomWakeWordPath = openFileDialog.FileName;
+                MessageBox.Show($"Custom wake word file selected:\n\n{System.IO.Path.GetFileName(openFileDialog.FileName)}\n\nThis will be used instead of the built-in wake word.",
+                              "Custom Wake Word Set",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Information);
+            }
+        }
+
+        private void ClearCustomWakeWord_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_viewModel.CustomWakeWordPath))
+            {
+                MessageBox.Show("No custom wake word is currently set.",
+                              "Information",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Information);
+                return;
+            }
+
+            var result = MessageBox.Show("Clear the custom wake word and use the built-in wake word instead?",
+                                        "Confirm",
+                                        MessageBoxButton.YesNo,
+                                        MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _viewModel.CustomWakeWordPath = null;
+                MessageBox.Show("Custom wake word cleared. The built-in wake word will be used.",
+                              "Success",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Information);
+            }
+        }
     }
 }

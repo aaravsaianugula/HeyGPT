@@ -17,7 +17,9 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 
 ### 🎤 Voice Recognition
 - **Porcupine High Accuracy Mode** - Industry-standard wake word detection with 97%+ accuracy and <1 false positive per 10 hours
-- **Dual Wake Word Engines** - Choose between Porcupine (high accuracy) or System.Speech (basic)
+- **14 Built-in Wake Words** - Jarvis, Alexa, Computer, Hey Google, Hey Siri, OK Google, Picovoice, Porcupine, Bumblebee, Terminator, Americano, Blueberry, Grapefruit, Grasshopper
+- **Custom Wake Words** - Upload your own custom wake word `.ppn` files created at [Picovoice Console](https://console.picovoice.ai)
+- **Dual Wake Word Engines** - Auto-detect Porcupine (high accuracy) when AccessKey provided, fallback to System.Speech
 - **Voice Commands** - Control ChatGPT in voice mode: "mic on/off", "exit voice mode"
 - **Strict Isolation Technology** - Advanced filtering prevents false triggers when wake word is embedded in sentences (System.Speech only)
 - **Post-Recognition Validation** - 400ms confirmation period ensures wake word was spoken in isolation (System.Speech only)
@@ -110,18 +112,24 @@ To fix false positive issues with wake word detection:
    - No credit card required
    - Takes 30 seconds to sign up
    - Free for personal use forever
-2. In Settings, scroll to "🎯 Porcupine High Accuracy Mode"
-3. Check "Enable Porcupine Wake Word Detection"
-4. Paste your AccessKey
-5. Adjust sensitivity if needed (default 0.5 works great)
-6. Save settings
+2. In Settings, scroll to "🎯 Porcupine AI Wake Word Engine"
+3. Paste your AccessKey
+4. Adjust sensitivity if needed (default 0.5 works great)
+5. Save settings
 
 **Why Porcupine?** 97%+ accuracy with <1 false positive per 10 hours vs. System.Speech which has frequent false positives.
 
+**Custom Wake Words**: Want to use a wake word beyond the 14 built-in options (Jarvis, Alexa, Computer, etc.)?
+1. Create a custom wake word at [console.picovoice.ai](https://console.picovoice.ai) using Porcupine Console
+2. Download the `.ppn` keyword file for Windows
+3. In Settings, under "Custom Wake Word (.ppn file)", click "Browse..." and select your file
+4. Save settings - your custom wake word will now be used instead of the built-in one!
+
 ### 3. Configure Wake Word (Optional)
-- Set custom wake word (default: "Hey GPT")
-- Adjust confidence threshold (0.0 - 1.0) for System.Speech
-- Enable/disable wake word isolation for System.Speech
+- Choose from **14 built-in wake words**: Jarvis, Alexa, Computer, Hey Google, Hey Siri, OK Google, Picovoice, Porcupine, Bumblebee, Terminator, Americano, Blueberry, Grapefruit, Grasshopper
+- **Upload custom wake word**: Create your own wake word at [console.picovoice.ai](https://console.picovoice.ai) and upload the `.ppn` file in Settings
+- Adjust confidence threshold (0.0 - 1.0) for System.Speech fallback mode
+- Enable/disable wake word isolation for System.Speech fallback mode
 
 ### 4. Configure Button Positions (Optional)
 For improved reliability, capture exact button positions:

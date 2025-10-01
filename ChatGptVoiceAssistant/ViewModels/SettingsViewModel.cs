@@ -12,6 +12,7 @@ namespace HeyGPT.ViewModels
         private string _picovoiceAccessKey = "";
         private float _porcupineSensitivity = 0.5f;
         private bool _usePorcupine = false;
+        private string? _customWakeWordPath = null;
         private string _monitorInfo = "Not configured";
         private bool _isMonitorConfigured = false;
         private Point _targetMonitorCenter = Point.Empty;
@@ -86,6 +87,19 @@ namespace HeyGPT.ViewModels
                 if (_usePorcupine != value)
                 {
                     _usePorcupine = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string? CustomWakeWordPath
+        {
+            get => _customWakeWordPath;
+            set
+            {
+                if (_customWakeWordPath != value)
+                {
+                    _customWakeWordPath = value;
                     OnPropertyChanged();
                 }
             }
@@ -437,6 +451,7 @@ namespace HeyGPT.ViewModels
             PicovoiceAccessKey = settings.PicovoiceAccessKey;
             PorcupineSensitivity = settings.PorcupineSensitivity;
             UsePorcupine = settings.UsePorcupine;
+            CustomWakeWordPath = settings.CustomWakeWordPath;
             TargetMonitorCenter = settings.TargetMonitorCenter;
             IsMonitorConfigured = settings.IsMonitorConfigured;
             ButtonClickDelay = settings.ButtonClickDelayMs;
@@ -475,6 +490,7 @@ namespace HeyGPT.ViewModels
                 PicovoiceAccessKey = PicovoiceAccessKey,
                 PorcupineSensitivity = PorcupineSensitivity,
                 UsePorcupine = UsePorcupine,
+                CustomWakeWordPath = CustomWakeWordPath,
                 TargetMonitorCenter = TargetMonitorCenter,
                 IsMonitorConfigured = IsMonitorConfigured,
                 ButtonClickDelayMs = ButtonClickDelay,

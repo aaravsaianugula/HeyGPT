@@ -289,6 +289,92 @@
                         <TextBlock Style="{StaticResource CaptionText}"
                                    Text="Higher = more sensitive (may increase false positives), Lower = less sensitive (may miss wake word). Default: 0.5"
                                    TextWrapping="Wrap"/>
+
+                        <Border Height="1"
+                                Background="{StaticResource MistBrush}"
+                                Margin="0,20,0,16"/>
+
+                        <TextBlock Style="{StaticResource SubheaderText}"
+                                   Text="Custom Wake Word (.ppn file)"
+                                   FontSize="13"
+                                   Margin="0,0,0,8"/>
+
+                        <Border Background="{StaticResource AccentBrush}"
+                                CornerRadius="6"
+                                Padding="12"
+                                Margin="0,0,0,12"
+                                Opacity="0.15">
+                            <TextBlock Style="{StaticResource CaptionText}"
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource CharcoalBrush}">
+                                <Run Text="🎨 Want a custom wake word?" FontWeight="Bold"/>
+                                <LineBreak/>
+                                <Run Text="You can create custom wake words at " FontSize="10"/>
+                                <Hyperlink NavigateUri="https://console.picovoice.ai" RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Run Text="Picovoice Console" FontSize="10"/>
+                                </Hyperlink>
+                                <Run Text=" and upload the .ppn file here." FontSize="10"/>
+                            </TextBlock>
+                        </Border>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="CustomWakeWordPathTextBox"
+                                     Grid.Column="0"
+                                     Style="{StaticResource TraditionalTextBox}"
+                                     Text="{Binding CustomWakeWordPath, Mode=TwoWay}"
+                                     IsReadOnly="True"
+                                     Margin="0,0,8,0"
+                                     FontFamily="Consolas"
+                                     FontSize="10"/>
+
+                            <Button x:Name="BrowseCustomWakeWordButton"
+                                    Grid.Column="1"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Content="Browse..."
+                                    Click="BrowseCustomWakeWord_Click"
+                                    Padding="16,8"/>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <Button x:Name="ClearCustomWakeWordButton"
+                                    Content="Clear Custom Wake Word"
+                                    Click="ClearCustomWakeWord_Click"
+                                    Padding="12,6"
+                                    FontSize="11"
+                                    Background="{StaticResource MistBrush}"
+                                    Foreground="{StaticResource CharcoalBrush}"
+                                    BorderBrush="{StaticResource StoneBrush}"
+                                    BorderThickness="1"
+                                    Cursor="Hand">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            CornerRadius="6"
+                                                            Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </StackPanel>
+
+                        <TextBlock Style="{StaticResource CaptionText}"
+                                   Text="If a custom wake word is set, it will be used instead of the built-in wake word above."
+                                   TextWrapping="Wrap"
+                                   Margin="0,8,0,0"/>
                     </StackPanel>
                 </GroupBox>
 

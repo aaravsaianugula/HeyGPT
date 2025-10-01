@@ -70,12 +70,19 @@ namespace HeyGPT.Views
                 {
                     // Porcupine for wake word detection (high accuracy, no isolation needed)
                     _porcupineService = new PorcupineWakeWordService();
-                    _porcupineService.Initialize(_currentSettings.PicovoiceAccessKey, null, _currentSettings.PorcupineSensitivity, _currentSettings.WakeWord);
+                    _porcupineService.Initialize(_currentSettings.PicovoiceAccessKey, _currentSettings.CustomWakeWordPath, _currentSettings.PorcupineSensitivity, _currentSettings.WakeWord);
                     _porcupineService.WakeWordDetected += OnWakeWordDetected;
                     _porcupineService.StatusChanged += OnSpeechStatusChanged;
                     _porcupineService.ErrorOccurred += OnSpeechError;
                     AddLog($"🎯 Porcupine AI Wake Word Engine");
-                    AddLog($"   Wake word: '{_currentSettings.WakeWord}'");
+                    if (!string.IsNullOrEmpty(_currentSettings.CustomWakeWordPath))
+                    {
+                        AddLog($"   Custom wake word: {System.IO.Path.GetFileName(_currentSettings.CustomWakeWordPath)}");
+                    }
+                    else
+                    {
+                        AddLog($"   Built-in wake word: '{_currentSettings.WakeWord}'");
+                    }
                     AddLog($"   Sensitivity: {_currentSettings.PorcupineSensitivity}");
                     AddLog($"   Version: {_porcupineService.GetVersion()}");
                 }
