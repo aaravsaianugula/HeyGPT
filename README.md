@@ -54,7 +54,7 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 ### Option 2: Build from Source
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/HeyGPT.git
+git clone https://github.com/aaravsaianugula/HeyGPT.git
 cd HeyGPT
 
 # Build the project
@@ -194,7 +194,7 @@ Contributions are welcome! Here's how:
 - .NET 8.0 SDK
 
 # Clone and build
-git clone https://github.com/yourusername/HeyGPT.git
+git clone https://github.com/aaravsaianugula/HeyGPT.git
 cd HeyGPT/ChatGptVoiceAssistant
 dotnet restore
 dotnet build
