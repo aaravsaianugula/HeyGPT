@@ -42,6 +42,11 @@
     <SolidColorBrush x:Key="RetroPeachBrush" Color="{StaticResource RetroPeachColor}"/>
     <SolidColorBrush x:Key="RetroPinkBrush" Color="{StaticResource RetroPinkColor}"/>
 
+    <!-- Easing Functions (must be defined before animations) -->
+    <CubicEase x:Key="SmoothEase" EasingMode="EaseOut"/>
+    <QuadraticEase x:Key="QuickEase" EasingMode="EaseOut"/>
+    <BackEase x:Key="BackEase" EasingMode="EaseOut" Amplitude="0.3"/>
+
     <!-- Animations -->
     <Storyboard x:Key="FadeInAnimation">
         <DoubleAnimation Storyboard.TargetProperty="Opacity"
@@ -86,11 +91,6 @@
                          Duration="0:0:0.4"
                          EasingFunction="{StaticResource SmoothEase}"/>
     </Storyboard>
-
-    <!-- Easing Functions -->
-    <CubicEase x:Key="SmoothEase" EasingMode="EaseOut"/>
-    <QuadraticEase x:Key="QuickEase" EasingMode="EaseOut"/>
-    <BackEase x:Key="BackEase" EasingMode="EaseOut" Amplitude="0.3"/>
 
     <!-- Wabi-Sabi Card Style -->
     <Style x:Key="WabiSabiCard" TargetType="Border">

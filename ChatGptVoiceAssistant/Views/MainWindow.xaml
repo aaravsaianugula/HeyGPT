@@ -5,7 +5,7 @@
         Height="720" Width="720"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
-        Icon="../Assets/SqaureLog.ico"
+        Icon="/SqaureLog.ico"
         Background="{StaticResource TraditionalGradientBrush}"
         Loaded="Window_Loaded"
         Opacity="0">
@@ -30,7 +30,7 @@
                      Margin="0,0,0,12"
                      HorizontalAlignment="Center">
                 <Ellipse.Fill>
-                    <ImageBrush ImageSource="../Assets/Logo.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/Assets/Logo.png" Stretch="UniformToFill"/>
                 </Ellipse.Fill>
                 <Ellipse.Effect>
                     <DropShadowEffect Color="#40000000"
