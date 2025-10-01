@@ -127,8 +127,9 @@ namespace HeyGPT.Views
                 _speechService.StartListening();
                 StartButton.IsEnabled = false;
                 StopButton.IsEnabled = true;
-                UpdateStatus($"Listening for wake word: '{_currentSettings.WakeWord}'");
-                AddLog("Speech recognition started");
+                UpdateStatus($"Listening for wake word: '{_currentSettings.WakeWord}' (Continuous)");
+                AddLog("Speech recognition started - will continue listening after each detection");
+                AddLog($"🎤 Say '{_currentSettings.WakeWord}' to launch ChatGPT");
             }
             catch (Exception ex)
             {
@@ -293,13 +294,29 @@ namespace HeyGPT.Views
                 {
                     if (success)
                     {
-                        UpdateStatus("ChatGPT launched successfully and voice mode activated!");
+                        UpdateStatus($"ChatGPT launched successfully! Still listening for '{_currentSettings.WakeWord}'...");
                         AddLog("✓ ChatGPT automation completed");
+                        AddLog($"🎤 Ready for next wake word: '{_currentSettings.WakeWord}'");
                     }
                     else
                     {
                         UpdateStatus("Failed to launch or control ChatGPT");
                         AddLog("✗ Automation failed");
+                    }
+
+                    if (!_speechService.IsListening)
+                    {
+                        AddLog("⚠ Speech recognition stopped - restarting...");
+                        try
+                        {
+                            _speechService.StartListening();
+                            UpdateStatus($"Listening resumed for wake word: '{_currentSettings.WakeWord}'");
+                            AddLog("✓ Speech recognition restarted");
+                        }
+                        catch (Exception restartEx)
+                        {
+                            AddLog($"✗ Failed to restart listening: {restartEx.Message}");
+                        }
                     }
                 });
             }
