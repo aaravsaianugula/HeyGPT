@@ -6,6 +6,9 @@ namespace HeyGPT.Models
     public class AppSettings
     {
         public string WakeWord { get; set; } = "Hey GPT";
+        public string PicovoiceAccessKey { get; set; } = "";
+        public float PorcupineSensitivity { get; set; } = 0.5f;
+        public bool UsePorcupine { get; set; } = false;
         public Point TargetMonitorCenter { get; set; } = Point.Empty;
         public bool IsMonitorConfigured { get; set; } = false;
         public string ChatGptAppPath { get; set; } = "chatgpt";

@@ -440,6 +440,26 @@ namespace HeyGPT.Views
             base.OnClosed(e);
         }
 
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = e.Uri.AbsoluteUri,
+                    UseShellExecute = true
+                });
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to open browser: {ex.Message}",
+                              "Error",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             System.Windows.Media.Animation.Storyboard windowFadeIn = new System.Windows.Media.Animation.Storyboard();

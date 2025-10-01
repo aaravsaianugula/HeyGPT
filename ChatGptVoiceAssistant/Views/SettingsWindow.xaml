@@ -194,6 +194,101 @@
                     </StackPanel>
                 </GroupBox>
 
+                <!-- Porcupine High Accuracy Wake Word -->
+                <GroupBox Style="{StaticResource TraditionalGroupBox}">
+                    <GroupBox.Header>
+                        <TextBlock Text="🎯 Porcupine High Accuracy Mode · 高精度モード"/>
+                    </GroupBox.Header>
+
+                    <StackPanel>
+                        <CheckBox x:Name="UsePorcupineCheckBox"
+                                  IsChecked="{Binding UsePorcupine, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="0,0,0,16">
+                            <CheckBox.Content>
+                                <StackPanel>
+                                    <TextBlock Text="Enable Porcupine Wake Word Detection"
+                                               Style="{StaticResource SubheaderText}"
+                                               FontSize="14"
+                                               Margin="0"/>
+                                    <TextBlock Text="97%+ accuracy, &lt;1 false positive per 10 hours"
+                                               Style="{StaticResource CaptionText}"
+                                               Margin="0,4,0,0"
+                                               FontSize="11"
+                                               Foreground="{StaticResource SecondaryBrush}"/>
+                                </StackPanel>
+                            </CheckBox.Content>
+                        </CheckBox>
+
+                        <TextBlock Style="{StaticResource CaptionText}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,12">
+                            <Run Text="🚀 Porcupine is an industry-standard wake word engine with exceptional accuracy. Recommended to fix false positive issues with System.Speech." FontWeight="SemiBold"/>
+                        </TextBlock>
+
+                        <TextBlock Style="{StaticResource SubheaderText}"
+                                   Text="Picovoice AccessKey (Required)"
+                                   FontSize="13"
+                                   Margin="0,0,0,4"/>
+                        <TextBox x:Name="PicovoiceAccessKeyTextBox"
+                                 Style="{StaticResource TraditionalTextBox}"
+                                 Text="{Binding PicovoiceAccessKey, UpdateSourceTrigger=PropertyChanged}"
+                                 FontFamily="Consolas"
+                                 FontSize="11"/>
+
+                        <Border Background="{StaticResource MistBrush}"
+                                CornerRadius="6"
+                                Padding="12"
+                                Margin="0,8,0,16">
+                            <TextBlock Style="{StaticResource CaptionText}" TextWrapping="Wrap">
+                                <Run Text="🔑 Get your FREE AccessKey: " FontWeight="Bold"/>
+                                <Hyperlink NavigateUri="https://console.picovoice.ai" RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Run Text="console.picovoice.ai"/>
+                                </Hyperlink>
+                                <LineBreak/>
+                                <Run Text="Free for personal use, no credit card required. Sign up takes 30 seconds." FontSize="10"/>
+                            </TextBlock>
+                        </Border>
+
+                        <TextBlock Style="{StaticResource SubheaderText}"
+                                   Text="Detection Sensitivity"
+                                   FontSize="13"
+                                   Margin="0,0,0,8"/>
+
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Slider x:Name="PorcupineSensitivitySlider"
+                                    Grid.Column="0"
+                                    Style="{StaticResource TraditionalSlider}"
+                                    Value="{Binding PorcupineSensitivity}"
+                                    Minimum="0.0"
+                                    Maximum="1.0"
+                                    TickFrequency="0.1"
+                                    IsSnapToTickEnabled="True"
+                                    Margin="0,0,16,0"/>
+
+                            <Border Grid.Column="1"
+                                    Background="{StaticResource SecondaryBrush}"
+                                    CornerRadius="6"
+                                    Padding="12,6"
+                                    MinWidth="50">
+                                <TextBlock Text="{Binding PorcupineSensitivity, StringFormat='{}{0:F1}'}"
+                                           Foreground="{StaticResource SurfaceBrush}"
+                                           FontWeight="Bold"
+                                           FontSize="14"
+                                           HorizontalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <TextBlock Style="{StaticResource CaptionText}"
+                                   Text="Higher = more sensitive (may increase false positives), Lower = less sensitive (may miss wake word). Default: 0.5"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </GroupBox>
+
                 <!-- Monitor Selection -->
                 <GroupBox Style="{StaticResource TraditionalGroupBox}">
                     <GroupBox.Header>

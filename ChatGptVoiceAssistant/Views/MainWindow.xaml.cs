@@ -15,6 +15,7 @@ namespace HeyGPT.Views
     public partial class MainWindow : Window
     {
         private readonly SpeechRecognitionService _speechService;
+        private PorcupineWakeWordService? _porcupineService;
         private readonly WindowAutomationService _windowService;
         private readonly SettingsService _settingsService;
         private readonly SettingsViewModel _settingsViewModel;
@@ -23,6 +24,7 @@ namespace HeyGPT.Views
         private NotifyIcon? _notifyIcon;
         private readonly StringBuilder _logBuilder;
         private readonly DispatcherTimer _voiceModeCheckTimer;
+        private bool _usePorcupine = false;
 
         public MainWindow()
         {
@@ -61,22 +63,39 @@ namespace HeyGPT.Views
         {
             try
             {
-                _speechService.Initialize(_currentSettings.WakeWord, _currentSettings.SpeechConfidenceThreshold);
-                _speechService.ConfigureIsolation(
-                    _currentSettings.EnableWakeWordIsolation,
-                    _currentSettings.SilenceThreshold,
-                    _currentSettings.MinimumSilenceDurationMs,
-                    _currentSettings.CooldownPeriodMs
-                );
+                _usePorcupine = _currentSettings.UsePorcupine && !string.IsNullOrWhiteSpace(_currentSettings.PicovoiceAccessKey);
+
+                if (_usePorcupine)
+                {
+                    _porcupineService = new PorcupineWakeWordService();
+                    _porcupineService.Initialize(_currentSettings.PicovoiceAccessKey, null, _currentSettings.PorcupineSensitivity);
+                    _porcupineService.WakeWordDetected += OnWakeWordDetected;
+                    _porcupineService.StatusChanged += OnSpeechStatusChanged;
+                    _porcupineService.ErrorOccurred += OnSpeechError;
+                    AddLog($"✓ Using Porcupine wake word engine (high accuracy)");
+                    AddLog($"Porcupine version: {_porcupineService.GetVersion()}");
+                }
+                else
+                {
+                    _speechService.Initialize(_currentSettings.WakeWord, _currentSettings.SpeechConfidenceThreshold);
+                    _speechService.ConfigureIsolation(
+                        _currentSettings.EnableWakeWordIsolation,
+                        _currentSettings.SilenceThreshold,
+                        _currentSettings.MinimumSilenceDurationMs,
+                        _currentSettings.CooldownPeriodMs
+                    );
+                    _speechService.WakeWordDetected += OnWakeWordDetected;
+                    _speechService.StatusChanged += OnSpeechStatusChanged;
+                    _speechService.ErrorOccurred += OnSpeechError;
+                    AddLog("Using System.Speech for wake word detection");
+                }
+
                 _speechService.InitializeCommands();
-                _speechService.WakeWordDetected += OnWakeWordDetected;
-                _speechService.StatusChanged += OnSpeechStatusChanged;
-                _speechService.ErrorOccurred += OnSpeechError;
                 _speechService.CommandRecognized += OnCommandRecognized;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to initialize speech recognition:\n{ex.Message}\n\nPlease ensure a microphone is connected.",
+                MessageBox.Show($"Failed to initialize speech recognition:\n{ex.Message}\n\nPlease ensure a microphone is connected and Picovoice AccessKey is valid.",
                               "Initialization Error",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -148,13 +167,22 @@ namespace HeyGPT.Views
 
             try
             {
-                _speechService.StartListening();
+                if (_usePorcupine && _porcupineService != null)
+                {
+                    _porcupineService.StartListening();
+                    AddLog("🎤 Porcupine listening for wake word (high accuracy mode)");
+                }
+                else
+                {
+                    _speechService.StartListening();
+                    AddLog($"🎤 Say '{_currentSettings.WakeWord}' to launch ChatGPT");
+                }
+
                 _voiceModeCheckTimer.Start();
                 StartButton.IsEnabled = false;
                 StopButton.IsEnabled = true;
-                UpdateStatus($"Listening for wake word: '{_currentSettings.WakeWord}' (Continuous)");
+                UpdateStatus("Listening for wake word (Continuous)");
                 AddLog("Speech recognition started - will continue listening after each detection");
-                AddLog($"🎤 Say '{_currentSettings.WakeWord}' to launch ChatGPT");
                 AddLog("Voice mode monitoring active - commands will work when ChatGPT is in voice mode");
             }
             catch (Exception ex)
@@ -168,7 +196,15 @@ namespace HeyGPT.Views
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            _speechService.StopListening();
+            if (_usePorcupine && _porcupineService != null)
+            {
+                _porcupineService.StopListening();
+            }
+            else
+            {
+                _speechService.StopListening();
+            }
+
             _voiceModeCheckTimer.Stop();
             _speechService.IsInVoiceMode = false;
             StartButton.IsEnabled = true;

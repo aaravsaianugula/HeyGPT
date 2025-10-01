@@ -9,6 +9,9 @@ namespace HeyGPT.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
         private string _wakeWord = "Hey GPT";
+        private string _picovoiceAccessKey = "";
+        private float _porcupineSensitivity = 0.5f;
+        private bool _usePorcupine = false;
         private string _monitorInfo = "Not configured";
         private bool _isMonitorConfigured = false;
         private Point _targetMonitorCenter = Point.Empty;
@@ -44,6 +47,45 @@ namespace HeyGPT.ViewModels
                 if (_wakeWord != value)
                 {
                     _wakeWord = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string PicovoiceAccessKey
+        {
+            get => _picovoiceAccessKey;
+            set
+            {
+                if (_picovoiceAccessKey != value)
+                {
+                    _picovoiceAccessKey = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public float PorcupineSensitivity
+        {
+            get => _porcupineSensitivity;
+            set
+            {
+                if (Math.Abs(_porcupineSensitivity - value) > 0.001f)
+                {
+                    _porcupineSensitivity = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool UsePorcupine
+        {
+            get => _usePorcupine;
+            set
+            {
+                if (_usePorcupine != value)
+                {
+                    _usePorcupine = value;
                     OnPropertyChanged();
                 }
             }
@@ -392,6 +434,9 @@ namespace HeyGPT.ViewModels
         public void LoadFromSettings(AppSettings settings)
         {
             WakeWord = settings.WakeWord;
+            PicovoiceAccessKey = settings.PicovoiceAccessKey;
+            PorcupineSensitivity = settings.PorcupineSensitivity;
+            UsePorcupine = settings.UsePorcupine;
             TargetMonitorCenter = settings.TargetMonitorCenter;
             IsMonitorConfigured = settings.IsMonitorConfigured;
             ButtonClickDelay = settings.ButtonClickDelayMs;
@@ -427,6 +472,9 @@ namespace HeyGPT.ViewModels
             return new AppSettings
             {
                 WakeWord = WakeWord,
+                PicovoiceAccessKey = PicovoiceAccessKey,
+                PorcupineSensitivity = PorcupineSensitivity,
+                UsePorcupine = UsePorcupine,
                 TargetMonitorCenter = TargetMonitorCenter,
                 IsMonitorConfigured = IsMonitorConfigured,
                 ButtonClickDelayMs = ButtonClickDelay,

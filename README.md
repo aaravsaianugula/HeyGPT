@@ -16,12 +16,13 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 ## ✨ Features
 
 ### 🎤 Voice Recognition
-- **Wake Word Detection** - Activate with customizable wake word (default: "Hey GPT")
+- **Porcupine High Accuracy Mode** - Industry-standard wake word detection with 97%+ accuracy and <1 false positive per 10 hours
+- **Dual Wake Word Engines** - Choose between Porcupine (high accuracy) or System.Speech (basic)
 - **Voice Commands** - Control ChatGPT in voice mode: "mic on/off", "exit voice mode"
-- **Strict Isolation Technology** - Advanced filtering prevents false triggers when wake word is embedded in sentences
-- **Post-Recognition Validation** - 400ms confirmation period ensures wake word was spoken in isolation
+- **Strict Isolation Technology** - Advanced filtering prevents false triggers when wake word is embedded in sentences (System.Speech only)
+- **Post-Recognition Validation** - 400ms confirmation period ensures wake word was spoken in isolation (System.Speech only)
 - **Continuous Listening Mode** - Keeps listening after each detection, no need to restart
-- **Configurable Confidence** - Adjust speech recognition sensitivity and thresholds
+- **Configurable Sensitivity** - Adjust detection sensitivity for your environment
 
 ### 🖥️ Window Automation
 - **Multi-Monitor Support** - Launch ChatGPT on any monitor
@@ -95,30 +96,44 @@ After installation, you can launch HeyGPT using any of these methods:
    - Move mouse to center of desired monitor
    - Wait for countdown to finish
 
-### 2. Configure Wake Word (Optional)
-- Set custom wake word (default: "Hey GPT")
-- Adjust confidence threshold (0.0 - 1.0)
-- Enable/disable wake word isolation
+### 2. Enable Porcupine High Accuracy Mode (Recommended)
+To fix false positive issues with wake word detection:
+1. Get a FREE Picovoice AccessKey from [console.picovoice.ai](https://console.picovoice.ai)
+   - No credit card required
+   - Takes 30 seconds to sign up
+   - Free for personal use forever
+2. In Settings, scroll to "🎯 Porcupine High Accuracy Mode"
+3. Check "Enable Porcupine Wake Word Detection"
+4. Paste your AccessKey
+5. Adjust sensitivity if needed (default 0.5 works great)
+6. Save settings
 
-### 3. Configure Button Positions (Optional)
+**Why Porcupine?** 97%+ accuracy with <1 false positive per 10 hours vs. System.Speech which has frequent false positives.
+
+### 3. Configure Wake Word (Optional)
+- Set custom wake word (default: "Hey GPT")
+- Adjust confidence threshold (0.0 - 1.0) for System.Speech
+- Enable/disable wake word isolation for System.Speech
+
+### 4. Configure Button Positions (Optional)
 For improved reliability, capture exact button positions:
 - **New Chat Button**: Position of "New chat" button in ChatGPT
 - **Voice Mode Button**: Position of voice mode button
 - Uses 10-second countdown capture technology
 
-### 4. Test Your Setup
+### 5. Test Your Setup
 1. Click **Test** button on main window
 2. Verify ChatGPT launches on correct monitor
 3. Confirm voice mode activates (blue orb detection)
 
-### 5. Start Using
+### 6. Start Using
 1. Click **Start Listening**
-2. Say your wake word: "Hey GPT" (speak it alone, not in a sentence)
+2. Say your wake word clearly (if using Porcupine, it will be detected automatically)
 3. ChatGPT launches automatically in voice mode!
-4. App continues listening - say "Hey GPT" again anytime to launch another window
+4. App continues listening - say wake word again anytime to launch another window
 5. Click **Stop** when you're done
 
-### 6. Voice Commands (In Voice Mode)
+### 7. Voice Commands (In Voice Mode)
 Once ChatGPT is in voice mode (blue orb visible), use voice commands to control it:
 
 **Available Commands:**
@@ -172,9 +187,11 @@ Adjust settings based on your environment:
 - **.NET runtime errors**: Install [.NET 8.0 Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 #### Voice Recognition Issues
-- **Wake word not detected**: Check microphone permissions, speak wake word clearly and alone (not in a sentence)
-- **"Speech continued after wake word" rejections**: Pause briefly after saying "Hey GPT", isolation requires silence after wake word
-- **Wake word triggers mid-sentence**: Should not happen with v1.0.0+ strict isolation; check Activity Log for details
+- **Frequent false positives**: Enable Porcupine High Accuracy Mode in Settings (97%+ accuracy vs System.Speech frequent false alarms)
+- **Wake word not detected with Porcupine**: Verify AccessKey is valid, check microphone permissions, speak clearly
+- **Wake word not detected with System.Speech**: Check microphone permissions, speak wake word clearly and alone (not in a sentence)
+- **"Speech continued after wake word" rejections** (System.Speech): Pause briefly after saying wake word, isolation requires silence
+- **"Invalid AccessKey" error**: Get a fresh key from https://console.picovoice.ai - takes 30 seconds, free for personal use
 
 #### ChatGPT Integration Issues
 - **ChatGPT doesn't launch**: Verify ChatGPT Desktop App is installed and "chatgpt" command works in PowerShell/CMD
@@ -220,13 +237,17 @@ HeyGPT/
 
 ### Key Technologies
 - **WPF (Windows Presentation Foundation)**: Modern UI framework
-- **System.Speech**: Windows speech recognition
+- **Porcupine by Picovoice**: Industry-standard wake word detection (97%+ accuracy)
+- **NAudio**: Audio capture for wake word processing
+- **System.Speech**: Windows speech recognition (fallback + voice commands)
 - **Windows.Media.Ocr**: Text detection for button finding
 - **Win32 APIs**: Window manipulation and mouse control
 - **MVVM Pattern**: Clean separation of concerns
 
 ### Core Features Implementation
-- **Wake Word Detection**: `SpeechRecognitionService.cs` with isolation logic
+- **Wake Word Detection (Porcupine)**: `PorcupineWakeWordService.cs` with high accuracy neural network
+- **Wake Word Detection (Fallback)**: `SpeechRecognitionService.cs` with isolation logic
+- **Voice Commands**: `SpeechRecognitionService.cs` for in-voice-mode commands
 - **Position Capture**: `MonitorService.cs` with 10-second countdown
 - **Blue Orb Detection**: `ImageRecognitionService.cs` with color analysis
 - **Window Automation**: `WindowAutomationService.cs` with Win32 APIs
