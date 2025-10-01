@@ -111,6 +111,114 @@
                 </StackPanel>
             </Border>
 
+            <!-- Voice Commands Section -->
+            <Border Style="{StaticResource WabiSabiCard}" Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="🎙 Voice Commands (In Voice Mode)"
+                               Style="{StaticResource HeaderText}"
+                               FontSize="24"
+                               Foreground="{StaticResource PrimaryBrush}"
+                               Margin="0,0,0,16"/>
+
+                    <TextBlock Style="{StaticResource BodyText}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,16">
+                        <Run Text="Once ChatGPT is in voice mode, you can use voice commands to control the application. These commands "
+                             FontWeight="SemiBold"/>
+                        <Run Text="ONLY work when the blue orb is visible"
+                             FontWeight="Bold"
+                             Foreground="{StaticResource AccentBrush}"/>
+                        <Run Text=" in ChatGPT."
+                             FontWeight="SemiBold"/>
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource SubheaderText}"
+                               Text="Available Commands"
+                               FontSize="16"
+                               Margin="0,0,0,8"/>
+                    <Border Background="{StaticResource BackgroundBrush}"
+                            BorderBrush="{StaticResource SecondaryBrush}"
+                            BorderThickness="2"
+                            CornerRadius="8"
+                            Padding="12"
+                            Margin="0,0,0,16">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap">
+                            <Run Text="🎤 'Mic On' or 'Mic Off'" FontWeight="Bold" FontSize="14"/>
+                            <LineBreak/>
+                            <Run Text="   → Toggles the microphone on/off in ChatGPT voice mode"/>
+                            <LineBreak/>
+                            <LineBreak/>
+                            <Run Text="🚪 'Exit' or 'Exit Voice Mode'" FontWeight="Bold" FontSize="14"/>
+                            <LineBreak/>
+                            <Run Text="   → Exits ChatGPT voice mode and returns to text chat"/>
+                        </TextBlock>
+                    </Border>
+
+                    <TextBlock Style="{StaticResource SubheaderText}"
+                               Text="How to Configure Voice Commands"
+                               FontSize="16"
+                               Margin="0,0,0,8"/>
+                    <TextBlock Style="{StaticResource BodyText}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,16">
+                        <Run Text="1. Launch ChatGPT and enter voice mode manually"/>
+                        <LineBreak/>
+                        <Run Text="2. In Settings, scroll to 'Voice Command Buttons' section"/>
+                        <LineBreak/>
+                        <Run Text="3. Click 'Capture Mic Button (10s countdown)'"/>
+                        <LineBreak/>
+                        <Run Text="4. Hover your mouse over the microphone button in ChatGPT"/>
+                        <LineBreak/>
+                        <Run Text="5. Wait 10 seconds until position is captured"/>
+                        <LineBreak/>
+                        <Run Text="6. Repeat for 'Capture Exit Voice Mode Button'"/>
+                        <LineBreak/>
+                        <Run Text="7. Hover over the exit/close button in ChatGPT voice mode"/>
+                        <LineBreak/>
+                        <Run Text="8. Save settings"/>
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource SubheaderText}"
+                               Text="How Voice Commands Work"
+                               FontSize="16"
+                               Margin="0,0,0,8"/>
+                    <TextBlock Style="{StaticResource BodyText}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,16">
+                        <Run Text="• The app continuously monitors ChatGPT for the blue orb (voice mode indicator)"/>
+                        <LineBreak/>
+                        <Run Text="• When blue orb is detected, voice command recognition is ENABLED"/>
+                        <LineBreak/>
+                        <Run Text="• Simply say 'mic on', 'mic off', or 'exit' while in voice mode"/>
+                        <LineBreak/>
+                        <Run Text="• The app will click the appropriate button for you"/>
+                        <LineBreak/>
+                        <Run Text="• If blue orb disappears, commands are automatically DISABLED"/>
+                    </TextBlock>
+
+                    <Border Background="{StaticResource MistBrush}"
+                            CornerRadius="8"
+                            Padding="16"
+                            Margin="0,8,0,0">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap">
+                            <Run Text="💡 Pro Tip: " FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                            <Run Text="Voice commands are separate from the wake word! Use the wake word ('Hey GPT' by default) to launch ChatGPT, then use voice commands ('mic on/off', 'exit') while already in voice mode."/>
+                        </TextBlock>
+                    </Border>
+
+                    <Border Background="{StaticResource AccentBrush}"
+                            CornerRadius="8"
+                            Padding="16"
+                            Margin="0,12,0,0"
+                            Opacity="0.15">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="⚠️ Important: " FontWeight="Bold"/>
+                            <Run Text="Voice commands will NOT work if ChatGPT is not in voice mode. Make sure the blue orb is visible before using commands. Check the Activity Log to see if voice mode is detected."/>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+            </Border>
+
             <!-- Wake Word Isolation Section -->
             <Border Style="{StaticResource WabiSabiCard}" Margin="0,0,0,24">
                 <StackPanel>

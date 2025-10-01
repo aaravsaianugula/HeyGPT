@@ -17,6 +17,7 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 
 ### 🎤 Voice Recognition
 - **Wake Word Detection** - Activate with customizable wake word (default: "Hey GPT")
+- **Voice Commands** - Control ChatGPT in voice mode: "mic on/off", "exit voice mode"
 - **Strict Isolation Technology** - Advanced filtering prevents false triggers when wake word is embedded in sentences
 - **Post-Recognition Validation** - 400ms confirmation period ensures wake word was spoken in isolation
 - **Continuous Listening Mode** - Keeps listening after each detection, no need to restart
@@ -116,6 +117,22 @@ For improved reliability, capture exact button positions:
 3. ChatGPT launches automatically in voice mode!
 4. App continues listening - say "Hey GPT" again anytime to launch another window
 5. Click **Stop** when you're done
+
+### 6. Voice Commands (In Voice Mode)
+Once ChatGPT is in voice mode (blue orb visible), use voice commands to control it:
+
+**Available Commands:**
+- **"Mic On"** / **"Mic Off"** - Toggle microphone on/off in ChatGPT
+- **"Exit"** / **"Exit Voice Mode"** - Exit voice mode and return to text chat
+
+**Setup Voice Commands:**
+1. Launch ChatGPT and enter voice mode manually
+2. In HeyGPT Settings, scroll to "Voice Command Buttons"
+3. Click "Capture Mic Button" and hover over the mic button in ChatGPT
+4. Click "Capture Exit Voice Mode Button" and hover over the exit button
+5. Save settings
+
+**Important:** Voice commands ONLY work when ChatGPT is in voice mode (blue orb detection). The app monitors voice mode status every 2 seconds and enables/disables commands accordingly.
 
 ## 🎯 Usage Tips
 
@@ -303,7 +320,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Multi-language support (Korean, Japanese)
 - [ ] Custom wake word training
 - [ ] Plugin system for other AI assistants
-- [ ] Voice command recognition beyond wake word
 - [ ] Hotkey activation alternative
 - [ ] MacOS/Linux support (future)
 

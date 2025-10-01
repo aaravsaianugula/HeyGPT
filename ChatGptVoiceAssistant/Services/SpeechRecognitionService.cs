@@ -10,6 +10,7 @@ namespace HeyGPT.Services
     public class SpeechRecognitionService : IDisposable
     {
         private SpeechRecognitionEngine? _recognizer;
+        private SpeechRecognitionEngine? _commandRecognizer;
         private string _currentWakeWord = "Hey GPT";
         private float _confidenceThreshold = 0.7f;
 
@@ -30,11 +31,34 @@ namespace HeyGPT.Services
         private readonly List<string> _postRecognitionHypotheses = new List<string>();
         private readonly object _lockObject = new object();
 
+        private bool _isInVoiceMode = false;
+        private bool _isCommandRecognitionEnabled = false;
+
         public event EventHandler<string>? WakeWordDetected;
         public event EventHandler<string>? StatusChanged;
         public event EventHandler<string>? ErrorOccurred;
+        public event EventHandler<string>? CommandRecognized;
 
         public bool IsListening { get; private set; }
+        public bool IsInVoiceMode
+        {
+            get => _isInVoiceMode;
+            set
+            {
+                if (_isInVoiceMode != value)
+                {
+                    _isInVoiceMode = value;
+                    if (_isInVoiceMode)
+                    {
+                        EnableCommandRecognition();
+                    }
+                    else
+                    {
+                        DisableCommandRecognition();
+                    }
+                }
+            }
+        }
 
         public void Initialize(string wakeWord, float confidenceThreshold)
         {
@@ -149,6 +173,95 @@ namespace HeyGPT.Services
             {
                 StartListening();
             }
+        }
+
+        public void InitializeCommands()
+        {
+            try
+            {
+                _commandRecognizer?.Dispose();
+                _commandRecognizer = new SpeechRecognitionEngine(new CultureInfo("en-US"));
+
+                Choices commandChoices = new Choices("mic on", "mic off", "exit", "exit voice mode");
+                GrammarBuilder commandGrammarBuilder = new GrammarBuilder(commandChoices);
+                Grammar commandGrammar = new Grammar(commandGrammarBuilder);
+
+                _commandRecognizer.LoadGrammar(commandGrammar);
+
+                _commandRecognizer.SpeechRecognized += OnCommandRecognized;
+                _commandRecognizer.SpeechRecognitionRejected += OnCommandRejected;
+
+                _commandRecognizer.SetInputToDefaultAudioDevice();
+
+                StatusChanged?.Invoke(this, "Voice commands initialized");
+            }
+            catch (Exception ex)
+            {
+                ErrorOccurred?.Invoke(this, $"Command initialization error: {ex.Message}");
+                throw;
+            }
+        }
+
+        public void EnableCommandRecognition()
+        {
+            try
+            {
+                if (_commandRecognizer == null)
+                {
+                    InitializeCommands();
+                }
+
+                if (_commandRecognizer != null && !_isCommandRecognitionEnabled)
+                {
+                    _commandRecognizer.RecognizeAsync(RecognizeMode.Multiple);
+                    _isCommandRecognitionEnabled = true;
+                    StatusChanged?.Invoke(this, "Voice commands ENABLED");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorOccurred?.Invoke(this, $"Error enabling commands: {ex.Message}");
+            }
+        }
+
+        public void DisableCommandRecognition()
+        {
+            try
+            {
+                if (_commandRecognizer != null && _isCommandRecognitionEnabled)
+                {
+                    _commandRecognizer.RecognizeAsyncStop();
+                    _isCommandRecognitionEnabled = false;
+                    StatusChanged?.Invoke(this, "Voice commands DISABLED");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorOccurred?.Invoke(this, $"Error disabling commands: {ex.Message}");
+            }
+        }
+
+        private void OnCommandRecognized(object? sender, SpeechRecognizedEventArgs e)
+        {
+            if (!_isInVoiceMode)
+            {
+                StatusChanged?.Invoke(this, $"Command ignored (not in voice mode): '{e.Result.Text}'");
+                return;
+            }
+
+            if (e.Result.Confidence < 0.5f)
+            {
+                StatusChanged?.Invoke(this, $"Low confidence command: '{e.Result.Text}' ({e.Result.Confidence:P0})");
+                return;
+            }
+
+            string command = e.Result.Text.ToLowerInvariant();
+            StatusChanged?.Invoke(this, $"✓ Voice command detected: '{command}' (confidence: {e.Result.Confidence:P0})");
+            CommandRecognized?.Invoke(this, command);
+        }
+
+        private void OnCommandRejected(object? sender, SpeechRecognitionRejectedEventArgs e)
+        {
         }
 
         private void OnAudioLevelUpdated(object? sender, AudioLevelUpdatedEventArgs e)
@@ -339,6 +452,8 @@ namespace HeyGPT.Services
         public void Dispose()
         {
             StopListening();
+            DisableCommandRecognition();
+
             if (_recognizer != null)
             {
                 _recognizer.SpeechRecognized -= OnSpeechRecognized;
@@ -348,6 +463,14 @@ namespace HeyGPT.Services
                 _recognizer.SpeechHypothesized -= OnSpeechHypothesized;
                 _recognizer.Dispose();
                 _recognizer = null;
+            }
+
+            if (_commandRecognizer != null)
+            {
+                _commandRecognizer.SpeechRecognized -= OnCommandRecognized;
+                _commandRecognizer.SpeechRecognitionRejected -= OnCommandRejected;
+                _commandRecognizer.Dispose();
+                _commandRecognizer = null;
             }
         }
     }

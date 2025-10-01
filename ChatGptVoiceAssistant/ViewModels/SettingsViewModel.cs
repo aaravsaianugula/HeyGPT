@@ -29,6 +29,12 @@ namespace HeyGPT.ViewModels
         private int _cooldownPeriodMs = 2500;
         private bool _startWithWindows = false;
         private bool _startMinimized = false;
+        private Point _micButtonPosition = Point.Empty;
+        private bool _isMicButtonConfigured = false;
+        private string _micButtonInfo = "Not configured";
+        private Point _exitVoiceModeButtonPosition = Point.Empty;
+        private bool _isExitVoiceModeButtonConfigured = false;
+        private string _exitVoiceModeButtonInfo = "Not configured";
 
         public string WakeWord
         {
@@ -303,6 +309,86 @@ namespace HeyGPT.ViewModels
             }
         }
 
+        public Point MicButtonPosition
+        {
+            get => _micButtonPosition;
+            set
+            {
+                if (_micButtonPosition != value)
+                {
+                    _micButtonPosition = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsMicButtonConfigured
+        {
+            get => _isMicButtonConfigured;
+            set
+            {
+                if (_isMicButtonConfigured != value)
+                {
+                    _isMicButtonConfigured = value;
+                    OnPropertyChanged();
+                    MicButtonInfo = value ? $"Configured at ({_micButtonPosition.X}, {_micButtonPosition.Y})" : "Not configured";
+                }
+            }
+        }
+
+        public string MicButtonInfo
+        {
+            get => _micButtonInfo;
+            set
+            {
+                if (_micButtonInfo != value)
+                {
+                    _micButtonInfo = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public Point ExitVoiceModeButtonPosition
+        {
+            get => _exitVoiceModeButtonPosition;
+            set
+            {
+                if (_exitVoiceModeButtonPosition != value)
+                {
+                    _exitVoiceModeButtonPosition = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsExitVoiceModeButtonConfigured
+        {
+            get => _isExitVoiceModeButtonConfigured;
+            set
+            {
+                if (_isExitVoiceModeButtonConfigured != value)
+                {
+                    _isExitVoiceModeButtonConfigured = value;
+                    OnPropertyChanged();
+                    ExitVoiceModeButtonInfo = value ? $"Configured at ({_exitVoiceModeButtonPosition.X}, {_exitVoiceModeButtonPosition.Y})" : "Not configured";
+                }
+            }
+        }
+
+        public string ExitVoiceModeButtonInfo
+        {
+            get => _exitVoiceModeButtonInfo;
+            set
+            {
+                if (_exitVoiceModeButtonInfo != value)
+                {
+                    _exitVoiceModeButtonInfo = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public void LoadFromSettings(AppSettings settings)
         {
             WakeWord = settings.WakeWord;
@@ -323,6 +409,10 @@ namespace HeyGPT.ViewModels
             CooldownPeriodMs = settings.CooldownPeriodMs;
             StartWithWindows = settings.StartWithWindows;
             StartMinimized = settings.StartMinimized;
+            MicButtonPosition = settings.MicButtonPosition;
+            IsMicButtonConfigured = settings.IsMicButtonConfigured;
+            ExitVoiceModeButtonPosition = settings.ExitVoiceModeButtonPosition;
+            IsExitVoiceModeButtonConfigured = settings.IsExitVoiceModeButtonConfigured;
 
             if (IsMonitorConfigured)
             {
@@ -353,7 +443,11 @@ namespace HeyGPT.ViewModels
                 MinimumSilenceDurationMs = MinimumSilenceDurationMs,
                 CooldownPeriodMs = CooldownPeriodMs,
                 StartWithWindows = StartWithWindows,
-                StartMinimized = StartMinimized
+                StartMinimized = StartMinimized,
+                MicButtonPosition = MicButtonPosition,
+                IsMicButtonConfigured = IsMicButtonConfigured,
+                ExitVoiceModeButtonPosition = ExitVoiceModeButtonPosition,
+                IsExitVoiceModeButtonConfigured = IsExitVoiceModeButtonConfigured
             };
         }
 
@@ -389,6 +483,24 @@ namespace HeyGPT.ViewModels
             else
             {
                 VoiceModeButtonInfo = "Not configured";
+            }
+
+            if (IsMicButtonConfigured && MicButtonPosition != Point.Empty)
+            {
+                MicButtonInfo = $"Configured ({MicButtonPosition.X}, {MicButtonPosition.Y})";
+            }
+            else
+            {
+                MicButtonInfo = "Not configured";
+            }
+
+            if (IsExitVoiceModeButtonConfigured && ExitVoiceModeButtonPosition != Point.Empty)
+            {
+                ExitVoiceModeButtonInfo = $"Configured ({ExitVoiceModeButtonPosition.X}, {ExitVoiceModeButtonPosition.Y})";
+            }
+            else
+            {
+                ExitVoiceModeButtonInfo = "Not configured";
             }
         }
 

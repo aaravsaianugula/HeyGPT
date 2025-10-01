@@ -23,5 +23,9 @@ namespace HeyGPT.Models
         public int CooldownPeriodMs { get; set; } = 1500;
         public bool StartWithWindows { get; set; } = false;
         public bool StartMinimized { get; set; } = false;
+        public Point MicButtonPosition { get; set; } = Point.Empty;
+        public bool IsMicButtonConfigured { get; set; } = false;
+        public Point ExitVoiceModeButtonPosition { get; set; } = Point.Empty;
+        public bool IsExitVoiceModeButtonConfigured { get; set; } = false;
     }
 }

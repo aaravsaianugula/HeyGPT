@@ -428,6 +428,118 @@
                     </StackPanel>
                 </GroupBox>
 
+                <!-- Voice Command Button Positions -->
+                <GroupBox Style="{StaticResource TraditionalGroupBox}">
+                    <GroupBox.Header>
+                        <TextBlock Text="🎙 Voice Command Buttons · 音声コマンドボタン"/>
+                    </GroupBox.Header>
+
+                    <StackPanel>
+                        <!-- Mic Button Position -->
+                        <TextBlock Style="{StaticResource SubheaderText}"
+                                   Text="Mic Button Position"
+                                   FontSize="13"
+                                   Margin="0,0,0,8"/>
+
+                        <Border Background="{StaticResource BackgroundBrush}"
+                                BorderBrush="{StaticResource SecondaryBrush}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="16,12"
+                                Margin="0,0,0,16">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="10" Height="10"
+                                         Fill="{StaticResource SecondaryBrush}"
+                                         Margin="0,0,12,0"
+                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding MicButtonInfo}"
+                                           Style="{StaticResource BodyText}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource PrimaryBrush}"
+                                           FontSize="14"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Button x:Name="CaptureMicButton"
+                                Style="{StaticResource SecondaryButton}"
+                                Content="Capture Mic Button (10s countdown)"
+                                Click="CaptureMicButton_Click"
+                                HorizontalAlignment="Stretch"
+                                Margin="0,0,0,16"/>
+
+                        <Border x:Name="MicCountdownTextBlock"
+                                Background="{StaticResource AccentBrush}"
+                                CornerRadius="8"
+                                Padding="16,12"
+                                Visibility="Collapsed">
+                            <TextBlock Text=""
+                                       Foreground="{StaticResource SurfaceBrush}"
+                                       FontSize="15"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"/>
+                        </Border>
+
+                        <Border Height="1"
+                                Background="{StaticResource MistBrush}"
+                                Margin="0,8,0,24"/>
+
+                        <!-- Exit Voice Mode Button Position -->
+                        <TextBlock Style="{StaticResource SubheaderText}"
+                                   Text="Exit Voice Mode Button Position"
+                                   FontSize="13"
+                                   Margin="0,0,0,8"/>
+
+                        <Border Background="{StaticResource BackgroundBrush}"
+                                BorderBrush="{StaticResource SecondaryBrush}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="16,12"
+                                Margin="0,0,0,16">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="10" Height="10"
+                                         Fill="{StaticResource SecondaryBrush}"
+                                         Margin="0,0,12,0"
+                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding ExitVoiceModeButtonInfo}"
+                                           Style="{StaticResource BodyText}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource PrimaryBrush}"
+                                           FontSize="14"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Button x:Name="CaptureExitVoiceModeButton"
+                                Style="{StaticResource SecondaryButton}"
+                                Content="Capture Exit Voice Mode Button (10s countdown)"
+                                Click="CaptureExitVoiceModeButton_Click"
+                                HorizontalAlignment="Stretch"
+                                Margin="0,0,0,16"/>
+
+                        <Border x:Name="ExitVoiceModeCountdownTextBlock"
+                                Background="{StaticResource AccentBrush}"
+                                CornerRadius="8"
+                                Padding="16,12"
+                                Visibility="Collapsed">
+                            <TextBlock Text=""
+                                       Foreground="{StaticResource SurfaceBrush}"
+                                       FontSize="15"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"/>
+                        </Border>
+
+                        <Border Background="{StaticResource MistBrush}"
+                                CornerRadius="6"
+                                Padding="12"
+                                Margin="0,12,0,0">
+                            <TextBlock Style="{StaticResource CaptionText}"
+                                       Text="📍 Voice Commands: Say 'mic on/off' to toggle mic, 'exit' to exit voice mode (ONLY works when ChatGPT is in voice mode)"
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource CharcoalBrush}"
+                                       Margin="0"/>
+                        </Border>
+                    </StackPanel>
+                </GroupBox>
+
                 <!-- Application Settings -->
                 <GroupBox Style="{StaticResource TraditionalGroupBox}">
                     <GroupBox.Header>

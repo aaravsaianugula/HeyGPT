@@ -14,6 +14,8 @@ namespace HeyGPT.Views
         private bool _isCapturing = false;
         private bool _isCapturingNewChatButton = false;
         private bool _isCapturingVoiceModeButton = false;
+        private bool _isCapturingMicButton = false;
+        private bool _isCapturingExitVoiceModeButton = false;
 
         public SettingsWindow(SettingsViewModel viewModel)
         {
@@ -273,6 +275,158 @@ namespace HeyGPT.Views
             CaptureVoiceModeButton.Content = "Capture Voice Mode Button (10s countdown)";
             VoiceModeCountdownTextBlock.Visibility = Visibility.Collapsed;
             if (VoiceModeCountdownTextBlock.Child is TextBlock textBlock)
+            {
+                textBlock.Text = "";
+            }
+        }
+
+        private async void CaptureMicButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isCapturingMicButton)
+            {
+                _monitorService.CancelMonitorCapture();
+                ResetMicCaptureUI();
+                return;
+            }
+
+            _isCapturingMicButton = true;
+            CaptureMicButton.Content = "Cancel Capture";
+            MicCountdownTextBlock.Visibility = Visibility.Visible;
+
+            EventHandler<int>? countdownHandler = null;
+            EventHandler<System.Drawing.Point>? captureHandler = null;
+
+            countdownHandler = (s, secondsRemaining) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (MicCountdownTextBlock.Child is TextBlock textBlock)
+                    {
+                        textBlock.Text = $"Hover mouse over Mic button... {secondsRemaining}s";
+                    }
+                });
+            };
+
+            captureHandler = (s, mousePosition) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    _viewModel.MicButtonPosition = (System.Drawing.Point)mousePosition;
+                    _viewModel.IsMicButtonConfigured = true;
+                    _viewModel.UpdateButtonInfo();
+
+                    MessageBox.Show($"Mic button position captured!\n\nPosition: ({mousePosition.X}, {mousePosition.Y})",
+                                  "Success",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Information);
+
+                    _monitorService.CountdownTick -= countdownHandler;
+                    _monitorService.MonitorCaptured -= captureHandler;
+                    ResetMicCaptureUI();
+                });
+            };
+
+            _monitorService.CountdownTick += countdownHandler;
+            _monitorService.MonitorCaptured += captureHandler;
+
+            try
+            {
+                await _monitorService.StartMonitorCapture();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during button capture: {ex.Message}",
+                              "Error",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+                _monitorService.CountdownTick -= countdownHandler;
+                _monitorService.MonitorCaptured -= captureHandler;
+                ResetMicCaptureUI();
+            }
+        }
+
+        private async void CaptureExitVoiceModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isCapturingExitVoiceModeButton)
+            {
+                _monitorService.CancelMonitorCapture();
+                ResetExitVoiceModeCaptureUI();
+                return;
+            }
+
+            _isCapturingExitVoiceModeButton = true;
+            CaptureExitVoiceModeButton.Content = "Cancel Capture";
+            ExitVoiceModeCountdownTextBlock.Visibility = Visibility.Visible;
+
+            EventHandler<int>? countdownHandler = null;
+            EventHandler<System.Drawing.Point>? captureHandler = null;
+
+            countdownHandler = (s, secondsRemaining) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (ExitVoiceModeCountdownTextBlock.Child is TextBlock textBlock)
+                    {
+                        textBlock.Text = $"Hover mouse over Exit Voice Mode button... {secondsRemaining}s";
+                    }
+                });
+            };
+
+            captureHandler = (s, mousePosition) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    _viewModel.ExitVoiceModeButtonPosition = (System.Drawing.Point)mousePosition;
+                    _viewModel.IsExitVoiceModeButtonConfigured = true;
+                    _viewModel.UpdateButtonInfo();
+
+                    MessageBox.Show($"Exit Voice Mode button position captured!\n\nPosition: ({mousePosition.X}, {mousePosition.Y})",
+                                  "Success",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Information);
+
+                    _monitorService.CountdownTick -= countdownHandler;
+                    _monitorService.MonitorCaptured -= captureHandler;
+                    ResetExitVoiceModeCaptureUI();
+                });
+            };
+
+            _monitorService.CountdownTick += countdownHandler;
+            _monitorService.MonitorCaptured += captureHandler;
+
+            try
+            {
+                await _monitorService.StartMonitorCapture();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during button capture: {ex.Message}",
+                              "Error",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+                _monitorService.CountdownTick -= countdownHandler;
+                _monitorService.MonitorCaptured -= captureHandler;
+                ResetExitVoiceModeCaptureUI();
+            }
+        }
+
+        private void ResetMicCaptureUI()
+        {
+            _isCapturingMicButton = false;
+            CaptureMicButton.Content = "Capture Mic Button (10s countdown)";
+            MicCountdownTextBlock.Visibility = Visibility.Collapsed;
+            if (MicCountdownTextBlock.Child is TextBlock textBlock)
+            {
+                textBlock.Text = "";
+            }
+        }
+
+        private void ResetExitVoiceModeCaptureUI()
+        {
+            _isCapturingExitVoiceModeButton = false;
+            CaptureExitVoiceModeButton.Content = "Capture Exit Voice Mode Button (10s countdown)";
+            ExitVoiceModeCountdownTextBlock.Visibility = Visibility.Collapsed;
+            if (ExitVoiceModeCountdownTextBlock.Child is TextBlock textBlock)
             {
                 textBlock.Text = "";
             }

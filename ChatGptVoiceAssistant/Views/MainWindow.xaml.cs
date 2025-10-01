@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using HeyGPT.Models;
 using HeyGPT.Services;
 using HeyGPT.ViewModels;
@@ -21,6 +22,7 @@ namespace HeyGPT.Views
         private AppSettings _currentSettings;
         private NotifyIcon? _notifyIcon;
         private readonly StringBuilder _logBuilder;
+        private readonly DispatcherTimer _voiceModeCheckTimer;
 
         public MainWindow()
         {
@@ -32,6 +34,12 @@ namespace HeyGPT.Views
             _settingsViewModel = new SettingsViewModel();
             _startupService = new StartupService();
             _logBuilder = new StringBuilder();
+
+            _voiceModeCheckTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(2)
+            };
+            _voiceModeCheckTimer.Tick += VoiceModeCheckTimer_Tick;
 
             _currentSettings = _settingsService.LoadSettings();
             _settingsViewModel.LoadFromSettings(_currentSettings);
@@ -60,9 +68,11 @@ namespace HeyGPT.Views
                     _currentSettings.MinimumSilenceDurationMs,
                     _currentSettings.CooldownPeriodMs
                 );
+                _speechService.InitializeCommands();
                 _speechService.WakeWordDetected += OnWakeWordDetected;
                 _speechService.StatusChanged += OnSpeechStatusChanged;
                 _speechService.ErrorOccurred += OnSpeechError;
+                _speechService.CommandRecognized += OnCommandRecognized;
             }
             catch (Exception ex)
             {
@@ -139,11 +149,13 @@ namespace HeyGPT.Views
             try
             {
                 _speechService.StartListening();
+                _voiceModeCheckTimer.Start();
                 StartButton.IsEnabled = false;
                 StopButton.IsEnabled = true;
                 UpdateStatus($"Listening for wake word: '{_currentSettings.WakeWord}' (Continuous)");
                 AddLog("Speech recognition started - will continue listening after each detection");
                 AddLog($"🎤 Say '{_currentSettings.WakeWord}' to launch ChatGPT");
+                AddLog("Voice mode monitoring active - commands will work when ChatGPT is in voice mode");
             }
             catch (Exception ex)
             {
@@ -157,6 +169,8 @@ namespace HeyGPT.Views
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
             _speechService.StopListening();
+            _voiceModeCheckTimer.Stop();
+            _speechService.IsInVoiceMode = false;
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
             UpdateStatus("Stopped listening");
@@ -356,6 +370,61 @@ namespace HeyGPT.Views
                 UpdateStatus($"Speech error: {error}");
                 AddLog($"✗ Error: {error}");
             });
+        }
+
+        private async void VoiceModeCheckTimer_Tick(object? sender, EventArgs e)
+        {
+            bool isVoiceModeActive = await _windowService.IsVoiceModeActive();
+            if (_speechService.IsInVoiceMode != isVoiceModeActive)
+            {
+                _speechService.IsInVoiceMode = isVoiceModeActive;
+                if (isVoiceModeActive)
+                {
+                    AddLog("✓ Voice mode detected - voice commands ENABLED");
+                }
+                else
+                {
+                    AddLog("Voice mode not active - voice commands DISABLED");
+                }
+            }
+        }
+
+        private async void OnCommandRecognized(object? sender, string command)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                AddLog($"🎤 Voice command: '{command}'");
+            });
+
+            try
+            {
+                if (command.Contains("mic on") || command.Contains("mic off"))
+                {
+                    if (!_currentSettings.IsMicButtonConfigured)
+                    {
+                        Dispatcher.Invoke(() => AddLog("⚠ Mic button position not configured - configure in settings"));
+                        return;
+                    }
+
+                    await _windowService.ClickMicButton(_currentSettings.MicButtonPosition, _currentSettings.IsMicButtonConfigured);
+                    Dispatcher.Invoke(() => AddLog($"✓ Mic button clicked ({command})"));
+                }
+                else if (command.Contains("exit"))
+                {
+                    if (!_currentSettings.IsExitVoiceModeButtonConfigured)
+                    {
+                        Dispatcher.Invoke(() => AddLog("⚠ Exit voice mode button position not configured - configure in settings"));
+                        return;
+                    }
+
+                    await _windowService.ClickExitVoiceModeButton(_currentSettings.ExitVoiceModeButtonPosition, _currentSettings.IsExitVoiceModeButtonConfigured);
+                    Dispatcher.Invoke(() => AddLog("✓ Exit voice mode button clicked"));
+                }
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() => AddLog($"✗ Command error: {ex.Message}"));
+            }
         }
 
         private void UpdateStatus(string status)

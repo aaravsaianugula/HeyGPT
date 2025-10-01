@@ -355,5 +355,97 @@ namespace HeyGPT.Services
                 return false;
             }
         }
+
+        public async Task<bool> IsVoiceModeActive()
+        {
+            try
+            {
+                await Task.Delay(100);
+
+                Process? chatGptProcess = GetChatGptProcess();
+                if (chatGptProcess == null || chatGptProcess.MainWindowHandle == IntPtr.Zero)
+                {
+                    return false;
+                }
+
+                using (var screenshot = _screenshotService.CaptureWindow(chatGptProcess.MainWindowHandle))
+                {
+                    if (screenshot == null)
+                    {
+                        return false;
+                    }
+
+                    bool blueOrbDetected = _imageRecognitionService.DetectBlueOrb(screenshot);
+                    return blueOrbDetected;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error checking voice mode: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task ClickMicButton(Point micButtonPosition, bool isMicButtonConfigured)
+        {
+            try
+            {
+                Process? chatGptProcess = GetChatGptProcess();
+                if (chatGptProcess == null || chatGptProcess.MainWindowHandle == IntPtr.Zero)
+                {
+                    Log("ChatGPT process not found - cannot click mic button");
+                    return;
+                }
+
+                Log("=== Clicking Mic Button ===");
+
+                if (isMicButtonConfigured && micButtonPosition != Point.Empty)
+                {
+                    Log($"Using configured mic button position: ({micButtonPosition.X}, {micButtonPosition.Y})");
+                    ClickAtPosition(micButtonPosition.X, micButtonPosition.Y);
+                    await Task.Delay(300);
+                    Log("✓ Mic button clicked");
+                }
+                else
+                {
+                    Log("⚠ Mic button position not configured");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error clicking mic button: {ex.Message}");
+            }
+        }
+
+        public async Task ClickExitVoiceModeButton(Point exitVoiceModeButtonPosition, bool isExitVoiceModeButtonConfigured)
+        {
+            try
+            {
+                Process? chatGptProcess = GetChatGptProcess();
+                if (chatGptProcess == null || chatGptProcess.MainWindowHandle == IntPtr.Zero)
+                {
+                    Log("ChatGPT process not found - cannot click exit voice mode button");
+                    return;
+                }
+
+                Log("=== Clicking Exit Voice Mode Button ===");
+
+                if (isExitVoiceModeButtonConfigured && exitVoiceModeButtonPosition != Point.Empty)
+                {
+                    Log($"Using configured exit button position: ({exitVoiceModeButtonPosition.X}, {exitVoiceModeButtonPosition.Y})");
+                    ClickAtPosition(exitVoiceModeButtonPosition.X, exitVoiceModeButtonPosition.Y);
+                    await Task.Delay(300);
+                    Log("✓ Exit voice mode button clicked");
+                }
+                else
+                {
+                    Log("⚠ Exit voice mode button position not configured");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error clicking exit voice mode button: {ex.Message}");
+            }
+        }
     }
 }
