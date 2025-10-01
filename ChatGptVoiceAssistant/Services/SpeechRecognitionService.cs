@@ -21,6 +21,7 @@ namespace HeyGPT.Services
         private DateTime _lastActivationTime = DateTime.MinValue;
         private DateTime _lastSilenceStartTime = DateTime.Now;
         private DateTime _lastSpeechTime = DateTime.Now;
+        private DateTime _firstHypothesisTime = DateTime.MinValue;
         private bool _isCurrentlySilent = true;
         private int _currentAudioLevel = 0;
         private readonly List<string> _recentHypotheses = new List<string>();
@@ -83,6 +84,7 @@ namespace HeyGPT.Services
             {
                 _lastSilenceStartTime = DateTime.Now;
                 _lastSpeechTime = DateTime.Now;
+                _firstHypothesisTime = DateTime.MinValue;
                 _isCurrentlySilent = true;
                 _currentAudioLevel = 0;
                 _recentHypotheses.Clear();
@@ -155,6 +157,12 @@ namespace HeyGPT.Services
                 if (!wasSilent && _isCurrentlySilent)
                 {
                     _lastSilenceStartTime = DateTime.Now;
+
+                    if (_recentHypotheses.Count > 0 && (DateTime.Now - _firstHypothesisTime).TotalMilliseconds > 3000)
+                    {
+                        _recentHypotheses.Clear();
+                        _firstHypothesisTime = DateTime.MinValue;
+                    }
                 }
                 else if (wasSilent && !_isCurrentlySilent)
                 {
@@ -167,9 +175,14 @@ namespace HeyGPT.Services
         {
             lock (_lockObject)
             {
+                if (_recentHypotheses.Count == 0)
+                {
+                    _firstHypothesisTime = DateTime.Now;
+                }
+
                 _recentHypotheses.Add(e.Result.Text);
 
-                if (_recentHypotheses.Count > 10)
+                if (_recentHypotheses.Count > 20)
                 {
                     _recentHypotheses.RemoveAt(0);
                 }
@@ -221,24 +234,43 @@ namespace HeyGPT.Services
                     return false;
                 }
 
-                if (_recentHypotheses.Count > 15)
+                var hypothesisDurationMs = _firstHypothesisTime == DateTime.MinValue ? 0 : (now - _firstHypothesisTime).TotalMilliseconds;
+                if (hypothesisDurationMs > 2000)
                 {
-                    StatusChanged?.Invoke(this, $"⚠ Rejected: Too many hypothesis words ({_recentHypotheses.Count}) - likely part of longer phrase");
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: Speech duration too long ({(int)hypothesisDurationMs}ms) - part of conversation");
                     return false;
                 }
 
-                var hypothesisUniqueWords = _recentHypotheses
+                if (_recentHypotheses.Count > 5)
+                {
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: Too many hypotheses ({_recentHypotheses.Count}/5) - embedded in sentence");
+                    return false;
+                }
+
+                var allHypothesisWords = _recentHypotheses
                     .SelectMany(h => h.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+                    .Select(w => w.ToLowerInvariant())
                     .Distinct()
-                    .Count();
+                    .ToList();
 
-                if (hypothesisUniqueWords > 8)
+                if (allHypothesisWords.Count > 3)
                 {
-                    StatusChanged?.Invoke(this, $"⚠ Rejected: Too many unique words in hypotheses ({hypothesisUniqueWords}) - likely part of conversation");
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: Too many unique words ({allHypothesisWords.Count}/3) - likely part of phrase");
                     return false;
                 }
 
-                StatusChanged?.Invoke(this, $"✓ Isolation passed: {_recentHypotheses.Count} hypotheses, {hypothesisUniqueWords} unique words, confidence: {confidence:P0}");
+                var wakeWordWords = _currentWakeWord.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(w => w.ToLowerInvariant())
+                    .ToHashSet();
+
+                var nonWakeWordWords = allHypothesisWords.Where(w => !wakeWordWords.Contains(w)).ToList();
+                if (nonWakeWordWords.Count > 0)
+                {
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: Non-wake-word detected: '{string.Join(", ", nonWakeWordWords)}' - embedded in sentence");
+                    return false;
+                }
+
+                StatusChanged?.Invoke(this, $"✓ Isolation PASSED: {_recentHypotheses.Count} hypotheses, {allHypothesisWords.Count} unique words, {(int)hypothesisDurationMs}ms duration");
                 return true;
             }
         }
