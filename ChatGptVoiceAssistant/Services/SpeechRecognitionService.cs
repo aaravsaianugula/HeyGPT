@@ -14,8 +14,8 @@ namespace HeyGPT.Services
         private float _confidenceThreshold = 0.7f;
 
         private int _silenceThreshold = 10;
-        private int _minimumSilenceDurationMs = 800;
-        private int _cooldownPeriodMs = 2500;
+        private int _minimumSilenceDurationMs = 500;
+        private int _cooldownPeriodMs = 1500;
         private bool _enableIsolation = true;
 
         private DateTime _lastActivationTime = DateTime.MinValue;
@@ -212,65 +212,37 @@ namespace HeyGPT.Services
         {
             lock (_lockObject)
             {
-                var timeSinceLastActivation = (DateTime.Now - _lastActivationTime).TotalMilliseconds;
+                var now = DateTime.Now;
+                var timeSinceLastActivation = (now - _lastActivationTime).TotalMilliseconds;
+
                 if (timeSinceLastActivation < _cooldownPeriodMs)
                 {
-                    StatusChanged?.Invoke(this, $"⚠ Rejected: Cooldown period ({(int)(_cooldownPeriodMs - timeSinceLastActivation)}ms remaining)");
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: Cooldown ({(int)(_cooldownPeriodMs - timeSinceLastActivation)}ms remaining)");
                     return false;
                 }
 
-                var silenceDuration = (DateTime.Now - _lastSilenceStartTime).TotalMilliseconds;
-                if (silenceDuration < _minimumSilenceDurationMs)
+                if (_recentHypotheses.Count > 15)
                 {
-                    StatusChanged?.Invoke(this, $"⚠ Rejected: Insufficient silence before wake word ({(int)silenceDuration}ms < {_minimumSilenceDurationMs}ms)");
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: Too many hypothesis words ({_recentHypotheses.Count}) - likely part of longer phrase");
                     return false;
                 }
 
-                var timeSinceSpeech = (DateTime.Now - _lastSpeechTime).TotalMilliseconds;
-                if (timeSinceSpeech > 5000)
+                var hypothesisUniqueWords = _recentHypotheses
+                    .SelectMany(h => h.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+                    .Distinct()
+                    .Count();
+
+                if (hypothesisUniqueWords > 8)
                 {
-                    StatusChanged?.Invoke(this, $"⚠ Rejected: Too much time since speech start ({(int)timeSinceSpeech}ms)");
+                    StatusChanged?.Invoke(this, $"⚠ Rejected: Too many unique words in hypotheses ({hypothesisUniqueWords}) - likely part of conversation");
                     return false;
                 }
 
-                if (IsWakeWordEmbeddedInLongerPhrase(recognizedText))
-                {
-                    StatusChanged?.Invoke(this, $"⚠ Rejected: Wake word embedded in longer phrase");
-                    return false;
-                }
-
+                StatusChanged?.Invoke(this, $"✓ Isolation passed: {_recentHypotheses.Count} hypotheses, {hypothesisUniqueWords} unique words, confidence: {confidence:P0}");
                 return true;
             }
         }
 
-        private bool IsWakeWordEmbeddedInLongerPhrase(string recognizedText)
-        {
-            if (_recentHypotheses.Count == 0)
-            {
-                return false;
-            }
-
-            var recentHypothesesText = string.Join(" ", _recentHypotheses);
-
-            if (recentHypothesesText.Length > recognizedText.Length * 2)
-            {
-                return true;
-            }
-
-            var hypothesisWordsCount = _recentHypotheses
-                .SelectMany(h => h.Split(' ', StringSplitOptions.RemoveEmptyEntries))
-                .Distinct()
-                .Count();
-
-            var recognizedWordsCount = recognizedText.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
-
-            if (hypothesisWordsCount > recognizedWordsCount * 2)
-            {
-                return true;
-            }
-
-            return false;
-        }
 
         private void OnSpeechRejected(object? sender, SpeechRecognitionRejectedEventArgs e)
         {

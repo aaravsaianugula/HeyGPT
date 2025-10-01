@@ -19,8 +19,8 @@ namespace HeyGPT.Models
         public bool IsVoiceModeButtonConfigured { get; set; } = false;
         public bool EnableWakeWordIsolation { get; set; } = true;
         public int SilenceThreshold { get; set; } = 10;
-        public int MinimumSilenceDurationMs { get; set; } = 800;
-        public int CooldownPeriodMs { get; set; } = 2500;
+        public int MinimumSilenceDurationMs { get; set; } = 500;
+        public int CooldownPeriodMs { get; set; } = 1500;
         public bool StartWithWindows { get; set; } = false;
         public bool StartMinimized { get; set; } = false;
     }
