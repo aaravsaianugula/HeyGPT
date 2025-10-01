@@ -77,7 +77,61 @@
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource SubheaderText}"
-                               Text="Step 3: Configure Wake Word"
+                               Text="Step 3: Enable Porcupine High Accuracy Mode (RECOMMENDED)"
+                               FontSize="16"
+                               Margin="0,0,0,8"/>
+                    <Border Background="{StaticResource AccentBrush}"
+                            CornerRadius="8"
+                            Padding="16,12"
+                            Margin="0,0,0,12"
+                            Opacity="0.15">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="⚠️ IMPORTANT: " FontWeight="Bold"/>
+                            <Run Text="If you experience false positives (app randomly detects wake word when not spoken), enable Porcupine for 97%+ accuracy!"/>
+                        </TextBlock>
+                    </Border>
+                    <TextBlock Style="{StaticResource BodyText}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,16">
+                        <Run Text="1. Visit " FontWeight="SemiBold"/>
+                        <Run Text="https://console.picovoice.ai" FontFamily="Consolas" Foreground="{StaticResource SecondaryBrush}"/>
+                        <LineBreak/>
+                        <Run Text="2. Sign up for FREE (takes 30 seconds, no credit card required)"/>
+                        <LineBreak/>
+                        <Run Text="3. Copy your AccessKey from the dashboard"/>
+                        <LineBreak/>
+                        <Run Text="4. In Settings, scroll to '🎯 Porcupine High Accuracy Mode'"/>
+                        <LineBreak/>
+                        <Run Text="5. Check 'Enable Porcupine Wake Word Detection'"/>
+                        <LineBreak/>
+                        <Run Text="6. Paste your AccessKey in the text field"/>
+                        <LineBreak/>
+                        <Run Text="7. Adjust sensitivity if needed (default 0.5 works great)"/>
+                        <LineBreak/>
+                        <Run Text="8. Click 'Save Settings'"/>
+                    </TextBlock>
+
+                    <Border Background="{StaticResource MistBrush}"
+                            CornerRadius="8"
+                            Padding="16"
+                            Margin="0,0,0,16">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap">
+                            <Run Text="✨ Benefits: " FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                            <LineBreak/>
+                            <Run Text="• 97%+ detection accuracy (vs. poor accuracy with System.Speech)"/>
+                            <LineBreak/>
+                            <Run Text="• Less than 1 false positive per 10 hours (vs. frequent false alarms)"/>
+                            <LineBreak/>
+                            <Run Text="• Industry-standard neural network wake word engine"/>
+                            <LineBreak/>
+                            <Run Text="• Completely offline, no cloud dependency"/>
+                            <LineBreak/>
+                            <Run Text="• Free for personal use forever"/>
+                        </TextBlock>
+                    </Border>
+
+                    <TextBlock Style="{StaticResource SubheaderText}"
+                               Text="Step 4: Configure Wake Word (Optional - System.Speech)"
                                FontSize="16"
                                Margin="0,0,0,8"/>
                     <TextBlock Style="{StaticResource BodyText}"
@@ -90,10 +144,13 @@
                         <Run Text="3. Configure Advanced Isolation settings (see below)"/>
                         <LineBreak/>
                         <Run Text="4. Click 'Save Settings'"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="Note: These settings only apply if Porcupine is disabled." FontStyle="Italic" Foreground="{StaticResource MistBrush}"/>
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource SubheaderText}"
-                               Text="Step 4: Test &amp; Use"
+                               Text="Step 5: Test &amp; Use"
                                FontSize="16"
                                Margin="0,0,0,8"/>
                     <TextBlock Style="{StaticResource BodyText}"
@@ -219,14 +276,138 @@
                 </StackPanel>
             </Border>
 
-            <!-- Wake Word Isolation Section -->
+            <!-- Porcupine High Accuracy Section -->
             <Border Style="{StaticResource WabiSabiCard}" Margin="0,0,0,24">
                 <StackPanel>
-                    <TextBlock Text="🛡️ Advanced Wake Word Isolation"
+                    <TextBlock Text="🎯 Porcupine High Accuracy Wake Word Detection"
                                Style="{StaticResource HeaderText}"
                                FontSize="24"
                                Foreground="{StaticResource PrimaryBrush}"
                                Margin="0,0,0,16"/>
+
+                    <Border Background="{StaticResource AccentBrush}"
+                            CornerRadius="8"
+                            Padding="16,12"
+                            Margin="0,0,0,16"
+                            Opacity="0.2">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="⚡ RECOMMENDED: " FontWeight="Bold"/>
+                            <Run Text="Porcupine provides 97%+ accuracy with less than 1 false positive per 10 hours. If you're experiencing issues with random wake word detections, enable Porcupine!"/>
+                        </TextBlock>
+                    </Border>
+
+                    <TextBlock Style="{StaticResource SubheaderText}"
+                               Text="What is Porcupine?"
+                               FontSize="16"
+                               Margin="0,0,0,8"/>
+                    <TextBlock Style="{StaticResource BodyText}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,16">
+                        <Run Text="Porcupine by Picovoice is an industry-standard wake word detection engine powered by deep learning. Unlike Windows System.Speech (which has frequent false positives), Porcupine uses neural networks specifically trained for wake word detection with exceptional accuracy."/>
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource SubheaderText}"
+                               Text="Why Use Porcupine?"
+                               FontSize="16"
+                               Margin="0,0,0,8"/>
+                    <Border Background="{StaticResource MistBrush}"
+                            CornerRadius="8"
+                            Padding="16"
+                            Margin="0,0,0,16">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap">
+                            <Run Text="✅ 97%+ detection rate (vs. poor with System.Speech)" FontWeight="SemiBold"/>
+                            <LineBreak/>
+                            <Run Text="✅ &lt;1 false positive per 10 hours (vs. frequent false alarms)" FontWeight="SemiBold"/>
+                            <LineBreak/>
+                            <Run Text="✅ Completely offline - no cloud dependency"/>
+                            <LineBreak/>
+                            <Run Text="✅ Low latency - microseconds detection time"/>
+                            <LineBreak/>
+                            <Run Text="✅ Low CPU usage - efficient neural network"/>
+                            <LineBreak/>
+                            <Run Text="✅ Free for personal use forever"/>
+                            <LineBreak/>
+                            <Run Text="✅ Cross-platform - works on Windows, Mac, Linux"/>
+                            <LineBreak/>
+                            <Run Text="✅ Active development - 4.4k GitHub stars"/>
+                        </TextBlock>
+                    </Border>
+
+                    <TextBlock Style="{StaticResource SubheaderText}"
+                               Text="How to Get Started"
+                               FontSize="16"
+                               Margin="0,0,0,8"/>
+                    <TextBlock Style="{StaticResource BodyText}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,16">
+                        <Run Text="1️⃣ Go to " FontWeight="Bold"/>
+                        <Run Text="https://console.picovoice.ai" FontFamily="Consolas" FontWeight="Bold" Foreground="{StaticResource SecondaryBrush}"/>
+                        <LineBreak/>
+                        <Run Text="2️⃣ Click 'Sign Up' and create a free account (30 seconds)"/>
+                        <LineBreak/>
+                        <Run Text="3️⃣ No credit card required - completely free for personal use"/>
+                        <LineBreak/>
+                        <Run Text="4️⃣ Copy your AccessKey from the dashboard"/>
+                        <LineBreak/>
+                        <Run Text="5️⃣ Open HeyGPT Settings → '🎯 Porcupine High Accuracy Mode'"/>
+                        <LineBreak/>
+                        <Run Text="6️⃣ Check 'Enable Porcupine Wake Word Detection'"/>
+                        <LineBreak/>
+                        <Run Text="7️⃣ Paste your AccessKey"/>
+                        <LineBreak/>
+                        <Run Text="8️⃣ Click 'Save Settings' and restart listening"/>
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource SubheaderText}"
+                               Text="Adjusting Sensitivity"
+                               FontSize="16"
+                               Margin="0,0,0,8"/>
+                    <TextBlock Style="{StaticResource BodyText}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,16">
+                        <Run Text="• Sensitivity range: 0.0 (least sensitive) to 1.0 (most sensitive)"/>
+                        <LineBreak/>
+                        <Run Text="• Default: 0.5 (recommended for most environments)"/>
+                        <LineBreak/>
+                        <Run Text="• Higher (0.6-0.8): More responsive, may increase false positives"/>
+                        <LineBreak/>
+                        <Run Text="• Lower (0.3-0.4): Fewer false alarms, may miss wake word"/>
+                        <LineBreak/>
+                        <Run Text="• Tip: Start with 0.5 and adjust based on your experience"/>
+                    </TextBlock>
+
+                    <Border Background="{StaticResource PrimaryBrush}"
+                            CornerRadius="8"
+                            Padding="16"
+                            Margin="0,8,0,0"
+                            Opacity="0.1">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="📌 Note: " FontWeight="Bold"/>
+                            <Run Text="When Porcupine is enabled, the System.Speech wake word detection and isolation settings are bypassed. Voice commands still use System.Speech."/>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Wake Word Isolation Section -->
+            <Border Style="{StaticResource WabiSabiCard}" Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="🛡️ Advanced Wake Word Isolation (System.Speech Only)"
+                               Style="{StaticResource HeaderText}"
+                               FontSize="24"
+                               Foreground="{StaticResource PrimaryBrush}"
+                               Margin="0,0,0,16"/>
+
+                    <Border Background="{StaticResource AccentBrush}"
+                            CornerRadius="8"
+                            Padding="16,12"
+                            Margin="0,0,0,16"
+                            Opacity="0.15">
+                        <TextBlock Style="{StaticResource BodyText}" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="⚠️ Note: " FontWeight="Bold"/>
+                            <Run Text="These settings only apply when Porcupine is DISABLED. If you've enabled Porcupine High Accuracy Mode, you don't need to configure these settings - Porcupine handles accuracy automatically!"/>
+                        </TextBlock>
+                    </Border>
 
                     <TextBlock Style="{StaticResource BodyText}"
                                TextWrapping="Wrap"
