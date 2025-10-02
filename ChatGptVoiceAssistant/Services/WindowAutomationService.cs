@@ -157,10 +157,12 @@ namespace HeyGPT.Services
 
                     try
                     {
+                        bool isFullPath = File.Exists(resolvedPath);
+
                         chatGptProcess = Process.Start(new ProcessStartInfo
                         {
                             FileName = resolvedPath,
-                            UseShellExecute = false,
+                            UseShellExecute = !isFullPath,
                             CreateNoWindow = false
                         });
 
@@ -312,48 +314,34 @@ namespace HeyGPT.Services
 
             if (isNewChatButton)
             {
-                if (isButtonConfigured && buttonPosition != Point.Empty)
+                if (!isButtonConfigured || buttonPosition == Point.Empty)
                 {
-                    Log($"Using configured New Chat button position: ({buttonPosition.X}, {buttonPosition.Y})");
-                    ClickAtPosition(buttonPosition.X, buttonPosition.Y);
-                    await Task.Delay(300);
-                    Log($"✓ New Chat button clicked at configured position");
+                    Log("❌ ERROR: New Chat button position NOT configured!");
+                    Log("   Please configure button positions in Settings before using voice activation.");
                     return;
                 }
-                else
-                {
-                    Log("New Chat button position not configured - using fallback position");
-                    int clickX = windowRect.Left + 110;
-                    int clickY = windowRect.Top + 65;
-                    Log($"Clicking New Chat at fallback position: ({clickX}, {clickY})");
-                    ClickAtPosition(clickX, clickY);
-                    await Task.Delay(300);
-                    Log($"✓ New Chat button clicked at fallback position");
-                    return;
-                }
+
+                Log($"Using configured New Chat button position: ({buttonPosition.X}, {buttonPosition.Y})");
+                ClickAtPosition(buttonPosition.X, buttonPosition.Y);
+                await Task.Delay(300);
+                Log($"✓ New Chat button clicked at configured position");
+                return;
             }
 
             if (isVoiceButton)
             {
-                if (isButtonConfigured && buttonPosition != Point.Empty)
+                if (!isButtonConfigured || buttonPosition == Point.Empty)
                 {
-                    Log($"Using configured Voice Mode button position: ({buttonPosition.X}, {buttonPosition.Y})");
-                    ClickAtPosition(buttonPosition.X, buttonPosition.Y);
-                    await Task.Delay(300);
-                    Log($"✓ Voice Mode button clicked at configured position");
+                    Log("❌ ERROR: Voice Mode button position NOT configured!");
+                    Log("   Please configure button positions in Settings before using voice activation.");
                     return;
                 }
-                else
-                {
-                    Log("Voice Mode button position not configured - using fallback position");
-                    int clickX = windowRect.Right - 80;
-                    int clickY = windowRect.Bottom - 80;
-                    Log($"Clicking Voice Mode at fallback position: ({clickX}, {clickY})");
-                    ClickAtPosition(clickX, clickY);
-                    await Task.Delay(300);
-                    Log($"✓ Voice Mode button clicked at fallback position");
-                    return;
-                }
+
+                Log($"Using configured Voice Mode button position: ({buttonPosition.X}, {buttonPosition.Y})");
+                ClickAtPosition(buttonPosition.X, buttonPosition.Y);
+                await Task.Delay(300);
+                Log($"✓ Voice Mode button clicked at configured position");
+                return;
             }
 
             Log($"⚠ Unknown button type: '{buttonText}' - attempting OCR fallback");
