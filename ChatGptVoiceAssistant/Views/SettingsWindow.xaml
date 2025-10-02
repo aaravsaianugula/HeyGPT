@@ -310,11 +310,12 @@
                     </GroupBox.Header>
 
                     <StackPanel>
-                        <Border Background="{StaticResource AccentBrush}"
+                        <Border Background="#1A7C4DFF"
+                                BorderBrush="{StaticResource AccentBrush}"
+                                BorderThickness="2"
                                 CornerRadius="8"
                                 Padding="16"
-                                Margin="0,0,0,16"
-                                Opacity="0.2">
+                                Margin="0,0,0,16">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource SubheaderText}"
                                            Text="📋 How to Create Custom Wake Words:"
