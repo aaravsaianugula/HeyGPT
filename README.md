@@ -8,9 +8,9 @@
 
 ### 🎬 Watch HeyGPT in Action
 
-<video src="Assets/HEYGPT_PROMO.mp4" controls style="max-width: 100%; border-radius: 8px;"></video>
+**[▶️ Watch Promo Video](Assets/HEYGPT_PROMO.mp4)** *(Created with Sora 2)*
 
-*Promo video created with Sora 2*
+> Click the link above to watch a demonstration of HeyGPT's voice-activated features in action!
 
 [![Release](https://img.shields.io/badge/Release-v1.1.0-blue.svg)](https://github.com/aaravsaianugula/HeyGPT/releases/latest)
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
