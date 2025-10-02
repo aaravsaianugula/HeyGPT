@@ -67,6 +67,8 @@ $RECYCLE.BIN/
 # User settings
 appsettings.Development.json
 *.user.json
+settings.json
+**/settings.json
 
 # Test results
 [Tt]est[Rr]esult*/
