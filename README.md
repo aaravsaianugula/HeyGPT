@@ -131,9 +131,35 @@ After installation, you can launch HeyGPT using any of these methods:
 3. Say your wake word (e.g., "Jarvis")
 4. ChatGPT launches in voice mode! ✨
 
-### Optional: Custom Wake Words
-**Want wake words beyond the 14 built-ins?**
-Create at [console.picovoice.ai](https://console.picovoice.ai) → Download `.ppn` file → Upload in Settings → "🎨 Custom Wake Word"
+---
+
+## 🎨 Custom Wake Words (Beyond the 14 Built-Ins)
+
+**Want "Hey Claude", "Okay Buddy", or any other wake word?**
+
+### Quick Process (10-15 minutes):
+
+1. **Sign up** at [console.picovoice.ai](https://console.picovoice.ai) (free, no credit card)
+2. **Train keyword** → "Porcupine Wake Word" → "Train New Keyword" → Enter your wake word → Wait ~5-10 min
+3. **Download .ppn** → Select Platform: **Windows** → Download file
+4. **Upload to HeyGPT** → Settings → "🎨 Custom Wake Word" → Browse → Select .ppn file → Save
+
+**📖 [Complete Step-by-Step Guide with Screenshots](USER_GUIDE.md#how-to-create-custom-wake-words-step-by-step)**
+
+### Important Notes:
+
+✅ **Built-in wake words** (jarvis, alexa, computer, etc.) work immediately - no .ppn needed
+❌ **Custom wake words** REQUIRE .ppn file - you can't just type random text
+⚠️ Must select **Windows** platform when downloading (not Mac/Linux)
+⏱️ Training takes ~5-10 minutes (you'll get email when done)
+
+### Troubleshooting:
+
+**"File not found" error?** → Make sure you downloaded **Windows** .ppn (not Mac/Linux)
+**Wake word not detected?** → Verify AccessKey is entered, speak clearly, adjust sensitivity
+**Training failed?** → Use 2-3 words, avoid special characters, try different phrase
+
+---
 
 ### Optional: Voice Commands
 Setup in Settings to use "Mic On", "Mic Off", "Exit" commands in voice mode

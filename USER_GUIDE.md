@@ -68,15 +68,139 @@
 
 ---
 
-## Advanced: Custom Wake Words
+## How to Create Custom Wake Words (Step-by-Step)
 
-**Want "Okay Claude" or "Hey Buddy"?**
+**Want to use a wake word NOT in the 14 built-ins?** (Like "Hey Claude", "Okay Buddy", "Yo Computer", etc.)
 
-1. Visit [console.picovoice.ai](https://console.picovoice.ai)
-2. Create custom wake word (follow their wizard)
-3. Download `.ppn` file for Windows
-4. In HeyGPT Settings → "🎨 Custom Wake Word" → Browse → Select file
-5. Save!
+You need to create a `.ppn` file using Picovoice Console. Here's exactly how:
+
+### Step 1: Sign Up at Picovoice (30 seconds)
+
+1. **Visit** → [https://console.picovoice.ai](https://console.picovoice.ai)
+2. **Click** → "Sign Up" button (top right)
+3. **Enter** → Your email and create password
+4. **Verify** → Check email and click verification link
+5. **Done** → You're now logged into Picovoice Console
+
+**Cost**: FREE - No credit card required for personal use
+
+---
+
+### Step 2: Create Your Wake Word (5-10 minutes)
+
+1. **Click** → "Porcupine Wake Word" in left sidebar menu
+2. **Click** → "Train New Keyword" button (top right)
+3. **Enter Details**:
+   - **Keyword**: Type your wake word (e.g., "Hey Claude")
+   - **Language**: Select "English (en)"
+   - **Platform**: Leave as "All" (we'll select Windows when downloading)
+4. **Click** → "Train Keyword" button
+5. **Wait** → Training takes ~5-10 minutes (you'll get email when done)
+
+**Tips for Good Wake Words**:
+- ✅ 2-3 words work best ("Hey Claude", "Okay Buddy")
+- ✅ Use distinct sounds (avoid common phrases)
+- ✅ Test pronunciation (say it out loud a few times)
+- ❌ Avoid single words (less accurate)
+- ❌ Avoid very long phrases (harder to detect)
+
+---
+
+### Step 3: Download .ppn File (30 seconds)
+
+1. **Wait for email** → "Your wake word training is complete"
+2. **Go back** → [https://console.picovoice.ai](https://console.picovoice.ai)
+3. **Click** → "Porcupine Wake Word" in left menu
+4. **Find your keyword** → It's now in the list
+5. **Click** → Download icon (↓) next to your wake word
+6. **Select Platform** → **Windows** (IMPORTANT!)
+7. **Download** → Save the `.ppn` file (e.g., `hey_claude_windows.ppn`)
+8. **Remember location** → You'll need this file in the next step
+
+**File Name**: Should end with `_windows.ppn` (e.g., `hey_claude_windows.ppn`)
+
+---
+
+### Step 4: Upload to HeyGPT (1 minute)
+
+1. **Open HeyGPT** → Launch the app
+2. **Click** → ⚙ Settings button
+3. **Scroll down** → Find "🎨 Custom Wake Word (Requires .ppn file)" section
+4. **Click** → "Browse..." button
+5. **Select** → Your downloaded `.ppn` file from Step 3
+6. **Verify** → File path appears in text box
+7. **Click** → "Save Settings" (bottom of window)
+8. **Done** → Custom wake word is active!
+
+---
+
+### Step 5: Test Your Custom Wake Word (1 minute)
+
+1. **Close Settings** → Back to main window
+2. **Click** → ▶ Start Listening
+3. **Say your wake word** → Clearly and at normal volume (e.g., "Hey Claude")
+4. **Watch** → ChatGPT should launch in voice mode!
+5. **Success?** → Your custom wake word works! 🎉
+
+**Not working?**
+- Check Activity Log for errors
+- Verify you downloaded the **Windows** .ppn file (not Mac/Linux)
+- Try speaking more clearly or adjusting Porcupine sensitivity in Settings
+- Make sure Picovoice AccessKey is entered in Settings
+
+---
+
+### Example: Creating "Hey Claude" Wake Word
+
+**Full walkthrough**:
+
+```
+1. Visit console.picovoice.ai → Sign up (free)
+2. Click "Porcupine Wake Word" → "Train New Keyword"
+3. Enter "Hey Claude" → Language: English → Train
+4. Wait 5-10 minutes (check email)
+5. Download → Platform: Windows → Save hey_claude_windows.ppn
+6. HeyGPT Settings → Browse → Select hey_claude_windows.ppn
+7. Save Settings → Start Listening → Say "Hey Claude" → Works!
+```
+
+**Time**: ~10-15 minutes total (including training wait time)
+
+---
+
+### Troubleshooting Custom Wake Words
+
+**Q: Training failed / "Invalid keyword" error**
+→ Try different wake word (avoid special characters, use 2-3 words)
+
+**Q: Downloaded .ppn but HeyGPT says "file not found"**
+→ Make sure you selected **Windows** platform (not Mac/Linux)
+
+**Q: Wake word not detected**
+→ Check: Picovoice AccessKey entered? Sensitivity too low? Speaking clearly?
+
+**Q: Can I use the same .ppn on multiple computers?**
+→ Yes! Copy the .ppn file to each computer and upload in Settings
+
+**Q: Can I have multiple custom wake words?**
+→ No, only one custom wake word at a time. But you can switch by uploading different .ppn files.
+
+**Q: How do I switch back to built-in wake words?**
+→ Settings → Custom Wake Word → Click "Clear" button → Select built-in from dropdown
+
+---
+
+### Quick Reference
+
+| Step | What | Where | Time |
+|------|------|-------|------|
+| 1 | Sign up | [console.picovoice.ai](https://console.picovoice.ai) | 30 sec |
+| 2 | Train keyword | Picovoice Console → Train New | 5-10 min |
+| 3 | Download .ppn | Picovoice Console → Download (Windows) | 30 sec |
+| 4 | Upload to HeyGPT | Settings → Browse → Select file | 1 min |
+| 5 | Test | Start Listening → Say wake word | 1 min |
+
+**Total Time**: ~10-15 minutes (mostly waiting for training)
 
 ---
 

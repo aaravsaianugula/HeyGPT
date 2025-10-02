@@ -310,27 +310,81 @@
                     </GroupBox.Header>
 
                     <StackPanel>
-                        <Border Background="{StaticResource SecondaryBrush}"
-                                CornerRadius="6"
-                                Padding="12"
-                                Margin="0,0,0,12"
+                        <Border Background="{StaticResource AccentBrush}"
+                                CornerRadius="8"
+                                Padding="16"
+                                Margin="0,0,0,16"
                                 Opacity="0.2">
-                            <TextBlock Style="{StaticResource CaptionText}"
-                                       TextWrapping="Wrap"
-                                       Foreground="{StaticResource CharcoalBrush}">
-                                <Run Text="🎨 Want a wake word NOT in the list above?" FontWeight="Bold"/>
-                                <LineBreak/>
-                                <Run Text="1. Create at " FontSize="11"/>
-                                <Hyperlink NavigateUri="https://console.picovoice.ai" RequestNavigate="Hyperlink_RequestNavigate">
-                                    <Run Text="console.picovoice.ai" FontSize="11"/>
-                                </Hyperlink>
-                                <Run Text=" (free)" FontSize="11"/>
-                                <LineBreak/>
-                                <Run Text="2. Download .ppn file for Windows" FontSize="11"/>
-                                <LineBreak/>
-                                <Run Text="3. Upload it here with Browse button below" FontSize="11"/>
-                            </TextBlock>
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource SubheaderText}"
+                                           Text="📋 How to Create Custom Wake Words:"
+                                           FontSize="13"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,12"/>
+
+                                <TextBlock Style="{StaticResource CaptionText}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,8">
+                                    <Run Text="STEP 1: Visit Picovoice Console" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="• Go to " FontSize="11"/>
+                                    <Hyperlink NavigateUri="https://console.picovoice.ai" RequestNavigate="Hyperlink_RequestNavigate">
+                                        <Run Text="https://console.picovoice.ai" FontSize="11" FontWeight="Bold"/>
+                                    </Hyperlink>
+                                    <LineBreak/>
+                                    <Run Text="• Sign up for FREE (no credit card)" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Click 'Porcupine Wake Word' in the left menu" FontSize="11"/>
+                                </TextBlock>
+
+                                <TextBlock Style="{StaticResource CaptionText}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,8">
+                                    <Run Text="STEP 2: Train Your Wake Word" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="• Click 'Train New Keyword'" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Enter your wake word (e.g., 'Hey Claude', 'Okay Buddy')" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Choose language: English" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Click 'Train Keyword' and wait ~5 minutes" FontSize="11"/>
+                                </TextBlock>
+
+                                <TextBlock Style="{StaticResource CaptionText}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,8">
+                                    <Run Text="STEP 3: Download .ppn File" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="• Once training is complete, find your keyword in the list" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Click the download icon (↓)" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Select Platform: " FontSize="11"/>
+                                    <Run Text="Windows" FontSize="11" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="• Save the .ppn file to your computer" FontSize="11"/>
+                                </TextBlock>
+
+                                <TextBlock Style="{StaticResource CaptionText}"
+                                           TextWrapping="Wrap">
+                                    <Run Text="STEP 4: Upload to HeyGPT" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="• Click 'Browse...' button below" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Select your downloaded .ppn file" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Click 'Save Settings' at bottom of this window" FontSize="11"/>
+                                    <LineBreak/>
+                                    <Run Text="• Done! Your custom wake word is ready!" FontSize="11" FontWeight="Bold"/>
+                                </TextBlock>
+                            </StackPanel>
                         </Border>
+
+                        <TextBlock Style="{StaticResource SubheaderText}"
+                                   Text="Upload Your .ppn File:"
+                                   FontSize="13"
+                                   Margin="0,0,0,8"/>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions>
