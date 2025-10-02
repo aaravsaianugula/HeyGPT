@@ -386,6 +386,20 @@ namespace HeyGPT.Services
             }
         }
 
+        public bool IsChatGptWindowOpen()
+        {
+            try
+            {
+                Process? chatGptProcess = GetChatGptProcess();
+                return chatGptProcess != null && chatGptProcess.MainWindowHandle != IntPtr.Zero;
+            }
+            catch (Exception ex)
+            {
+                Log($"Error checking ChatGPT window: {ex.Message}");
+                return false;
+            }
+        }
+
         public async Task ClickMicButton(Point micButtonPosition, bool isMicButtonConfigured)
         {
             try

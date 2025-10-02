@@ -372,8 +372,10 @@ namespace HeyGPT.Views
                 {
                     if (success)
                     {
+                        _speechService.IsInVoiceMode = true;
                         UpdateStatus($"ChatGPT launched successfully! Still listening for '{_currentSettings.WakeWord}'...");
                         AddLog("✓ ChatGPT automation completed");
+                        AddLog("✓ Voice mode ENABLED - mic on/off commands active");
                         AddLog($"🎤 Ready for next wake word: '{_currentSettings.WakeWord}'");
                     }
                     else
@@ -422,20 +424,18 @@ namespace HeyGPT.Views
             });
         }
 
-        private async void VoiceModeCheckTimer_Tick(object? sender, EventArgs e)
+        private void VoiceModeCheckTimer_Tick(object? sender, EventArgs e)
         {
-            bool isVoiceModeActive = await _windowService.IsVoiceModeActive();
-            if (_speechService.IsInVoiceMode != isVoiceModeActive)
+            bool isChatGptWindowOpen = _windowService.IsChatGptWindowOpen();
+
+            if (!isChatGptWindowOpen && _speechService.IsInVoiceMode)
             {
-                _speechService.IsInVoiceMode = isVoiceModeActive;
-                if (isVoiceModeActive)
-                {
-                    AddLog("✓ Voice mode detected - voice commands ENABLED");
-                }
-                else
-                {
-                    AddLog("Voice mode not active - voice commands DISABLED");
-                }
+                _speechService.IsInVoiceMode = false;
+                AddLog("✗ ChatGPT window closed - voice mode DISABLED");
+                AddLog("   Voice commands (mic on/off) will not work");
+            }
+            else if (isChatGptWindowOpen && _speechService.IsInVoiceMode)
+            {
             }
         }
 
@@ -443,8 +443,18 @@ namespace HeyGPT.Views
         {
             Dispatcher.Invoke(() =>
             {
-                AddLog($"🎤 Voice command: '{command}'");
+                AddLog($"🎤 Voice command detected: '{command}'");
             });
+
+            if (!_speechService.IsInVoiceMode)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    AddLog("⚠ Voice commands disabled - not in voice mode");
+                    AddLog("   Say wake word to launch ChatGPT and enable commands");
+                });
+                return;
+            }
 
             try
             {
@@ -469,6 +479,7 @@ namespace HeyGPT.Views
 
                     await _windowService.ClickExitVoiceModeButton(_currentSettings.ExitVoiceModeButtonPosition, _currentSettings.IsExitVoiceModeButtonConfigured);
                     Dispatcher.Invoke(() => AddLog("✓ Exit voice mode button clicked"));
+                    _speechService.IsInVoiceMode = false;
                 }
             }
             catch (Exception ex)
