@@ -124,23 +124,46 @@
                 <!-- Wake Word Selection -->
                 <GroupBox Style="{StaticResource TraditionalGroupBox}">
                     <GroupBox.Header>
-                        <TextBlock Text="🎤 Wake Word"/>
+                        <TextBlock Text="🎤 Wake Word (Built-In Only)"/>
                     </GroupBox.Header>
 
                     <StackPanel>
-                        <TextBlock Style="{StaticResource SubheaderText}"
-                                   Text="Choose Wake Word"
-                                   FontSize="13"
-                                   Margin="0,0,0,4"/>
-                        <TextBox x:Name="WakeWordTextBox"
-                                 Style="{StaticResource TraditionalTextBox}"
-                                 Text="{Binding WakeWord, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Border Background="{StaticResource AccentBrush}"
+                                CornerRadius="6"
+                                Padding="12"
+                                Margin="0,0,0,12"
+                                Opacity="0.15">
+                            <TextBlock Style="{StaticResource CaptionText}"
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource CharcoalBrush}">
+                                <Run Text="ℹ️ Only these 14 wake words work without .ppn files:" FontWeight="SemiBold"/>
+                                <LineBreak/>
+                                <Run Text="jarvis, alexa, computer, hey google, hey siri, ok google, picovoice, porcupine, bumblebee, terminator, americano, blueberry, grapefruit, grasshopper" FontSize="10"/>
+                                <LineBreak/>
+                                <Run Text="For other wake words, use Custom Wake Word section below." FontSize="10" FontStyle="Italic"/>
+                            </TextBlock>
+                        </Border>
 
-                        <TextBlock Style="{StaticResource CaptionText}"
-                                   Margin="0,4,0,12">
-                            <Run Text="Built-in options: " FontWeight="SemiBold"/>
-                            <Run Text="jarvis, alexa, computer, hey google, hey siri, ok google, picovoice, porcupine, bumblebee, terminator, americano, blueberry, grapefruit, grasshopper"/>
-                        </TextBlock>
+                        <ComboBox x:Name="WakeWordComboBox"
+                                  Style="{StaticResource {x:Type ComboBox}}"
+                                  Text="{Binding WakeWord, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEditable="True"
+                                  Margin="0,0,0,12">
+                            <ComboBoxItem Content="jarvis"/>
+                            <ComboBoxItem Content="alexa"/>
+                            <ComboBoxItem Content="computer"/>
+                            <ComboBoxItem Content="hey google"/>
+                            <ComboBoxItem Content="hey siri"/>
+                            <ComboBoxItem Content="ok google"/>
+                            <ComboBoxItem Content="picovoice"/>
+                            <ComboBoxItem Content="porcupine"/>
+                            <ComboBoxItem Content="bumblebee"/>
+                            <ComboBoxItem Content="terminator"/>
+                            <ComboBoxItem Content="americano"/>
+                            <ComboBoxItem Content="blueberry"/>
+                            <ComboBoxItem Content="grapefruit"/>
+                            <ComboBoxItem Content="grasshopper"/>
+                        </ComboBox>
 
                         <TextBlock Style="{StaticResource SubheaderText}"
                                    Text="Speech Confidence Threshold"
@@ -283,20 +306,31 @@
                 <!-- Custom Wake Word (Optional) -->
                 <GroupBox Style="{StaticResource TraditionalGroupBox}">
                     <GroupBox.Header>
-                        <TextBlock Text="🎨 Custom Wake Word (Optional)"/>
+                        <TextBlock Text="🎨 Custom Wake Word (Requires .ppn file)"/>
                     </GroupBox.Header>
 
                     <StackPanel>
-                        <TextBlock Style="{StaticResource CaptionText}"
-                                   TextWrapping="Wrap"
-                                   Margin="0,0,0,12">
-                            <Run Text="Want a custom wake word?" FontWeight="SemiBold"/>
-                            <Run Text=" Create one at "/>
-                            <Hyperlink NavigateUri="https://console.picovoice.ai" RequestNavigate="Hyperlink_RequestNavigate">
-                                <Run Text="console.picovoice.ai"/>
-                            </Hyperlink>
-                            <Run Text=" and upload the .ppn file here."/>
-                        </TextBlock>
+                        <Border Background="{StaticResource SecondaryBrush}"
+                                CornerRadius="6"
+                                Padding="12"
+                                Margin="0,0,0,12"
+                                Opacity="0.2">
+                            <TextBlock Style="{StaticResource CaptionText}"
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource CharcoalBrush}">
+                                <Run Text="🎨 Want a wake word NOT in the list above?" FontWeight="Bold"/>
+                                <LineBreak/>
+                                <Run Text="1. Create at " FontSize="11"/>
+                                <Hyperlink NavigateUri="https://console.picovoice.ai" RequestNavigate="Hyperlink_RequestNavigate">
+                                    <Run Text="console.picovoice.ai" FontSize="11"/>
+                                </Hyperlink>
+                                <Run Text=" (free)" FontSize="11"/>
+                                <LineBreak/>
+                                <Run Text="2. Download .ppn file for Windows" FontSize="11"/>
+                                <LineBreak/>
+                                <Run Text="3. Upload it here with Browse button below" FontSize="11"/>
+                            </TextBlock>
+                        </Border>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions>

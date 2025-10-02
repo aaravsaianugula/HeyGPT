@@ -102,17 +102,27 @@
 **AccessKey**: Get from [console.picovoice.ai](https://console.picovoice.ai)
 **Sensitivity**: 0.5 default (higher = more sensitive, may have false positives)
 
-### 🎤 Wake Word
+### 🎤 Wake Word (Built-In Only)
 
-**Choose Wake Word**: Type wake word or pick from built-ins
-**Built-in Options**: jarvis, alexa, computer, hey google, hey siri, ok google, picovoice, porcupine, bumblebee, terminator, americano, blueberry, grapefruit, grasshopper
+**14 Built-In Options** (work without .ppn files):
+- jarvis, alexa, computer, hey google, hey siri, ok google
+- picovoice, porcupine, bumblebee, terminator
+- americano, blueberry, grapefruit, grasshopper
+
+**Select from dropdown** or type one of the above.
+
 **Confidence Threshold**: Only used if NO Porcupine AccessKey (0.6-0.8 recommended)
 
 **Advanced Settings (Expander)**: Only applies when using fallback mode (no Porcupine)
 
-### 🎨 Custom Wake Word (Optional)
+### 🎨 Custom Wake Word (Requires .ppn File)
 
-Upload `.ppn` files created at Picovoice Console for custom wake words like "Okay Claude"
+**Want something else?** (like "Okay Claude", "Hey Buddy")
+1. Create at [console.picovoice.ai](https://console.picovoice.ai) (free)
+2. Download `.ppn` file for Windows
+3. Settings → Browse → Select file → Save
+
+**Note**: .ppn file required because Porcupine uses AI models trained for specific wake words
 
 ### 🖥 Monitor & ChatGPT Setup
 

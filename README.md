@@ -132,7 +132,8 @@ After installation, you can launch HeyGPT using any of these methods:
 4. ChatGPT launches in voice mode! ✨
 
 ### Optional: Custom Wake Words
-Create custom wake words at [console.picovoice.ai](https://console.picovoice.ai), download `.ppn` file, upload in Settings
+**Want wake words beyond the 14 built-ins?**
+Create at [console.picovoice.ai](https://console.picovoice.ai) → Download `.ppn` file → Upload in Settings → "🎨 Custom Wake Word"
 
 ### Optional: Voice Commands
 Setup in Settings to use "Mic On", "Mic Off", "Exit" commands in voice mode
