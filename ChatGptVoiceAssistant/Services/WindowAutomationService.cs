@@ -15,6 +15,18 @@ namespace HeyGPT.Services
         private readonly ScreenshotService _screenshotService;
         private readonly OcrService _ocrService;
         private readonly ImageRecognitionService _imageRecognitionService;
+        private Process? _cachedChatGptProcess;
+        private DateTime _lastProcessCheck = DateTime.MinValue;
+        private const int ProcessCacheDurationSeconds = 5;
+
+        private static readonly string[] AllowedExecutables = new[]
+        {
+            "chatgpt",
+            "chatgpt.exe",
+            @"C:\Program Files\ChatGPT\ChatGPT.exe",
+            @"%LOCALAPPDATA%\Programs\ChatGPT\ChatGPT.exe",
+            @"%USERPROFILE%\AppData\Local\Programs\ChatGPT\ChatGPT.exe"
+        };
 
         public event EventHandler<string>? DebugLog;
 
@@ -29,6 +41,66 @@ namespace HeyGPT.Services
         {
             Debug.WriteLine(message);
             DebugLog?.Invoke(this, message);
+        }
+
+        private bool IsAllowedExecutable(string path)
+        {
+            string expandedPath = Environment.ExpandEnvironmentVariables(path);
+
+            foreach (string allowed in AllowedExecutables)
+            {
+                string expandedAllowed = Environment.ExpandEnvironmentVariables(allowed);
+                if (string.Equals(expandedPath, expandedAllowed, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            if (File.Exists(expandedPath) && expandedPath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                string fileName = Path.GetFileName(expandedPath);
+                if (string.Equals(fileName, "ChatGPT.exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private string? ResolveExecutablePath(string appPath)
+        {
+            string expandedPath = Environment.ExpandEnvironmentVariables(appPath);
+
+            if (!IsAllowedExecutable(appPath))
+            {
+                Log($"Security: Blocked unauthorized executable: {appPath}");
+                return null;
+            }
+
+            if (File.Exists(expandedPath))
+            {
+                return expandedPath;
+            }
+
+            string[] searchPaths = new[]
+            {
+                expandedPath,
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "ChatGPT", "ChatGPT.exe"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "ChatGPT", "ChatGPT.exe"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Local", "Programs", "ChatGPT", "ChatGPT.exe")
+            };
+
+            foreach (string path in searchPaths)
+            {
+                if (File.Exists(path))
+                {
+                    Log($"Found ChatGPT at: {path}");
+                    return path;
+                }
+            }
+
+            return null;
         }
 
         [DllImport("user32.dll")]
@@ -74,17 +146,29 @@ namespace HeyGPT.Services
 
                 if (chatGptProcess == null)
                 {
-                    string expandedPath = Environment.ExpandEnvironmentVariables(appPath);
-                    Log($"Launching ChatGPT with command: {expandedPath}");
+                    string? resolvedPath = ResolveExecutablePath(appPath);
+                    if (resolvedPath == null)
+                    {
+                        Log($"Failed to resolve executable path: {appPath}");
+                        return false;
+                    }
+
+                    Log($"Launching ChatGPT: {resolvedPath}");
 
                     try
                     {
                         chatGptProcess = Process.Start(new ProcessStartInfo
                         {
-                            FileName = expandedPath,
-                            UseShellExecute = true,
+                            FileName = resolvedPath,
+                            UseShellExecute = false,
                             CreateNoWindow = false
                         });
+
+                        if (chatGptProcess == null)
+                        {
+                            Log("Failed to start ChatGPT process");
+                            return false;
+                        }
 
                         Log("ChatGPT launch command executed, waiting for window...");
                         await Task.Delay(5000);
@@ -153,12 +237,24 @@ namespace HeyGPT.Services
 
         private Process? GetChatGptProcess()
         {
+            var now = DateTime.Now;
+
+            if (_cachedChatGptProcess != null &&
+                !_cachedChatGptProcess.HasExited &&
+                (now - _lastProcessCheck).TotalSeconds < ProcessCacheDurationSeconds)
+            {
+                return _cachedChatGptProcess;
+            }
+
+            _lastProcessCheck = now;
             int currentProcessId = Process.GetCurrentProcess().Id;
 
-            return Process.GetProcesses()
+            _cachedChatGptProcess = Process.GetProcesses()
                 .FirstOrDefault(p => p.ProcessName.Equals("ChatGPT", StringComparison.OrdinalIgnoreCase)
                                      && p.MainWindowHandle != IntPtr.Zero
                                      && p.Id != currentProcessId);
+
+            return _cachedChatGptProcess;
         }
 
         private void MoveWindowToMonitor(IntPtr windowHandle, Point targetMonitorCenter)
@@ -274,11 +370,35 @@ namespace HeyGPT.Services
 
                     Log($"Screenshot captured: {screenshot.Width}x{screenshot.Height}");
 
-                    string debugPath = Path.Combine(
+                    string sanitizedButtonText = new string(buttonText
+                        .Where(c => char.IsLetterOrDigit(c) || c == ' ' || c == '_')
+                        .ToArray())
+                        .Replace(" ", "_");
+
+                    if (sanitizedButtonText.Length > 50)
+                    {
+                        sanitizedButtonText = sanitizedButtonText.Substring(0, 50);
+                    }
+
+                    if (string.IsNullOrWhiteSpace(sanitizedButtonText))
+                    {
+                        sanitizedButtonText = "button";
+                    }
+
+                    string baseDir = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        "HeyGPT",
-                        $"debug_{buttonText.Replace(" ", "_")}_{DateTime.Now:HHmmss}.png"
-                    );
+                        "HeyGPT");
+
+                    string debugPath = Path.Combine(baseDir, $"debug_{sanitizedButtonText}_{DateTime.Now:HHmmss}.png");
+
+                    string normalizedPath = Path.GetFullPath(debugPath);
+                    string normalizedBaseDir = Path.GetFullPath(baseDir);
+
+                    if (!normalizedPath.StartsWith(normalizedBaseDir, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Log($"Security: Blocked path traversal attempt: {buttonText}");
+                        return;
+                    }
 
                     try
                     {

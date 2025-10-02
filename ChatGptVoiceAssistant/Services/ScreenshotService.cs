@@ -24,6 +24,7 @@ namespace HeyGPT.Services
 
         public Bitmap? CaptureWindow(IntPtr windowHandle)
         {
+            Bitmap? bitmap = null;
             try
             {
                 if (windowHandle == IntPtr.Zero)
@@ -44,19 +45,26 @@ namespace HeyGPT.Services
                     return null;
                 }
 
-                Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
                 using (Graphics graphics = Graphics.FromImage(bitmap))
                 {
                     IntPtr hdc = graphics.GetHdc();
-                    PrintWindow(windowHandle, hdc, 0);
-                    graphics.ReleaseHdc(hdc);
+                    try
+                    {
+                        PrintWindow(windowHandle, hdc, 0);
+                    }
+                    finally
+                    {
+                        graphics.ReleaseHdc(hdc);
+                    }
                 }
 
                 return bitmap;
             }
             catch (Exception ex)
             {
+                bitmap?.Dispose();
                 System.Diagnostics.Debug.WriteLine($"Error capturing window: {ex.Message}");
                 return null;
             }
@@ -64,9 +72,11 @@ namespace HeyGPT.Services
 
         public Bitmap? CaptureRegion(IntPtr windowHandle, Rectangle region)
         {
+            Bitmap? fullScreenshot = null;
+            Bitmap? croppedBitmap = null;
             try
             {
-                Bitmap? fullScreenshot = CaptureWindow(windowHandle);
+                fullScreenshot = CaptureWindow(windowHandle);
                 if (fullScreenshot == null)
                 {
                     return null;
@@ -80,13 +90,16 @@ namespace HeyGPT.Services
                     return fullScreenshot;
                 }
 
-                Bitmap croppedBitmap = fullScreenshot.Clone(region, fullScreenshot.PixelFormat);
+                croppedBitmap = fullScreenshot.Clone(region, fullScreenshot.PixelFormat);
                 fullScreenshot.Dispose();
+                fullScreenshot = null;
 
                 return croppedBitmap;
             }
             catch (Exception ex)
             {
+                fullScreenshot?.Dispose();
+                croppedBitmap?.Dispose();
                 System.Diagnostics.Debug.WriteLine($"Error capturing region: {ex.Message}");
                 return null;
             }

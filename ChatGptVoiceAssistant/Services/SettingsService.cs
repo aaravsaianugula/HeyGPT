@@ -26,7 +26,15 @@ namespace HeyGPT.Services
                 if (File.Exists(SettingsFilePath))
                 {
                     string json = File.ReadAllText(SettingsFilePath);
-                    var settings = JsonConvert.DeserializeObject<AppSettings>(json);
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.None,
+                        MaxDepth = 10,
+                        MetadataPropertyHandling = MetadataPropertyHandling.Ignore
+                    };
+
+                    var settings = JsonConvert.DeserializeObject<AppSettings>(json, jsonSettings);
 
                     if (settings != null)
                     {
@@ -36,6 +44,16 @@ namespace HeyGPT.Services
                         {
                             settings.ChatGptAppPath = "chatgpt";
                             needsSave = true;
+                        }
+
+                        var secureSettings = new SecureSettingsService();
+                        if (!string.IsNullOrEmpty(settings.PicovoiceAccessKeyEncrypted) &&
+                            !secureSettings.IsEncrypted(settings.PicovoiceAccessKeyEncrypted))
+                        {
+                            string plaintextKey = settings.PicovoiceAccessKeyEncrypted;
+                            settings.PicovoiceAccessKey = plaintextKey;
+                            needsSave = true;
+                            System.Diagnostics.Debug.WriteLine("Migrated plaintext API key to encrypted storage");
                         }
 
                         if (needsSave)

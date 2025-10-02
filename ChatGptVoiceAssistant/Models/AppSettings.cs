@@ -1,12 +1,42 @@
 using System;
 using System.Drawing;
+using Newtonsoft.Json;
+using HeyGPT.Services;
 
 namespace HeyGPT.Models
 {
     public class AppSettings
     {
+        private static readonly SecureSettingsService _secureSettings = new SecureSettingsService();
+
         public string WakeWord { get; set; } = "Hey GPT";
-        public string PicovoiceAccessKey { get; set; } = "";
+
+        public string PicovoiceAccessKeyEncrypted { get; set; } = "";
+
+        [JsonIgnore]
+        public string PicovoiceAccessKey
+        {
+            get
+            {
+                if (_secureSettings.IsEncrypted(PicovoiceAccessKeyEncrypted))
+                {
+                    return _secureSettings.DecryptApiKey(PicovoiceAccessKeyEncrypted);
+                }
+                return PicovoiceAccessKeyEncrypted;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    PicovoiceAccessKeyEncrypted = _secureSettings.EncryptApiKey(value);
+                }
+                else
+                {
+                    PicovoiceAccessKeyEncrypted = string.Empty;
+                }
+            }
+        }
+
         public float PorcupineSensitivity { get; set; } = 0.5f;
         public bool UsePorcupine { get; set; } = false;
         public string? CustomWakeWordPath { get; set; } = null;
