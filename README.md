@@ -11,7 +11,7 @@
 [![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)](https://www.microsoft.com/windows)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**[📥 Download](https://github.com/aaravsaianugula/HeyGPT/releases/latest) | [📖 User Guide](USER_GUIDE.md) | [🐛 Report Issue](https://github.com/aaravsaianugula/HeyGPT/issues)**
+**[📥 Download](https://github.com/aaravsaianugula/HeyGPT/releases/latest) | [📖 User Guide](USER_GUIDE.md) | [📝 Changelog](CHANGELOG.md) | [🐛 Report Issue](https://github.com/aaravsaianugula/HeyGPT/issues)**
 
 ---
 
@@ -41,9 +41,11 @@
 - **Blue Orb Verification** - Confirms voice mode activation visually
 
 ### 🎨 Modern UI
-- **Retro Japanese Aesthetic** - Inspired by 1950s-60s design with cherry blossoms
-- **Fluid Animations** - Smooth entrance animations and button transitions
-- **Responsive Design** - Scale and shadow effects on all interactive elements
+- **Glassmorphism Design** - Modern translucent cards with gradient borders and elevated shadows
+- **Logo-Inspired Colors** - Navy blue (#1a3a52), Turquoise (#7dd3c0), Coral (#e85d75) gradient accents
+- **Fluid Animations** - Pulse, glow, and scale effects with staggered entrance animations
+- **Modern Typography** - Clean 40px headers with gradient underlines
+- **Responsive Design** - Smooth hover effects with BackEase animations on all interactive elements
 - **System Tray Integration** - Minimize to tray for background operation
 
 ### ⚙️ Configuration
