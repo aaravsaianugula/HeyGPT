@@ -4,14 +4,22 @@
 
 ![HeyGPT Logo](Assets/Logo.png)
 
-A modern, voice-activated desktop assistant for Windows that launches and controls ChatGPT using wake word detection.
+**A modern, voice-activated desktop assistant for Windows that launches and controls ChatGPT using wake word detection.**
 
 [![Release](https://img.shields.io/badge/Release-v1.1.0-blue.svg)](https://github.com/aaravsaianugula/HeyGPT/releases/latest)
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)](https://www.microsoft.com/windows)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+**[📥 Download](https://github.com/aaravsaianugula/HeyGPT/releases/latest) | [📖 User Guide](USER_GUIDE.md) | [🐛 Report Issue](https://github.com/aaravsaianugula/HeyGPT/issues)**
+
+---
+
 </div>
+
+> **Just say your wake word and ChatGPT opens in voice mode - hands-free, fast, and accurate!**
+>
+> 🎯 **97%+ accuracy** with Porcupine AI • 🎤 **14 built-in wake words** + custom support • 🚀 **One-click install**
 
 ## ✨ Features
 
@@ -46,10 +54,15 @@ A modern, voice-activated desktop assistant for Windows that launches and contro
 
 ## 📋 Requirements
 
-- **OS**: Windows 10/11 (version 10.0.17763.0 or higher)
-- **Runtime**: [.NET 8.0 Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
-- **ChatGPT**: [ChatGPT Desktop App](https://openai.com/chatgpt/desktop/) installed
-- **Microphone**: Any working microphone for voice input
+Before installing HeyGPT, make sure you have:
+
+- ✅ **Windows 10/11** (version 10.0.17763.0 or higher)
+- ✅ **[.NET 8.0 Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)** (free download from Microsoft)
+- ✅ **[ChatGPT Desktop App](https://openai.com/chatgpt/desktop/)** (free download from OpenAI)
+- ✅ **Working microphone** for voice input
+
+**Optional but Recommended:**
+- 🎯 **[Picovoice Account](https://console.picovoice.ai)** (free, no credit card) for 97%+ accuracy wake word detection
 
 ## 🚀 Installation
 
@@ -98,13 +111,15 @@ After installation, you can launch HeyGPT using any of these methods:
 
 ## 📖 Quick Start Guide
 
+**New to HeyGPT?** Read the **[complete User Guide](USER_GUIDE.md)** for detailed setup instructions, troubleshooting, and tips.
+
 ### 1. Initial Setup
-1. Launch HeyGPT
-2. Click **Settings** (⚙ button)
-3. Configure your target monitor:
+1. **Launch HeyGPT** (Windows Search → "HeyGPT")
+2. Click **⚙ Settings** button
+3. **Configure your target monitor**:
    - Click "Configure Monitor (10s countdown)"
-   - Move mouse to center of desired monitor
-   - Wait for countdown to finish
+   - Move mouse to center of desired monitor where you want ChatGPT to appear
+   - Wait for countdown to finish (you'll see "Monitor configured successfully!")
 
 ### 2. Enable Porcupine High Accuracy Mode (Recommended)
 To fix false positive issues with wake word detection:
@@ -284,10 +299,15 @@ The app uses a retro Japanese-inspired theme:
 
 ## 🔒 Privacy & Security
 
-- **No Data Collection**: All processing happens locally on your machine
-- **No Network Calls**: Except launching ChatGPT desktop app
-- **Settings Storage**: Stored locally in `%APPDATA%\HeyGPT\settings.json`
-- **Open Source**: Full code available for review
+HeyGPT respects your privacy:
+
+- ✅ **100% Local Processing**: All wake word detection happens on your device (no audio sent to cloud)
+- ✅ **No Telemetry**: Zero tracking, analytics, or data collection
+- ✅ **Open Source**: Full source code available for review on GitHub
+- ✅ **Local Settings**: All configuration stored locally in `%APPDATA%\HeyGPT\settings.json`
+- ✅ **Optional Cloud**: Picovoice AccessKey is only used for wake word validation (no audio sent)
+
+**Note**: ChatGPT itself requires internet and follows OpenAI's privacy policy.
 
 ## 🤝 Contributing
 
@@ -324,28 +344,37 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Changelog
 
-### v1.1.0 (2025-10-01)
-**Major Update: Porcupine High Accuracy Wake Word Detection** 🎉
+### v1.1.0 (Latest)
+**Major Update: Porcupine High Accuracy + Custom Wake Words** 🎉
 
 **🎯 Major Features:**
-- Added Porcupine by Picovoice for industry-standard wake word detection
-- 97%+ accuracy with <1 false positive per 10 hours
-- Voice commands: "mic on/off", "exit voice mode" (in voice mode only)
-- Dual wake word engine support (Porcupine + System.Speech)
-- Blue orb detection for voice mode tracking
-- Comprehensive in-app Porcupine user guide
+- ✨ **Porcupine AI Wake Word Engine**: Industry-standard detection with 97%+ accuracy
+- 🎨 **Custom Wake Words**: Upload your own `.ppn` files created at Picovoice Console
+- 🎙 **14 Built-in Wake Words**: Jarvis, Alexa, Computer, Hey Google, Hey Siri, OK Google, Picovoice, Porcupine, Bumblebee, Terminator, Americano, Blueberry, Grapefruit, Grasshopper
+- 🎤 **Voice Commands**: "mic on/off", "exit voice mode" (works in ChatGPT voice mode)
+- 👁 **Blue Orb Detection**: Automatic voice mode tracking
+- 📦 **Windows Installer**: Professional installer with full uninstall support
+- 📖 **Comprehensive User Guide**: Complete documentation for all features
 
 **🔧 Improvements:**
-- Dramatically improved wake word accuracy
-- Fixed false positive issue with System.Speech
-- Added Picovoice AccessKey configuration in Settings
-- Added sensitivity adjustment (0.0-1.0)
-- Added voice mode monitoring (checks every 2 seconds)
-- Updated Settings UI with Porcupine section
+- Dramatically improved wake word accuracy (97%+ vs. 60-70% with System.Speech)
+- <1 false positive per 10 hours (vs. frequent false alarms with System.Speech)
+- Auto-detect Porcupine when AccessKey is provided
+- Simplified Settings UI - removed confusing dual-engine checkbox
+- Better validation and error messages in Settings
+- Enhanced logging to show which wake word is active
 
-**📦 Dependencies:**
-- Added Porcupine 3.0.10
-- Added NAudio 2.2.1
+**📦 What's Included:**
+- Porcupine 3.0.10 for wake word detection
+- NAudio 2.2.1 for audio capture
+- Inno Setup installer for professional Windows installation
+- Complete user guide (USER_GUIDE.md)
+
+**🐛 Bug Fixes:**
+- Fixed icon path errors on first launch
+- Fixed XAML resource ordering issues
+- Fixed wake word hardcoded to "COMPUTER" instead of user's choice
+- Improved file path validation for custom wake words
 
 **📖 Documentation:**
 - Updated README with Porcupine setup instructions

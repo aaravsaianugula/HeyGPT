@@ -99,20 +99,54 @@ namespace HeyGPT.Views
         {
             if (string.IsNullOrWhiteSpace(_viewModel.WakeWord))
             {
-                MessageBox.Show("Wake word cannot be empty.",
+                MessageBox.Show("Wake word cannot be empty.\n\nPlease enter a wake word (e.g., 'Hey GPT', 'Jarvis', 'Computer').",
                               "Validation Error",
                               MessageBoxButton.OK,
                               MessageBoxImage.Warning);
                 return;
             }
 
-            if (!_viewModel.IsMonitorConfigured)
+            if (_viewModel.ButtonClickDelay < 100 || _viewModel.ButtonClickDelay > 10000)
             {
-                var result = MessageBox.Show("Monitor is not configured. Continue anyway?",
-                                            "Warning",
+                MessageBox.Show("Button click delay must be between 100 and 10000 milliseconds.\n\nRecommended: 1000ms",
+                              "Validation Error",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Warning);
+                return;
+            }
+
+            if (_viewModel.ConfidenceThreshold < 0.0f || _viewModel.ConfidenceThreshold > 1.0f)
+            {
+                MessageBox.Show("Confidence threshold must be between 0.0 and 1.0.\n\nRecommended: 0.6-0.8",
+                              "Validation Error",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(_viewModel.CustomWakeWordPath) && !System.IO.File.Exists(_viewModel.CustomWakeWordPath))
+            {
+                var result = MessageBox.Show($"Custom wake word file not found:\n{_viewModel.CustomWakeWordPath}\n\nDo you want to clear it and continue?",
+                                            "File Not Found",
                                             MessageBoxButton.YesNo,
                                             MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
+                if (result == MessageBoxResult.Yes)
+                {
+                    _viewModel.CustomWakeWordPath = null;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            if (!_viewModel.IsMonitorConfigured)
+            {
+                var result = MessageBox.Show("Monitor is not configured yet.\n\nThe app needs to know which monitor to launch ChatGPT on.\n\nDo you want to configure it now?",
+                                            "Monitor Not Configured",
+                                            MessageBoxButton.YesNo,
+                                            MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
                 {
                     return;
                 }
