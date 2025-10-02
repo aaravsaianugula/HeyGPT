@@ -181,22 +181,36 @@ namespace HeyGPT.Views
 
             try
             {
+                string activeWakeWord = "";
                 if (_usePorcupine && _porcupineService != null)
                 {
                     _porcupineService.StartListening();
-                    AddLog("🎤 Porcupine listening for wake word (high accuracy mode)");
+                    if (!string.IsNullOrEmpty(_currentSettings.CustomWakeWordPath))
+                    {
+                        activeWakeWord = System.IO.Path.GetFileNameWithoutExtension(_currentSettings.CustomWakeWordPath);
+                        AddLog($"🎤 Porcupine listening for CUSTOM wake word: '{activeWakeWord}'");
+                    }
+                    else
+                    {
+                        activeWakeWord = _currentSettings.WakeWord;
+                        AddLog($"🎤 Porcupine listening for wake word: '{activeWakeWord}' (high accuracy mode)");
+                    }
                 }
                 else
                 {
+                    activeWakeWord = _currentSettings.WakeWord;
                     _speechService.StartListening();
-                    AddLog($"🎤 Say '{_currentSettings.WakeWord}' to launch ChatGPT");
+                    AddLog($"🎤 System.Speech listening for wake word: '{activeWakeWord}'");
                 }
+
+                ActiveWakeWordText.Text = activeWakeWord;
+                ActiveWakeWordBorder.Visibility = Visibility.Visible;
 
                 _voiceModeCheckTimer.Start();
                 StartButton.IsEnabled = false;
                 StopButton.IsEnabled = true;
-                UpdateStatus("Listening for wake word (Continuous)");
-                AddLog("Speech recognition started - will continue listening after each detection");
+                UpdateStatus($"Listening for wake word: '{activeWakeWord}' (Continuous)");
+                AddLog("✓ Wake word detection ACTIVE - Only listening for the selected wake word");
                 AddLog("Voice mode monitoring active - commands will work when ChatGPT is in voice mode");
             }
             catch (Exception ex)
@@ -219,12 +233,14 @@ namespace HeyGPT.Views
                 _speechService.StopListening();
             }
 
+            ActiveWakeWordBorder.Visibility = Visibility.Collapsed;
+
             _voiceModeCheckTimer.Stop();
             _speechService.IsInVoiceMode = false;
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
             UpdateStatus("Stopped listening");
-            AddLog("Speech recognition stopped");
+            AddLog("✓ Wake word detection stopped");
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -258,10 +274,64 @@ namespace HeyGPT.Views
                 _settingsService.SaveSettings(_currentSettings);
                 _settingsViewModel.LoadFromSettings(_currentSettings);
 
-                bool wasListening = _speechService.IsListening;
-                if (wasListening)
+                bool wasListening = false;
+                if (_usePorcupine && _porcupineService != null)
                 {
-                    _speechService.StopListening();
+                    wasListening = _porcupineService.IsListening;
+                    if (wasListening)
+                    {
+                        _porcupineService.StopListening();
+                    }
+                }
+                else
+                {
+                    wasListening = _speechService.IsListening;
+                    if (wasListening)
+                    {
+                        _speechService.StopListening();
+                    }
+                }
+
+                ActiveWakeWordBorder.Visibility = Visibility.Collapsed;
+
+                bool accessKeyChanged = oldSettings.PicovoiceAccessKey != _currentSettings.PicovoiceAccessKey;
+                bool wakeWordChanged = oldSettings.WakeWord != _currentSettings.WakeWord;
+                bool customPathChanged = oldSettings.CustomWakeWordPath != _currentSettings.CustomWakeWordPath;
+                bool sensitivityChanged = oldSettings.PorcupineSensitivity != _currentSettings.PorcupineSensitivity;
+                bool porcupineSettingsChanged = accessKeyChanged || wakeWordChanged || customPathChanged || sensitivityChanged;
+
+                if (porcupineSettingsChanged)
+                {
+                    _porcupineService?.Dispose();
+                    _porcupineService = null;
+                    _usePorcupine = !string.IsNullOrWhiteSpace(_currentSettings.PicovoiceAccessKey);
+
+                    if (_usePorcupine)
+                    {
+                        try
+                        {
+                            _porcupineService = new PorcupineWakeWordService();
+                            _porcupineService.Initialize(_currentSettings.PicovoiceAccessKey, _currentSettings.CustomWakeWordPath, _currentSettings.PorcupineSensitivity, _currentSettings.WakeWord);
+                            _porcupineService.WakeWordDetected += OnWakeWordDetected;
+                            _porcupineService.StatusChanged += OnSpeechStatusChanged;
+                            _porcupineService.ErrorOccurred += OnSpeechError;
+                            AddLog($"🎯 Porcupine re-initialized");
+                            if (!string.IsNullOrEmpty(_currentSettings.CustomWakeWordPath))
+                            {
+                                AddLog($"   Custom wake word: {System.IO.Path.GetFileName(_currentSettings.CustomWakeWordPath)}");
+                            }
+                            else
+                            {
+                                AddLog($"   Built-in wake word: '{_currentSettings.WakeWord}'");
+                            }
+                            AddLog($"   ✓ ONLY listening for this wake word");
+                        }
+                        catch (Exception ex)
+                        {
+                            AddLog($"❌ Porcupine initialization failed: {ex.Message}");
+                            _usePorcupine = false;
+                        }
+                    }
                 }
 
                 _speechService.UpdateWakeWord(_currentSettings.WakeWord, _currentSettings.SpeechConfidenceThreshold);
@@ -274,7 +344,14 @@ namespace HeyGPT.Views
 
                 if (wasListening)
                 {
-                    _speechService.StartListening();
+                    if (_usePorcupine && _porcupineService != null)
+                    {
+                        _porcupineService.StartListening();
+                    }
+                    else
+                    {
+                        _speechService.StartListening();
+                    }
                 }
 
                 UpdateStatus("Settings saved and applied successfully");
