@@ -138,17 +138,18 @@
                 </Grid>
 
                 <Border Grid.Row="1"
-                        Background="#F8FAFA"
+                        Background="#F0F4F8"
                         CornerRadius="12"
                         Padding="20"
-                        BorderBrush="{StaticResource MistBrush}"
-                        BorderThickness="1">
+                        BorderBrush="{StaticResource SecondaryBrush}"
+                        BorderThickness="2"
+                        MinHeight="200">
                     <ScrollViewer VerticalScrollBarVisibility="Auto"
                                   MaxHeight="240">
                         <TextBlock x:Name="LogTextBlock"
                                    FontSize="13"
                                    FontFamily="Consolas"
-                                   Foreground="{StaticResource CharcoalBrush}"
+                                   Foreground="#2d2d2d"
                                    TextWrapping="Wrap"
                                    LineHeight="20"
                                    Text=""/>
