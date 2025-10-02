@@ -83,12 +83,22 @@ namespace HeyGPT.Services
                 return expandedPath;
             }
 
+            bool isSimpleCommand = !expandedPath.Contains(Path.DirectorySeparatorChar) &&
+                                  !expandedPath.Contains(Path.AltDirectorySeparatorChar);
+
+            if (isSimpleCommand && (expandedPath.Equals("chatgpt", StringComparison.OrdinalIgnoreCase) ||
+                                   expandedPath.Equals("chatgpt.exe", StringComparison.OrdinalIgnoreCase)))
+            {
+                Log($"Using command name '{expandedPath}' - will be resolved via PATH");
+                return expandedPath;
+            }
+
             string[] searchPaths = new[]
             {
-                expandedPath,
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "ChatGPT", "ChatGPT.exe"),
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "ChatGPT", "ChatGPT.exe"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Local", "Programs", "ChatGPT", "ChatGPT.exe")
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Local", "Programs", "ChatGPT", "ChatGPT.exe"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft", "WindowsApps", "chatgpt.exe")
             };
 
             foreach (string path in searchPaths)
@@ -100,6 +110,7 @@ namespace HeyGPT.Services
                 }
             }
 
+            Log($"ChatGPT executable not found in search paths");
             return null;
         }
 
