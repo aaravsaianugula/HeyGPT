@@ -30,12 +30,27 @@
     <SolidColorBrush x:Key="GoldBrush" Color="{StaticResource SoftGoldColor}"/>
     <SolidColorBrush x:Key="MistBrush" Color="{StaticResource MistColor}"/>
 
-    <!-- Retro Sunset Gradient Background -->
-    <LinearGradientBrush x:Key="TraditionalGradientBrush" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#e0f5f1" Offset="0"/>
-        <GradientStop Color="#f5e6d3" Offset="0.4"/>
-        <GradientStop Color="#ffefd5" Offset="0.7"/>
-        <GradientStop Color="#ffe8e0" Offset="1"/>
+    <!-- Modern Gradient Backgrounds -->
+    <LinearGradientBrush x:Key="TraditionalGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#E8F5F4" Offset="0"/>
+        <GradientStop Color="#F5E6D3" Offset="0.5"/>
+        <GradientStop Color="#FFE8E0" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ModernGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#1a3a52" Offset="0"/>
+        <GradientStop Color="#2a5a72" Offset="0.5"/>
+        <GradientStop Color="#3a7a92" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#7dd3c0" Offset="0"/>
+        <GradientStop Color="#6dc3b0" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="CoralGradientBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#e85d75" Offset="0"/>
+        <GradientStop Color="#ff6d85" Offset="1"/>
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="RetroTurquoiseBrush" Color="{StaticResource RetroTurquoiseColor}"/>
@@ -92,21 +107,97 @@
                          EasingFunction="{StaticResource SmoothEase}"/>
     </Storyboard>
 
-    <!-- Wabi-Sabi Card Style -->
+    <!-- Pulse Animation for Active States -->
+    <Storyboard x:Key="PulseAnimation" RepeatBehavior="Forever" AutoReverse="True">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0.6"
+                         Duration="0:0:1.2"
+                         EasingFunction="{StaticResource SmoothEase}"/>
+    </Storyboard>
+
+    <!-- Glow Animation -->
+    <Storyboard x:Key="GlowAnimation" RepeatBehavior="Forever" AutoReverse="True">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius"
+                         From="10" To="20"
+                         Duration="0:0:1.5"
+                         EasingFunction="{StaticResource SmoothEase}"/>
+    </Storyboard>
+
+    <!-- Smooth Scale Up -->
+    <Storyboard x:Key="ScaleUp">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="1.05"
+                         Duration="0:0:0.3"
+                         EasingFunction="{StaticResource BackEase}"/>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1.05"
+                         Duration="0:0:0.3"
+                         EasingFunction="{StaticResource BackEase}"/>
+    </Storyboard>
+
+    <!-- Scale Down --><Storyboard x:Key="ScaleDown">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="1"
+                         Duration="0:0:0.3"
+                         EasingFunction="{StaticResource SmoothEase}"/>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1"
+                         Duration="0:0:0.3"
+                         EasingFunction="{StaticResource SmoothEase}"/>
+    </Storyboard>
+
+    <!-- Modern Card Style with Elevation -->
     <Style x:Key="WabiSabiCard" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource MistBrush}"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="White" Opacity="0.95"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource RetroTurquoiseColor}" Opacity="0.3"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Padding" Value="24"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="28"/>
         <Setter Property="Margin" Value="16"/>
         <Setter Property="Effect">
             <Setter.Value>
-                <DropShadowEffect Color="#40000000"
-                                  BlurRadius="20"
-                                  ShadowDepth="4"
+                <DropShadowEffect Color="#30000000"
+                                  BlurRadius="30"
+                                  ShadowDepth="8"
                                   Direction="270"
-                                  Opacity="0.15"/>
+                                  Opacity="0.25"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Glassmorphism Card Style -->
+    <Style x:Key="GlassCard" TargetType="Border">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="White" Opacity="0.85"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#7dd3c0" Offset="0"/>
+                    <GradientStop Color="#e85d75" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="24"/>
+        <Setter Property="Padding" Value="32"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#40000000"
+                                  BlurRadius="40"
+                                  ShadowDepth="10"
+                                  Direction="270"
+                                  Opacity="0.2"/>
             </Setter.Value>
         </Setter>
     </Style>
@@ -304,9 +395,10 @@
         </Setter>
     </Style>
 
-    <!-- Secondary Button (Turquoise) -->
+    <!-- Modern Secondary Button with Gradient -->
     <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource TraditionalButton}">
-        <Setter Property="Background" Value="{StaticResource SecondaryBrush}"/>
+        <Setter Property="Background" Value="{StaticResource AccentGradientBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

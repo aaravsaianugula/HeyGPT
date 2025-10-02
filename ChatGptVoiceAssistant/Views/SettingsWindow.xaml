@@ -17,35 +17,33 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Header -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,32">
-                <TextBlock Text="環境設定"
-                           FontSize="16"
+            <!-- Modern Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,40">
+                <TextBlock Text="Settings"
+                           FontSize="40"
                            FontWeight="Light"
+                           Foreground="{StaticResource PrimaryBrush}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,8"/>
+
+                <Border Height="4"
+                        Width="80"
+                        HorizontalAlignment="Center"
+                        CornerRadius="2"
+                        Margin="0,0,0,16">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#7dd3c0" Offset="0"/>
+                            <GradientStop Color="#e85d75" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+
+                <TextBlock Text="Configure your voice-activated AI assistant"
+                           FontSize="14"
                            Foreground="{StaticResource StoneBrush}"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,8"
-                           Opacity="0.6"/>
-
-                <TextBlock Style="{StaticResource HeaderText}"
-                           FontSize="32"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,12">
-                    <Run Text="Configuration" Foreground="{StaticResource PrimaryBrush}"/>
-                    <Run Text="Settings" Foreground="{StaticResource TextPrimaryBrush}"/>
-                </TextBlock>
-
-                <Border Height="2"
-                        Width="100"
-                        Background="{StaticResource AccentBrush}"
-                        CornerRadius="1"
-                        Opacity="0.7"/>
-
-                <TextBlock Text="Configure your voice assistant with traditional elegance"
-                           Style="{StaticResource CaptionText}"
-                           HorizontalAlignment="Center"
-                           Margin="0,16,0,0"
-                           FontSize="12"/>
+                           Opacity="0.9"/>
             </StackPanel>
 
             <!-- Settings Content -->

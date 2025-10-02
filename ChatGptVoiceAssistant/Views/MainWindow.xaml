@@ -1,8 +1,8 @@
 <Window x:Class="HeyGPT.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="HeyGPT · 음성 비서"
-        Height="720" Width="720"
+        Title="HeyGPT · Voice Assistant"
+        Height="800" Width="720"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
         Icon="/SqaureLog.ico"
@@ -10,7 +10,7 @@
         Loaded="Window_Loaded"
         Opacity="0">
 
-    <Grid Margin="32">
+    <Grid Margin="40,32,40,40">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -19,70 +19,94 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header with Logo -->
-        <StackPanel x:Name="HeaderPanel" Grid.Row="0" Margin="0,0,0,24" HorizontalAlignment="Center"
+        <!-- Modern Header with Animated Logo -->
+        <StackPanel x:Name="HeaderPanel" Grid.Row="0" Margin="0,0,0,32" HorizontalAlignment="Center"
                     Opacity="0"
                     RenderTransformOrigin="0.5,0.5">
             <StackPanel.RenderTransform>
                 <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
             </StackPanel.RenderTransform>
-            <Ellipse Width="140" Height="140"
-                     Margin="0,0,0,12"
-                     HorizontalAlignment="Center">
-                <Ellipse.Fill>
-                    <ImageBrush ImageSource="/Assets/Logo.png" Stretch="UniformToFill"/>
-                </Ellipse.Fill>
-                <Ellipse.Effect>
-                    <DropShadowEffect Color="#40000000"
-                                      BlurRadius="20"
-                                      ShadowDepth="6"
-                                      Direction="270"
-                                      Opacity="0.3"/>
-                </Ellipse.Effect>
-            </Ellipse>
 
-            <TextBlock Text="音声アシスタント · Voice Assistant"
-                       FontSize="13"
+            <Border Width="160" Height="160"
+                    CornerRadius="80"
+                    Margin="0,0,0,16"
+                    Background="White">
+                <Border.Effect>
+                    <DropShadowEffect Color="#507dd3c0"
+                                      BlurRadius="40"
+                                      ShadowDepth="0"
+                                      Direction="270"/>
+                </Border.Effect>
+                <Ellipse Width="140" Height="140"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="/Assets/Logo.png" Stretch="UniformToFill"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Border>
+
+            <TextBlock Text="HeyGPT"
+                       FontSize="36"
                        FontWeight="Light"
+                       Foreground="{StaticResource PrimaryBrush}"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,4"/>
+
+            <TextBlock Text="Voice-Activated AI Assistant"
+                       FontSize="14"
+                       FontWeight="Normal"
                        Foreground="{StaticResource StoneBrush}"
                        HorizontalAlignment="Center"
-                       Margin="0,0,0,0"
-                       Opacity="0.7"/>
+                       Opacity="0.8"/>
         </StackPanel>
 
-        <!-- Status Display Card -->
+        <!-- Status Card with Modern Design -->
         <Border x:Name="StatusCard" Grid.Row="1"
-                Style="{StaticResource WabiSabiCard}"
-                Margin="0,0,0,24"
+                Style="{StaticResource GlassCard}"
+                Margin="0,0,0,28"
                 Opacity="0">
             <Border.RenderTransform>
                 <TranslateTransform Y="-30"/>
             </Border.RenderTransform>
             <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <Ellipse Width="12" Height="12"
-                             Fill="{StaticResource SecondaryBrush}"
-                             Margin="0,0,8,0"
-                             VerticalAlignment="Center"/>
-                    <TextBlock Text="現在の状態 · Current Status"
-                               Style="{StaticResource SubheaderText}"
-                               Foreground="{StaticResource TextPrimaryBrush}"/>
-                </StackPanel>
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Width="14" Height="14"
+                            Grid.Column="0"
+                            CornerRadius="7"
+                            Margin="0,0,12,0"
+                            VerticalAlignment="Center">
+                        <Border.Background>
+                            <SolidColorBrush Color="{StaticResource RetroTurquoiseColor}"/>
+                        </Border.Background>
+                    </Border>
+
+                    <TextBlock Grid.Column="1"
+                               Text="Current Status"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryBrush}"/>
+                </Grid>
 
                 <TextBlock x:Name="StatusTextBlock"
-                           Style="{StaticResource BodyText}"
-                           FontSize="14"
-                           Foreground="{StaticResource PrimaryBrush}"
+                           FontSize="15"
+                           Foreground="{StaticResource CharcoalBrush}"
                            TextWrapping="Wrap"
-                           Margin="20,8,0,0"
-                           Text="Application started. Configure settings and start listening."/>
+                           Margin="26,0,0,0"
+                           LineHeight="24"
+                           Text="Ready to listen. Click Start to activate voice detection."/>
             </StackPanel>
         </Border>
 
-        <!-- Activity Log Card -->
+        <!-- Activity Log with Modern Card -->
         <Border x:Name="ActivityLogCard" Grid.Row="2"
-                Style="{StaticResource WabiSabiCard}"
-                Margin="0,0,0,24"
+                Style="{StaticResource GlassCard}"
+                Margin="0,0,0,28"
                 Opacity="0">
             <Border.RenderTransform>
                 <TranslateTransform Y="-30"/>
@@ -93,60 +117,69 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
-                    <Path Data="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M16.59,7.58L10,14.17L7.41,11.59L6,13L10,17L18,9L16.59,7.58Z"
-                          Fill="{StaticResource WoodBrush}"
-                          Width="16"
-                          Height="16"
-                          Stretch="Uniform"
-                          Margin="0,0,8,0"
-                          VerticalAlignment="Center"/>
-                    <TextBlock Text="活動ログ · Activity Log"
-                               Style="{StaticResource SubheaderText}"/>
-                </StackPanel>
+                <Grid Grid.Row="0" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Width="18" Height="18"
+                             Grid.Column="0"
+                             Fill="{StaticResource AccentBrush}"
+                             Margin="0,0,12,0"
+                             VerticalAlignment="Center"
+                             Opacity="0.8"/>
+
+                    <TextBlock Grid.Column="1"
+                               Text="Activity Log"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryBrush}"/>
+                </Grid>
 
                 <Border Grid.Row="1"
-                        Background="{StaticResource BackgroundBrush}"
-                        CornerRadius="8"
-                        Padding="16"
+                        Background="#F8FAFA"
+                        CornerRadius="12"
+                        Padding="20"
                         BorderBrush="{StaticResource MistBrush}"
                         BorderThickness="1">
                     <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                  MaxHeight="220">
+                                  MaxHeight="240">
                         <TextBlock x:Name="LogTextBlock"
-                                   Style="{StaticResource BodyText}"
-                                   FontSize="12"
+                                   FontSize="13"
                                    FontFamily="Consolas"
                                    Foreground="{StaticResource CharcoalBrush}"
                                    TextWrapping="Wrap"
-                                   LineHeight="18"
+                                   LineHeight="20"
                                    Text=""/>
                     </ScrollViewer>
                 </Border>
             </Grid>
         </Border>
 
-        <!-- Action Buttons -->
+        <!-- Modern Action Buttons with Gradient -->
         <StackPanel x:Name="ActionButtonsPanel" Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center"
-                    Margin="0,0,0,20"
+                    Margin="0,0,0,24"
                     Opacity="0">
             <StackPanel.RenderTransform>
                 <TranslateTransform Y="30"/>
             </StackPanel.RenderTransform>
+
             <Button x:Name="StartButton"
                     Style="{StaticResource AccentButton}"
                     Click="StartButton_Click"
-                    Width="200"
-                    Padding="24,16">
+                    Width="220"
+                    Padding="28,18">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="▶"
-                               FontSize="16"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center"/>
+                    <Ellipse Width="12" Height="12"
+                             Fill="White"
+                             Margin="0,0,12,0"
+                             VerticalAlignment="Center"/>
                     <TextBlock Text="Start Listening"
-                               FontSize="14"
+                               FontSize="15"
+                               FontWeight="SemiBold"
                                VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
@@ -154,22 +187,25 @@
             <Button x:Name="StopButton"
                     Style="{StaticResource SecondaryButton}"
                     Click="StopButton_Click"
-                    Width="200"
-                    Padding="24,16"
+                    Width="220"
+                    Padding="28,18"
                     IsEnabled="False">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="⏸"
-                               FontSize="16"
-                               Margin="0,0,8,0"
-                               VerticalAlignment="Center"/>
+                    <Rectangle Width="12" Height="12"
+                               Fill="White"
+                               Margin="0,0,12,0"
+                               VerticalAlignment="Center"
+                               RadiusX="2"
+                               RadiusY="2"/>
                     <TextBlock Text="Stop Listening"
-                               FontSize="14"
+                               FontSize="15"
+                               FontWeight="SemiBold"
                                VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
         </StackPanel>
 
-        <!-- Settings, Test, and User Guide Buttons -->
+        <!-- Bottom Navigation with Modern Design -->
         <Grid x:Name="BottomButtonsPanel" Grid.Row="4"
               Opacity="0">
             <Grid.RenderTransform>
@@ -185,14 +221,15 @@
                     Grid.Column="0"
                     Style="{StaticResource TraditionalButton}"
                     Click="SettingsButton_Click"
-                    Margin="0,0,4,0"
-                    Padding="16,14">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="⚙"
-                               FontSize="16"
-                               Margin="0,0,8,0"/>
+                    Margin="0,0,6,0"
+                    Padding="20,16">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Ellipse Width="8" Height="8"
+                             Fill="{StaticResource SecondaryBrush}"
+                             Margin="0,0,10,0"/>
                     <TextBlock Text="Settings"
-                               FontSize="13"/>
+                               FontSize="14"
+                               FontWeight="Medium"/>
                 </StackPanel>
             </Button>
 
@@ -200,14 +237,15 @@
                     Grid.Column="1"
                     Style="{StaticResource TraditionalButton}"
                     Click="TestButton_Click"
-                    Margin="4,0,4,0"
-                    Padding="16,14">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="🧪"
-                               FontSize="16"
-                               Margin="0,0,8,0"/>
+                    Margin="6,0,6,0"
+                    Padding="20,16">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Ellipse Width="8" Height="8"
+                             Fill="{StaticResource GoldBrush}"
+                             Margin="0,0,10,0"/>
                     <TextBlock Text="Test"
-                               FontSize="13"/>
+                               FontSize="14"
+                               FontWeight="Medium"/>
                 </StackPanel>
             </Button>
 
@@ -215,14 +253,15 @@
                     Grid.Column="2"
                     Style="{StaticResource TraditionalButton}"
                     Click="UserGuideButton_Click"
-                    Margin="4,0,0,0"
-                    Padding="16,14">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="📖"
-                               FontSize="16"
-                               Margin="0,0,8,0"/>
+                    Margin="6,0,0,0"
+                    Padding="20,16">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Ellipse Width="8" Height="8"
+                             Fill="{StaticResource AccentBrush}"
+                             Margin="0,0,10,0"/>
                     <TextBlock Text="Guide"
-                               FontSize="13"/>
+                               FontSize="14"
+                               FontWeight="Medium"/>
                 </StackPanel>
             </Button>
         </Grid>
