@@ -109,105 +109,43 @@ After installation, you can launch HeyGPT using any of these methods:
 3. **Direct Launch**: Navigate to installation folder and run `HeyGPT.exe`
 4. **Auto-Start**: Enable in Settings to launch with Windows
 
-## 📖 Quick Start Guide
+## 📖 Quick Start (5 Minutes)
 
-**New to HeyGPT?** Read the **[complete User Guide](USER_GUIDE.md)** for detailed setup instructions, troubleshooting, and tips.
+**[📘 Full User Guide](USER_GUIDE.md)** | **[💬 Get Help](https://github.com/aaravsaianugula/HeyGPT/issues)**
 
-### 1. Initial Setup
-1. **Launch HeyGPT** (Windows Search → "HeyGPT")
-2. Click **⚙ Settings** button
-3. **Configure your target monitor**:
-   - Click "Configure Monitor (10s countdown)"
-   - Move mouse to center of desired monitor where you want ChatGPT to appear
-   - Wait for countdown to finish (you'll see "Monitor configured successfully!")
+### 1. Get Porcupine AccessKey (30 sec)
+1. Visit [console.picovoice.ai](https://console.picovoice.ai)
+2. Sign up (free, no credit card)
+3. Copy your AccessKey
 
-### 2. Enable Porcupine High Accuracy Mode (Recommended)
-To fix false positive issues with wake word detection:
-1. Get a FREE Picovoice AccessKey from [console.picovoice.ai](https://console.picovoice.ai)
-   - No credit card required
-   - Takes 30 seconds to sign up
-   - Free for personal use forever
-2. In Settings, scroll to "🎯 Porcupine AI Wake Word Engine"
-3. Paste your AccessKey
-4. Adjust sensitivity if needed (default 0.5 works great)
-5. Save settings
+### 2. Configure (2 min)
+1. **Launch** → Windows Search → "HeyGPT"
+2. **Settings** → Paste AccessKey in "🎯 Porcupine AI"
+3. **Choose wake word** → `jarvis`, `alexa`, `computer`, etc.
+4. **Configure Monitor** → Click button → Move mouse to screen center
+5. **Save**
 
-**Why Porcupine?** 97%+ accuracy with <1 false positive per 10 hours vs. System.Speech which has frequent false positives.
+### 3. Test & Use (2 min)
+1. Click **🧪 Test** → ChatGPT should launch on your monitor
+2. Click **▶ Start Listening**
+3. Say your wake word (e.g., "Jarvis")
+4. ChatGPT launches in voice mode! ✨
 
-**Custom Wake Words**: Want to use a wake word beyond the 14 built-in options (Jarvis, Alexa, Computer, etc.)?
-1. Create a custom wake word at [console.picovoice.ai](https://console.picovoice.ai) using Porcupine Console
-2. Download the `.ppn` keyword file for Windows
-3. In Settings, under "Custom Wake Word (.ppn file)", click "Browse..." and select your file
-4. Save settings - your custom wake word will now be used instead of the built-in one!
+### Optional: Custom Wake Words
+Create custom wake words at [console.picovoice.ai](https://console.picovoice.ai), download `.ppn` file, upload in Settings
 
-### 3. Configure Wake Word (Optional)
-- Choose from **14 built-in wake words**: Jarvis, Alexa, Computer, Hey Google, Hey Siri, OK Google, Picovoice, Porcupine, Bumblebee, Terminator, Americano, Blueberry, Grapefruit, Grasshopper
-- **Upload custom wake word**: Create your own wake word at [console.picovoice.ai](https://console.picovoice.ai) and upload the `.ppn` file in Settings
-- Adjust confidence threshold (0.0 - 1.0) for System.Speech fallback mode
-- Enable/disable wake word isolation for System.Speech fallback mode
+### Optional: Voice Commands
+Setup in Settings to use "Mic On", "Mic Off", "Exit" commands in voice mode
 
-### 4. Configure Button Positions (Optional)
-For improved reliability, capture exact button positions:
-- **New Chat Button**: Position of "New chat" button in ChatGPT
-- **Voice Mode Button**: Position of voice mode button
-- Uses 10-second countdown capture technology
+## 💡 Tips for Best Results
 
-### 5. Test Your Setup
-1. Click **Test** button on main window
-2. Verify ChatGPT launches on correct monitor
-3. Confirm voice mode activates (blue orb detection)
+✅ **Use Porcupine** - 97%+ accuracy, <1 false positive/10hrs
+✅ **Speak clearly** - Normal volume, clear pronunciation
+✅ **Built-in wake words** - Jarvis, Computer, Alexa work best
+✅ **Keep mic close** - Within 3 feet for best detection
+✅ **Minimize noise** - Quiet environment helps accuracy
 
-### 6. Start Using
-1. Click **Start Listening**
-2. Say your wake word clearly (if using Porcupine, it will be detected automatically)
-3. ChatGPT launches automatically in voice mode!
-4. App continues listening - say wake word again anytime to launch another window
-5. Click **Stop** when you're done
-
-### 7. Voice Commands (In Voice Mode)
-Once ChatGPT is in voice mode (blue orb visible), use voice commands to control it:
-
-**Available Commands:**
-- **"Mic On"** / **"Mic Off"** - Toggle microphone on/off in ChatGPT
-- **"Exit"** / **"Exit Voice Mode"** - Exit voice mode and return to text chat
-
-**Setup Voice Commands:**
-1. Launch ChatGPT and enter voice mode manually
-2. In HeyGPT Settings, scroll to "Voice Command Buttons"
-3. Click "Capture Mic Button" and hover over the mic button in ChatGPT
-4. Click "Capture Exit Voice Mode Button" and hover over the exit button
-5. Save settings
-
-**Important:** Voice commands ONLY work when ChatGPT is in voice mode (blue orb detection). The app monitors voice mode status every 2 seconds and enables/disables commands accordingly.
-
-## 🎯 Usage Tips
-
-### How Wake Word Isolation Works
-HeyGPT uses **advanced isolation technology** to ensure wake words are only detected when spoken alone:
-
-**Pre-Recognition Checks:**
-- Maximum 5 speech hypotheses (rejects if part of longer sentence)
-- Maximum 3 unique words (rejects if conversation detected)
-- Maximum 2 second speech duration
-- All words must be part of wake word (rejects "Hey what's up GPT")
-
-**Post-Recognition Validation (400ms):**
-- Monitors for continued speech after wake word
-- Rejects if any additional words detected
-- Ensures silence follows the wake word
-
-**Result:** ✅ "Hey GPT" triggers, ❌ "Hey GPT can you..." rejects
-
-### Wake Word Isolation Settings
-- **Enable Wake Word Isolation**: Turn on/off strict filtering (recommended: ON)
-- **Cooldown Period**: Time between detections (default: 1.5s)
-- **Confidence Threshold**: Speech recognition confidence level (default: 0.7)
-
-### Environment Presets
-Adjust settings based on your environment:
-- **Quiet Office**: Enable isolation, default settings work well
-- **Noisy Environment**: Increase confidence threshold to 0.8+
-- **Shared Space**: Enable isolation to prevent accidental triggers
+**Skip Porcupine?** System.Speech works but has frequent false positives. Enable "Wake Word Isolation" in Advanced Settings if using fallback mode.
 
 ### Troubleshooting
 
