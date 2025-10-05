@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="HeyGPT · Voice Assistant"
-        Height="800" Width="720"
+        Height="900" Width="720"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
         Icon="/SqaureLog.ico"
