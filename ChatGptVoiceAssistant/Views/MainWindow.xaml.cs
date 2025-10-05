@@ -52,10 +52,45 @@ namespace HeyGPT.Views
             _windowService.DebugLog += (s, message) => Dispatcher.Invoke(() => AddLog(message));
 
             UpdateStatus("Ready. Please configure settings before starting.");
+            UpdateSystemStatus();
 
             if (_currentSettings.StartMinimized)
             {
                 WindowState = WindowState.Minimized;
+            }
+        }
+
+        private void UpdateSystemStatus()
+        {
+            if (_usePorcupine)
+            {
+                EngineStatusText.Text = "🎯 Porcupine AI (High Accuracy Mode)";
+                EngineStatusText.Foreground = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#1a8754"));
+            }
+            else
+            {
+                EngineStatusText.Text = "⚙️ System.Speech (Basic Mode)";
+                EngineStatusText.Foreground = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#d97706"));
+            }
+
+            if (!string.IsNullOrEmpty(_currentSettings.CustomWakeWordPath) && _usePorcupine)
+            {
+                WakeWordTypeText.Text = $"🎨 Custom .ppn File";
+                WakeWordTypeText.Foreground = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#7c3aed"));
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(_currentSettings.CustomWakeWordPath);
+                CurrentWakeWordText.Text = $"'{fileName}'";
+            }
+            else if (!string.IsNullOrWhiteSpace(_currentSettings.WakeWord))
+            {
+                WakeWordTypeText.Text = "📦 Preset Wake Word";
+                WakeWordTypeText.Foreground = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#0891b2"));
+                CurrentWakeWordText.Text = $"'{_currentSettings.WakeWord}'";
+            }
+            else
+            {
+                WakeWordTypeText.Text = "Not configured";
+                WakeWordTypeText.Foreground = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#6b7280"));
+                CurrentWakeWordText.Text = "Please configure in Settings";
             }
         }
 
@@ -209,7 +244,10 @@ namespace HeyGPT.Views
                 _voiceModeCheckTimer.Start();
                 StartButton.IsEnabled = false;
                 StopButton.IsEnabled = true;
-                UpdateStatus($"Listening for wake word: '{activeWakeWord}' (Continuous)");
+
+                StatusIndicator.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#10b981"));
+
+                UpdateStatus($"🎤 Listening for '{activeWakeWord}'...");
                 AddLog("✓ Wake word detection ACTIVE - Only listening for the selected wake word");
                 AddLog("Voice mode monitoring active - commands will work when ChatGPT is in voice mode");
             }
@@ -239,7 +277,10 @@ namespace HeyGPT.Views
             _speechService.IsInVoiceMode = false;
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
-            UpdateStatus("Stopped listening");
+
+            StatusIndicator.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#7dd3c0"));
+
+            UpdateStatus("⏸️ Stopped listening");
             AddLog("✓ Wake word detection stopped");
         }
 
@@ -355,6 +396,7 @@ namespace HeyGPT.Views
                 }
 
                 UpdateStatus("Settings saved and applied successfully");
+                UpdateSystemStatus();
                 AddLog("=== Settings Applied ===");
                 LogSettingsChanges(oldSettings, _currentSettings);
             }

@@ -102,7 +102,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Width="14" Height="14"
+                    <Border x:Name="StatusIndicator" Width="14" Height="14"
                             Grid.Column="0"
                             CornerRadius="7"
                             Margin="0,0,12,0"
@@ -113,19 +113,74 @@
                     </Border>
 
                     <TextBlock Grid.Column="1"
-                               Text="Current Status"
+                               Text="System Status"
                                FontSize="16"
                                FontWeight="SemiBold"
                                Foreground="{StaticResource PrimaryBrush}"/>
                 </Grid>
 
-                <TextBlock x:Name="StatusTextBlock"
-                           FontSize="15"
-                           Foreground="{StaticResource CharcoalBrush}"
-                           TextWrapping="Wrap"
-                           Margin="26,0,0,0"
-                           LineHeight="24"
-                           Text="Ready to listen. Click Start to activate voice detection."/>
+                <Grid Margin="26,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Margin="0,0,0,8">
+                        <TextBlock Text="Detection Engine:"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   Foreground="{StaticResource StoneBrush}"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock x:Name="EngineStatusText"
+                                   Text="System.Speech (Basic Mode)"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource CharcoalBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Margin="0,0,0,8">
+                        <TextBlock Text="Wake Word Type:"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   Foreground="{StaticResource StoneBrush}"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock x:Name="WakeWordTypeText"
+                                   Text="Preset Wake Word"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource CharcoalBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Margin="0,0,0,8">
+                        <TextBlock Text="Current Wake Word:"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   Foreground="{StaticResource StoneBrush}"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock x:Name="CurrentWakeWordText"
+                                   Text="Not configured"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource CharcoalBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3">
+                        <TextBlock Text="Status:"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   Foreground="{StaticResource StoneBrush}"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock x:Name="StatusTextBlock"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource CharcoalBrush}"
+                                   TextWrapping="Wrap"
+                                   LineHeight="20"
+                                   Text="Ready to listen. Click Start to activate voice detection."/>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </Border>
 
