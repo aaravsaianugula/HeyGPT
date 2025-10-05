@@ -75,7 +75,7 @@ Before installing HeyGPT, make sure you have:
 ## 🚀 Installation
 
 ### Option 1: Windows Installer (Recommended)
-1. Download **[HeyGPT-v1.1.0-Setup.exe](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.1.0)** (11 MB)
+1. Download **[HeyGPT-Setup.exe](https://github.com/aaravsaianugula/HeyGPT/releases/latest/download/HeyGPT-v1.1.0-Setup.exe)** (11 MB)
 2. Run the installer - it will install to `C:\Program Files\HeyGPT`
 3. Creates Start Menu shortcuts automatically
 4. **Can be uninstalled** from Windows Settings → Apps & Features → HeyGPT
@@ -85,7 +85,7 @@ Before installing HeyGPT, make sure you have:
 **Benefits**: Automatic shortcuts, clean uninstall, integrates with Windows properly.
 
 ### Option 2: Portable ZIP Version
-1. Download **[HeyGPT-v1.1.0-Windows.zip](https://github.com/aaravsaianugula/HeyGPT/releases/tag/v1.1.0)** (13 MB)
+1. Download **[HeyGPT-Windows.zip](https://github.com/aaravsaianugula/HeyGPT/releases/latest/download/HeyGPT-v1.1.0-Windows.zip)** (13 MB)
 2. Extract to a permanent location (e.g., `C:\Program Files\HeyGPT`)
 3. **Important**: Keep all files together - don't move just the `.exe`
 4. Run `HeyGPT.exe` from the extracted folder
