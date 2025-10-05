@@ -2,7 +2,7 @@
 ; Creates a Windows installer with full uninstall support
 
 #define MyAppName "HeyGPT"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.2.0"
 #define MyAppPublisher "Aarav Sai Anugula"
 #define MyAppURL "https://github.com/aaravsaianugula/HeyGPT"
 #define MyAppExeName "HeyGPT.exe"
@@ -43,8 +43,8 @@ Name: "startupicon"; Description: "Launch {#MyAppName} at Windows startup"; Grou
 
 [Files]
 Source: "ChatGptVoiceAssistant\bin\Release\net8.0-windows10.0.19041.0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "Release\HeyGPT-v1.1.0-Windows\README.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\HeyGPT-v1.1.0-Windows\RELEASE_NOTES.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\HeyGPT-v1.2.0-Windows\README.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\HeyGPT-v1.2.0-Windows\RELEASE_NOTES.txt"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

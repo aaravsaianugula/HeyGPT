@@ -12,7 +12,7 @@
 
 *Click to watch promo video created with Sora 2*
 
-[![Release](https://img.shields.io/badge/Release-v1.1.0-blue.svg)](https://github.com/aaravsaianugula/HeyGPT/releases/latest)
+[![Release](https://img.shields.io/badge/Release-v1.2.0-blue.svg)](https://github.com/aaravsaianugula/HeyGPT/releases/latest)
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)](https://www.microsoft.com/windows)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -75,7 +75,7 @@ Before installing HeyGPT, make sure you have:
 ## 🚀 Installation
 
 ### Option 1: Windows Installer (Recommended)
-1. Download **[HeyGPT-Setup.exe](https://github.com/aaravsaianugula/HeyGPT/releases/latest/download/HeyGPT-v1.1.0-Setup.exe)** (11 MB)
+1. Download **[HeyGPT-Setup.exe](https://github.com/aaravsaianugula/HeyGPT/releases/latest/download/HeyGPT-v1.2.0-Setup.exe)** (11 MB)
 2. Run the installer - it will install to `C:\Program Files\HeyGPT`
 3. Creates Start Menu shortcuts automatically
 4. **Can be uninstalled** from Windows Settings → Apps & Features → HeyGPT
@@ -85,7 +85,7 @@ Before installing HeyGPT, make sure you have:
 **Benefits**: Automatic shortcuts, clean uninstall, integrates with Windows properly.
 
 ### Option 2: Portable ZIP Version
-1. Download **[HeyGPT-Windows.zip](https://github.com/aaravsaianugula/HeyGPT/releases/latest/download/HeyGPT-v1.1.0-Windows.zip)** (13 MB)
+1. Download **[HeyGPT-Windows.zip](https://github.com/aaravsaianugula/HeyGPT/releases/latest/download/HeyGPT-v1.2.0-Windows.zip)** (13 MB)
 2. Extract to a permanent location (e.g., `C:\Program Files\HeyGPT`)
 3. **Important**: Keep all files together - don't move just the `.exe`
 4. Run `HeyGPT.exe` from the extracted folder
@@ -317,7 +317,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Changelog
 
-### v1.1.0 (Latest)
+### v1.2.0 (Latest)
+**Improvements & Fixes** 🔧
+
+**✨ New Features:**
+- 👁 **Active Wake Word Indicator**: Visual display showing current active wake word
+- 🎬 **Promo Video**: Embedded YouTube video created with Sora 2
+
+**🐛 Bug Fixes:**
+- Fixed ChatGPT launch for 'chatgpt' command
+- Fixed button positioning issues for more reliable automation
+- Updated download links to auto-update with latest releases
+
+**🔒 Security & Performance:**
+- Comprehensive security audit with vulnerability fixes
+- Improved voice mode state tracking for mic commands
+- Better activity log visibility with enhanced color contrast
+
+### v1.1.0
 **Major Update: Porcupine High Accuracy + Custom Wake Words** 🎉
 
 **🎯 Major Features:**

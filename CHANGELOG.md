@@ -7,7 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added - Modern UI Overhaul (2025-01-XX)
+## [1.2.0] - 2025-10-04
+
+### Added
+- **Active Wake Word Indicator** - Visual display showing which wake word is currently active in the UI
+- **YouTube Promo Video** - Embedded Sora 2 promo video in README for better project showcase
+
+### Fixed
+- **ChatGPT Launch** - Fixed 'chatgpt' command not working correctly
+- **Button Positioning** - Removed default button positions for more reliable detection
+- **Download Links** - Updated to use `/releases/latest/download/` for automatic updates
+
+### Security
+- **Comprehensive Security Audit** - Fixed multiple security vulnerabilities and performance issues
+- **Voice Mode State Tracking** - Improved mic on/off command reliability with better state management
+
+### Changed
+- **Documentation** - Updated modern UI details and comprehensive changelog
+- **Activity Log** - Better contrast and visibility with improved color scheme
+
+## [1.1.0] - 2024-12-XX
+
+### Added - Modern UI Overhaul
 
 #### Complete Visual Redesign
 - **Glassmorphism Design System** - Modern translucent cards with gradient borders and elevated shadows
